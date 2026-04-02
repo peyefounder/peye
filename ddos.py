@@ -84,8 +84,8 @@ def print_banner():
 """
     print(banner)
     print(f"{CYAN}╔══════════════════════════════════════════════════════════════════╗")
-    print(f"║     {MAGENTA}Welcome To Peye {RESET}{CYAN}                   ║")
-    print(f"║     {GREEN}Tools Vuln Site Scanner Or ddos by (peyefounder) don't forget to follow: instagram: @hexornot{RESET}{CYAN}                    ║")
+    print(f"║     {MAGENTA} Welcome To Peye {RESET}{CYAN}                   ║")
+    print(f"║     {GREEN}Tools Vuln Site Scanner Or ddos by (peyefounder) don't forget to follow: instagram: @hexornot {RESET}{CYAN}                    ║")
     print(f"╚══════════════════════════════════════════════════════════════════╝{RESET}\n")
 
 class Stats:
