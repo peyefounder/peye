@@ -178,7 +178,7 @@ class DorkSearch:
     
     def tech_search(self, tech_name):
         tech_dorks = {
-            'wordpress': 'inurl:wp-content', '
+            'wordpress': 'inurl:wp-content', 
             'laravel': 'inurl:.env',
             'jquery': 'inurl:jquery.js',
             'php': 'ext:php',
