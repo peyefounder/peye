@@ -1,8 +1,6 @@
 # 🔥 PEYE Simple Scann Vuln Site
 
-<p align="center">
-  <img src="peye.png" alt="PEYE Logo" width="200">
-</p>
+
 
 <p align="center">
   <img src="https://img.shields.io/badge/Version-9.0-red?style=for-the-badge&logo=github">
@@ -27,7 +25,7 @@
 | 🌐 **Subdomain Scan** | Subdomain enumeration |
 | 🎯 **Dork Search** | Google Dorking |
 | 🖥️ **Tech Detection** | CMS, JS, Server detection |
-| 💥 **DoS Attack** | 15+ attack methods |
+| 💥 **DoS Attack** | 8 attack methods |
 
 > ⚠️ **Peringatan**: Tools ini HANYA untuk testing pada sistem yang Anda miliki atau memiliki izin eksplisit!
 
@@ -52,4 +50,9 @@ cd peye
 pip3 install cloudscraper dnspython requests
 
 # Jalankan
-python3 peye.py
+python3 ddos.py
+
+#LICENSE
+*SCRIPT INI BERSIFAT OPEN SOURCE (BOLEH DI RENAME ATAU UBAH) DENGAN BATASAN HANYA MENAMBAH VITUR ATAU MENGUBAH VITUR TETAPI MENGUBAH COPYRIGHT SANGAT TIDAK DI PERBOLEHKAN DAN JIKA ADA KERUSAKAN DI TIMBULKAN OLEH TOOLS INI KARENA ULAH ORANG LAIN DEVOLOPER ATAU PENCIPTA TIDAK BERTANGGUNG JAWAB ATAD KERUSAKAN NYA*
+
+#PEYE FOUNDER
