@@ -1,8 +1,3 @@
-#!/usr/bin/env python3
-"""
-PEYE v18.0 - Ultimate Security Testing Framework
-"""
-
 import threading
 import requests
 import time
