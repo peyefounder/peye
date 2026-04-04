@@ -428,7 +428,7 @@ class H2FloodJS:
     
     @staticmethod
     def run(target, duration, threads):
-        proxy_file = "proxy.txt"
+        proxy_file = "proxies.txt"
         
         if not os.path.exists(proxy_file):
             print(f"{RED}[✗] Proxy file '{proxy_file}' not found!{RESET}")
