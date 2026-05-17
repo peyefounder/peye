@@ -3,7 +3,7 @@
 
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-9.0-red?style=for-the-badge&logo=github">
+  <img src="https://img.shields.io/badge/Version-19.1-red?style=for-the-badge&logo=github">
   <img src="https://img.shields.io/badge/Python-3.8%2B-blue?style=for-the-badge&logo=python">
   <img src="https://img.shields.io/badge/License-Custom-yellow?style=for-the-badge&logo=legal">
   <img src="https://img.shields.io/badge/Platform-Linux%20%7C%20Termux%20%7C%20Windows-lightgrey?style=for-the-badge&logo=linux">
